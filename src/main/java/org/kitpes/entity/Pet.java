@@ -1,28 +1,34 @@
 package org.kitpes.entity;
 
+import org.codehaus.jackson.map.annotate.JsonView;
+
 /**
  * Created by mac on 11.04.17.
  */
 public class Pet {
+    private Long id;
     private String name;
     private String type; // cat, dog etc.
-    private String status; // if a pet need to be treated
-    private String description; // description about a pet
-    private String organization; // an organization that a pet is bound
     private int age;
-    private boolean sex;
+
+    private String sex;
+    private String description; // description about a pet
+    private String status; // if a pet need to be treated
+    private String organization; // an organization that a pet is bound
     private boolean vaccinated; // a pet is vaccinated or not
     private boolean sterilized; // a pet is sterilized or not
 
-    public Pet(String name,
+    public Pet(Long id,
+               String name,
                String type,
                String status,
                String description,
                String organization,
                int age,
-               boolean sex,
+               String sex,
                boolean vaccinated,
                boolean sterilized) {
+        this.id = id;
         this.name = name;
         this.type = type;
         this.status = status;
@@ -33,6 +39,10 @@ public class Pet {
         this.vaccinated = vaccinated;
         this.sterilized = sterilized;
     }
+
+    public Long getId() { return id; }
+
+    public void setId(Long id) { this.id = id; }
 
     public String getName() { return name; }
 
@@ -58,9 +68,9 @@ public class Pet {
 
     public void setAge(int age) { this.age = age; }
 
-    public boolean isSex() { return sex; }
+    public String getSex() { return this.sex; }
 
-    public void setSex(boolean sex) { this.sex = sex; }
+    public void setSex(String sex) { this.sex = sex; }
 
     public boolean isVaccinated() { return vaccinated;}
 
