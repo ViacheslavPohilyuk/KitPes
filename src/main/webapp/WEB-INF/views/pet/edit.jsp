@@ -10,20 +10,53 @@
 
 <html>
 <head>
+    <meta charset="utf-8"/>
     <title>Pet</title>
 </head>
-<h1>Изменить данные питомца</h1>
 <body>
 <form action="/pet/edit" method="POST">
-    id: <input type="text" name="id" value="<c:out value="${pet.id}" />"/><br/>
-    name: <input type="text" name="name" value="<c:out value="${pet.name}" />"/><br/>
-    animal: <input type="text" name="animal" value="<c:out value="${pet.animal}" />"/><br/>
-    age: <input type="text" name="age" value="<c:out value="${pet.age}" />"/><br/>
-    sex: <input type="text" name="sex" value="<c:out value="${pet.sex}" />"/><br/>
-    description: <input type="text" name="description" value="<c:out value="${pet.description}" />"/><br/>
-    status: <input type="text" name="status" value="<c:out value="${pet.status}" />"/><br/>
-    organization: <input type="text" name="organization" value="<c:out value="${pet.organization}" />"/><br/>
-    <input type="submit" value="Изменить"/>
+    <c:choose>
+        <c:when test="${pet.id != null}">
+            <h1>Изменить данные питомца</h1>
+            <table>
+                <tr>
+                    <td><input type="hidden" name="id" value="<c:out value="${pet.id}" />"/></td>
+                </tr>
+                <tr>
+                    <td>name:</td>
+                    <td><input type="text" name="name" value="<c:out value="${pet.name}" />"/></td>
+                </tr>
+                <tr>
+                    <td>animal:</td>
+                    <td><input type="text" name="animal" value="<c:out value="${pet.animal}" />"/></td>
+                </tr>
+                <tr>
+                    <td>age:</td>
+                    <td><input type="text" name="age" value="<c:out value="${pet.age}" />"/></td>
+                </tr>
+                <tr>
+                    <td>sex:</td>
+                    <td><input type="text" name="sex" value="<c:out value="${pet.sex}" />"/></td>
+                </tr>
+                <tr>
+                    <td>description:</td>
+                    <td><input type="text" name="description" value="<c:out value="${pet.description}" />"/></td>
+                </tr>
+                <tr>
+                    <td>status:</td>
+                    <td><input type="text" name="status" value="<c:out value="${pet.status}" />"/></td>
+                </tr>
+                <tr>
+                    <td>organization:</td>
+                    <td><input type="text" name="organization" value="<c:out value="${pet.organization}" />"/></td>
+                </tr>
+            </table>
+            <input type="submit" value="Изменить"/>
+        </c:when>
+        <c:otherwise>
+            <div>No pet with such id</div>
+        </c:otherwise>
+    </c:choose>
 </form>
 </body>
 </html>

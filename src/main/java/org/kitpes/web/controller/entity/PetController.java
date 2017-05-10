@@ -120,7 +120,7 @@ public class PetController {
      */
     @RequestMapping(value = "/new", method = POST)
     public String create(Pet pet) {
-        petRepository.save(pet);
-        return "redirect:/pet/" + pet.getId();
+        long key = petRepository.save(pet);
+        return "redirect:/pet/" + key;
     }
 }
