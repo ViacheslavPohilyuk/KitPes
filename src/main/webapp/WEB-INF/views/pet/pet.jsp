@@ -17,7 +17,6 @@
     <c:choose>
         <c:when test="${pet.id != null}">
             <h1>Профиль питомца <c:out value="${pet.name}"/></h1>
-            id: <c:out value="${pet.id}"/><br/>
             name: <c:out value="${pet.name}"/><br/>
             animal: <c:out value="${pet.animal}"/><br/>
             age: <c:out value="${pet.age}"/><br/>
