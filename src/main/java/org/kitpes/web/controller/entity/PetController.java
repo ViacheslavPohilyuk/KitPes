@@ -55,7 +55,7 @@ public class PetController {
 
         // If can't find a pet with required id
         if(pet.getId() == null)
-            return "pet/message/noID";
+            return "pet/noID";
 
         model.addAttribute(pet);
         return "pet/pet";
@@ -76,7 +76,7 @@ public class PetController {
 
         // If can't find a pet with required id
         if(pet.getId() == null)
-            return "pet/message/noID";
+            return "pet/noID";
 
         model.addAttribute(pet);
         return "pet/edit";
@@ -92,8 +92,8 @@ public class PetController {
     public String updateID(Pet pet) {
         int countUpdated = petRepository.updateOne(pet);
         if (countUpdated == 0)
-            return "pet/message/noID";
-        return "pet/message/changing";
+            return "pet/noID";
+        return "redirect:/pet/" + pet.getId();
     }
 
     /**
@@ -105,8 +105,8 @@ public class PetController {
     public String deleteID(@PathVariable long id) {
         int countDeleted = petRepository.deleteOne(id);
         if (countDeleted == 0)
-            return "pet/message/noID";
-        return "pet/message/deleting";
+            return "pet/noID";
+        return "redirect:/pet";
     }
 
     /**
