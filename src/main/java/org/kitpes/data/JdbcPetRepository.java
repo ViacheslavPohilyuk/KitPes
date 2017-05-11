@@ -92,13 +92,13 @@ public class JdbcPetRepository implements PetRepository {
                     return ps;
                 },
                 keyHolder);
+
         return (long) keyHolder.getKey();
     }
 
     private static class PetRowMapper implements RowMapper<Pet>, Serializable {
         PetRowMapper() {
         }
-
         public Pet mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new Pet(rs.getLong("id"),
                     rs.getString("name"),
