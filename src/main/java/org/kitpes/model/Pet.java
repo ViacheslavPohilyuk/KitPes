@@ -1,6 +1,4 @@
-package org.kitpes.entity;
-
-import org.codehaus.jackson.map.annotate.JsonView;
+package org.kitpes.model;
 
 /**
  * Created by mac on 11.04.17.

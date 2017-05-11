@@ -1,6 +1,6 @@
 package org.kitpes.data;
 
-import org.kitpes.entity.Pet;
+import org.kitpes.model.Pet;
 
 import java.util.List;
 

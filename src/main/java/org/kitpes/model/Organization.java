@@ -1,4 +1,4 @@
-package org.kitpes.entity;
+package org.kitpes.model;
 
 
 /**
