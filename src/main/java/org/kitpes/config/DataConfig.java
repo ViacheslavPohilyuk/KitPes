@@ -18,7 +18,9 @@ public class DataConfig {
     @Bean
     public DataSource dataSource() throws SQLException, ClassNotFoundException {
         /* Database connection data */
+
         String url = "jdbc:mysql://mysql-t2micro.c6wjr65m2iif.us-west-2.rds.amazonaws.com:3306";
+        String encoding = "useUnicode=true&characterEncoding=utf-8";
         String db = "students_assistant";
         String username = "student";
         String password = "student";
@@ -26,7 +28,7 @@ public class DataConfig {
         /* Set driver and connection data */
         DriverManagerDataSource ds = new DriverManagerDataSource();
         ds.setDriverClassName("com.mysql.jdbc.Driver");
-        ds.setUrl(url + "/" + db);
+        ds.setUrl(url + "/" + db + "?" + encoding);
         ds.setUsername(username);
         ds.setPassword(password);
         return ds;

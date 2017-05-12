@@ -8,27 +8,17 @@ import java.util.Date;
 public class User {
     private String email;
     private String password;
-
-    /* fields below are optional */
     private String firstName;
     private String lastName;
-    private Date birthday;
-    private String number; // phone number
 
     public User(String email,
                 String password,
                 String firstName,
-                String lastName,
-                Date birthday,
-                String number,
-                String country,
-                String city) {
+                String lastName) {
         this.email = email;
         this.password = password;
-        this.firstName = null;
-        this.lastName = null;
-        this.birthday = null;
-        this.number = null;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     public String getEmail() { return email; }
@@ -47,14 +37,6 @@ public class User {
 
     public void setLastName(String lastName) { this.lastName = lastName; }
 
-    public Date getBirthday() { return birthday; }
-
-    public void setBirthday(Date birthday) { this.birthday = birthday; }
-
-    public String getNumber() { return number; }
-
-    public void setNumber(String number) { this.number = number; }
-
     @Override
     public String toString() {
         return "User{" +
@@ -62,8 +44,6 @@ public class User {
                 ", password='" + password + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", birthday=" + birthday +
-                ", number='" + number + '\'' +
                 '}';
     }
 }
