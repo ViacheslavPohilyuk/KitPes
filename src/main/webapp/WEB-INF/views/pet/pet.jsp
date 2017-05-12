@@ -10,17 +10,19 @@
 <%@ page session="false" %>
 <html>
 <head>
+    <meta charset="utf-8"/>
     <title>Pet</title>
 </head>
 <body>
-<h1>Профиль питомца <c:out value="${pet.name}" /></h1>
-    id: <c:out value="${pet.id}" /><br/>
-    name: <c:out value="${pet.name}" /><br/>
-    animal: <c:out value="${pet.animal}" /><br/>
-    age: <c:out value="${pet.age}" /><br/>
-    sex: <c:out value="${pet.sex}" /><br/>
-    description: <c:out value="${pet.description}" /><br/>
-    status: <c:out value="${pet.status}" /><br/>
-    organization: <c:out value="${pet.organization}" /><br/>
+    <h1>Профиль питомца <c:out value="${pet.name}"/></h1>
+    name: <c:out value="${pet.name}"/><br/>
+    animal: <c:out value="${pet.animal}"/><br/>
+    age: <c:out value="${pet.age}"/><br/>
+    sex: <c:out value="${pet.sex}"/><br/>
+    description: <c:out value="${pet.description}"/><br/>
+    status: <c:out value="${pet.status}"/><br/>
+    organization: <c:out value="${pet.organization}"/><br/>
+    <a href="<c:url value="/pet/edit/${pet.id}" />">редактировать</a> |
+    <a href="<c:url value="/pet/delete/${pet.id}" />">удалить</a>
 </body>
 </html>

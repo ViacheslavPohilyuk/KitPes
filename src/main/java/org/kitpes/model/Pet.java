@@ -17,6 +17,17 @@ public class Pet {
     public Pet() {
     }
 
+    public Pet(String name,
+               String animal,
+               int age,
+               String sex,
+               String description,
+               String status,
+               String organization
+    ) {
+        this(null, name, animal, age, sex, description, status, organization);
+    }
+
     public Pet(Long id,
                String name,
                String animal,
@@ -25,7 +36,7 @@ public class Pet {
                String description,
                String status,
                String organization
-               ) {
+    ) {
         this.id = id;
         this.name = name;
         this.animal = animal;
@@ -36,37 +47,69 @@ public class Pet {
         this.sex = sex;
     }
 
-    public Long getId() { return id; }
+    public Long getId() {
+        return id;
+    }
 
-    public void setId(Long id) { this.id = id; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getName() { return name; }
+    public String getName() {
+        return name;
+    }
 
-    public void setName(String name) { this.name = name; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public String getAnimal() { return animal; }
+    public String getAnimal() {
+        return animal;
+    }
 
-    public void setAnimal(String type) { this.animal = type; }
+    public void setAnimal(String type) {
+        this.animal = type;
+    }
 
-    public String getStatus() { return status; }
+    public String getStatus() {
+        return status;
+    }
 
-    public void setStatus(String status) { this.status = status; }
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-    public String getDescription() { return description; }
+    public String getDescription() {
+        return description;
+    }
 
-    public void setDescription(String description) { this.description = description; }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-    public String getOrganization() { return organization; }
+    public String getOrganization() {
+        return organization;
+    }
 
-    public void setOrganization(String oraginzation) { this.organization = oraginzation; }
+    public void setOrganization(String oraginzation) {
+        this.organization = oraginzation;
+    }
 
-    public int getAge() { return age; }
+    public int getAge() {
+        return age;
+    }
 
-    public void setAge(int age) { this.age = age; }
+    public void setAge(int age) {
+        this.age = age;
+    }
 
-    public String getSex() { return this.sex; }
+    public String getSex() {
+        return this.sex;
+    }
 
-    public void setSex(String sex) { this.sex = sex; }
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
 
     @Override
     public String toString() {

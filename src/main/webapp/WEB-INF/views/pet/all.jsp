@@ -11,6 +11,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <meta charset="utf-8" />
     <title>Питомцы</title>
 </head>
 <body>
@@ -30,6 +31,8 @@
                             description: <c:out value="${pet.description}"/><br/>
                             status: <c:out value="${pet.status}"/><br/>
                             organization: <c:out value="${pet.organization}"/><br/>
+                            <a href="<c:url value="/pet/edit/${pet.id}" />">редактировать</a> |
+                            <a href="<c:url value="/pet/delete/${pet.id}" />">удалить</a>
                         </div>
                     </td>
                 </tr>

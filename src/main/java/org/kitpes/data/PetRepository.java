@@ -16,5 +16,5 @@ public interface PetRepository {
 
     public int updateOne(Pet pet);
 
-    public void save(Pet pet);
+    public long save(Pet pet);
 }

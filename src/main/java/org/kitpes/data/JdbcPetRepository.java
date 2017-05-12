@@ -1,15 +1,17 @@
 package org.kitpes.data;
 
 import java.io.Serializable;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
+import java.sql.*;
 import java.util.List;
 
 import org.kitpes.model.Pet;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -29,10 +31,18 @@ public class JdbcPetRepository implements PetRepository {
     }
 
     public Pet readOne(long id) {
-        return jdbc.queryForObject(
-                "SELECT * FROM pets" +
-                        " WHERE id = ?",
-                new PetRowMapper(), id);
+        Pet pet;
+        try {
+            pet = jdbc.queryForObject(
+                    "SELECT * FROM pets" +
+                            " WHERE id = ?",
+                    new PetRowMapper(), id);
+        } catch (EmptyResultDataAccessException e) {
+            /* Assigning empty Pet instance to {@code pet} valuable
+             if program can't find pet with required id in the db */
+            pet = new Pet();
+        }
+        return pet;
     }
 
     public int deleteOne(long id) {
@@ -65,23 +75,30 @@ public class JdbcPetRepository implements PetRepository {
         return jdbc.update(updateStatement, updatedDataAndID);
     }
 
-    public void save(Pet pet) {
-        jdbc.update(
-                "INSERT INTO pets (id, name, animal, age, sex, description, status, organization)" +
-                        " VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-                pet.getId(),
-                pet.getName(),
-                pet.getAnimal(),
-                pet.getAge(),
-                pet.getSex(),
-                pet.getDescription(),
-                pet.getStatus(),
-                pet.getOrganization());
+    public long save(Pet pet) {
+        final String insertSQL = "INSERT INTO pets (name, animal, age, sex, description, status, organization)" +
+                " VALUES (?, ?, ?, ?, ?, ?, ?)";
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbc.update((connection) -> {
+                    PreparedStatement ps =
+                            connection.prepareStatement(insertSQL, new String[]{"id"});
+                    ps.setString(1, pet.getName());
+                    ps.setString(2, pet.getAnimal());
+                    ps.setInt(3, pet.getAge());
+                    ps.setString(4, pet.getSex());
+                    ps.setString(5, pet.getDescription());
+                    ps.setString(6, pet.getStatus());
+                    ps.setString(7, pet.getOrganization());
+                    return ps;
+                },
+                keyHolder);
+
+        return (long) keyHolder.getKey();
     }
 
     private static class PetRowMapper implements RowMapper<Pet>, Serializable {
-        PetRowMapper() {}
-
+        PetRowMapper() {
+        }
         public Pet mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new Pet(rs.getLong("id"),
                     rs.getString("name"),

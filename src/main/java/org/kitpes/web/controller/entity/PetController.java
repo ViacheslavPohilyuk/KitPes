@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -37,7 +36,7 @@ public class PetController {
      */
     @RequestMapping(method = GET)
     public String pets(Model model) {
-        List<Pet> pets =  petRepository.readAll();
+        List<Pet> pets = petRepository.readAll();
         model.addAttribute("petList", pets);
         return "pet/all";
     }
@@ -45,29 +44,41 @@ public class PetController {
     /**
      * Getting a profile of a pet by id
      *
-     * @param id an id of a pet
+     * @param id    an id of a pet
      * @param model adding a pet to the model
      * @return web-page with data of an one pet
      */
     @RequestMapping(value = "/{id}", method = GET)
     public String pet(@PathVariable long id,
-                        Model model) {
-        model.addAttribute(petRepository.readOne(id));
+                      Model model) {
+        Pet pet = petRepository.readOne(id);
+
+        // If can't find a pet with required id
+        if(pet.getId() == null)
+            return "pet/noID";
+
+        model.addAttribute(pet);
         return "pet/pet";
     }
 
     /**
      * Getting web-form with data of a pet that will be updated
      *
-     * @param id an id of a pet
+     * @param id    an id of a pet
      * @param model model that will contain a Pet instance
      * @return web-form with fields which contain data of a pet
-     *         will be updated
+     * will be updated
      */
     @RequestMapping(value = "/edit/{id}", method = GET)
     public String updatedGet(@PathVariable long id,
-                               Model model) {
-        model.addAttribute(petRepository.readOne(id));
+                             Model model) {
+        Pet pet = petRepository.readOne(id);
+
+        // If can't find a pet with required id
+        if(pet.getId() == null)
+            return "pet/noID";
+
+        model.addAttribute(pet);
         return "pet/edit";
     }
 
@@ -78,13 +89,11 @@ public class PetController {
      * @return message about an operation
      */
     @RequestMapping(value = "/edit", method = POST)
-    @ResponseBody
     public String updateID(Pet pet) {
-        String message = "The pet has been successfully updated";
         int countUpdated = petRepository.updateOne(pet);
         if (countUpdated == 0)
-            message = "No pet with such id";
-        return message;
+            return "pet/noID";
+        return "redirect:/pet/" + pet.getId();
     }
 
     /**
@@ -93,13 +102,11 @@ public class PetController {
      * @param id an id of a pet
      */
     @RequestMapping(value = "/delete/{id}", method = GET)
-    @ResponseBody
     public String deleteID(@PathVariable long id) {
-        String message = "The pet has been successfully deleted";
         int countDeleted = petRepository.deleteOne(id);
         if (countDeleted == 0)
-            message = "No pet with such id";
-        return message;
+            return "pet/noID";
+        return "redirect:/pet";
     }
 
     /**
@@ -120,7 +127,7 @@ public class PetController {
      */
     @RequestMapping(value = "/new", method = POST)
     public String create(Pet pet) {
-        petRepository.save(pet);
-        return "redirect:/pet/" + pet.getId();
+        long key = petRepository.save(pet);
+        return "redirect:/pet/" + key;
     }
 }

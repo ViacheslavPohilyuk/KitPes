@@ -1,5 +1,5 @@
 CREATE TABLE `pets` (
-	`id` IDENTITY,
+	`id` IDENTITY AUTO_INCREMENT,
 	`name` varchar(255) DEFAULT NULL,
 	`animal` varchar(255) DEFAULT NULL,
 	`age` int(11) DEFAULT NULL,
