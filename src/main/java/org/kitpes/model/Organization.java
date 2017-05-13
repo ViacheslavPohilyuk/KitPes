@@ -1,45 +1,101 @@
 package org.kitpes.model;
 
+import java.sql.Time;
 
 /**
  * Created by mac on 11.04.17.
  */
 public class Organization {
+    private Long id;
     private String name;
-    private String number;
-    private String country;
-    private String city;
+    private String address;
+    private Long cellNumber;
+    private Time oppeningHours;
+    private String workingDays;
 
-    public Organization(String name, String number, String country, String city) {
-        this.name = name;
-        this.number = number;
-        this.country = country;
-        this.city = city;
+    public Organization() {
     }
 
-    public String getName() { return name; }
+    public Organization(String name,
+                        String address,
+                        Long cellNumber,
+                        Time oppeningHours,
+                        String workingDays ) {
+        this(null, name, address, cellNumber, oppeningHours, workingDays);
+    }
 
-    public void setName(String name) { this.name = name; }
+    public Organization(
+            Long id,
+            String name,
+            String address,
+            Long cellNumber,
+            Time oppeningHours,
+            String workingDays) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.cellNumber = cellNumber;
+        this.oppeningHours = oppeningHours;
+        this.workingDays = workingDays;
+    }
 
-    public String getNumber() { return number; }
+    public Long getId() {
+        return id;
+    }
 
-    public void setNumber(String number) { this.number = number; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getCountry() { return this.country; }
+    public String getName() {
+        return name;
+    }
 
-    public void setCountry(String country) { this.country = country; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public String getCity() { return this.city; }
+    public String getAddress() {
+        return address;
+    }
 
-    public void setCity(String city) { this.city = city; }
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public Long getCellNumber() {
+        return cellNumber;
+    }
+
+    public void setCellNumber(Long cellNumber) {
+        this.cellNumber = cellNumber;
+    }
+
+    public Time getOppeningHours() {
+        return oppeningHours;
+    }
+
+    public void setOppeningHours(Time oppeningHours) {
+        this.oppeningHours = oppeningHours;
+    }
+
+    public String getWorkingDays() {
+        return workingDays;
+    }
+
+    public void setWorkingDays(String workingDays) {
+        this.workingDays = workingDays;
+    }
 
     @Override
     public String toString() {
         return "Organization{" +
                 "name='" + name + '\'' +
-                ", number='" + number + '\'' +
-                ", country='" + country + '\'' +
-                ", city='" + city + '\'' +
+                ", address='" + address + '\'' +
+                ", cellNumber=" + cellNumber +
+                ", oppeningHours=" + oppeningHours +
+                ", workingDays='" + workingDays + '\'' +
                 '}';
     }
+
 }

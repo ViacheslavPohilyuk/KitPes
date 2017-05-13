@@ -23,8 +23,7 @@ public class Pet {
                String sex,
                String description,
                String status,
-               String organization
-    ) {
+               String organization) {
         this(null, name, animal, age, sex, description, status, organization);
     }
 
@@ -114,13 +113,13 @@ public class Pet {
     @Override
     public String toString() {
         return "Pet{" +
-                "name='" + name + '\'' +
-                ", type='" + animal + '\'' +
-                ", status='" + status + '\'' +
-                ", description='" + description + '\'' +
-                ", organization='" + organization + '\'' +
+                ", name='" + name + '\'' +
+                ", animal='" + animal + '\'' +
                 ", age=" + age +
-                ", sex=" + sex +
+                ", sex='" + sex + '\'' +
+                ", description='" + description + '\'' +
+                ", status='" + status + '\'' +
+                ", organization='" + organization + '\'' +
                 '}';
     }
 }
