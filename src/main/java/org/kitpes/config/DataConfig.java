@@ -18,12 +18,11 @@ public class DataConfig {
     @Bean
     public DataSource dataSource() throws SQLException, ClassNotFoundException {
         /* Database connection data */
-
-        String url = "jdbc:mysql://mysql-t2micro.c6wjr65m2iif.us-west-2.rds.amazonaws.com:3306";
+        String url = "jdbc:mysql://hngomrlb3vfq3jcr.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306";
         String encoding = "useUnicode=true&characterEncoding=utf-8";
-        String db = "students_assistant";
-        String username = "student";
-        String password = "student";
+        String db = "ydtnrkg2yazh7r4c";
+        String username = "gt61wylco9krv1qj";
+        String password = "vzca9pd5nlaalmhj";
 
         /* Set driver and connection data */
         DriverManagerDataSource ds = new DriverManagerDataSource();
