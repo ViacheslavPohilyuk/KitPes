@@ -19,31 +19,31 @@
     <table>
         <tr>
             <td>name:</td>
-            <td><input type="text" name="name" content="text/html; charset=utf-8"/><br/></td>
+            <td><input type="text" name="name" /><br/></td>
         </tr>
         <tr>
             <td>animal:</td>
-            <td><input type="text" name="animal" content="text/html; charset=utf-8"/><br/></td>
+            <td><input type="text" name="animal" /><br/></td>
         </tr>
         <tr>
             <td>age:</td>
-            <td><input type="text" name="age" content="text/html; charset=utf-8"/><br/></td>
+            <td><input type="text" name="age" /><br/></td>
         </tr>
         <tr>
             <td>sex:</td>
-            <td><input type="text" name="sex" content="text/html; charset=utf-8"/><br/></td>
+            <td><input type="text" name="sex" /><br/></td>
         </tr>
         <tr>
             <td>description:</td>
-            <td><input type="text" name="description" content="text/html; charset=utf-8"/><br/></td>
+            <td><input type="text" name="description" /><br/></td>
         </tr>
         <tr>
             <td>status:</td>
-            <td><input type="text" name="status" content="text/html; charset=utf-8"/><br/></td>
+            <td><input type="text" name="status" /><br/></td>
         </tr>
         <tr>
             <td>organization:</td>
-            <td><input type="text" name="organization" content="text/html; charset=utf-8"/><br/></td>
+            <td><input type="text" name="organization" /><br/></td>
         </tr>
     </table>
     <input type="submit" value="Создать" />

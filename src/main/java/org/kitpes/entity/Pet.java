@@ -1,7 +1,5 @@
 package org.kitpes.entity;
 
-import org.codehaus.jackson.map.annotate.JsonView;
-
 /**
  * Created by mac on 11.04.17.
  */
@@ -10,7 +8,6 @@ public class Pet {
     private String name;
     private String animal; // cat, dog etc.
     private int age;
-
     private String sex;
     private String description; // description about a pet
     private String status; // if a pet need to be treated

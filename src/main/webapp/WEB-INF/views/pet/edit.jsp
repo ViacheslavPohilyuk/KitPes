@@ -15,7 +15,6 @@
 </head>
 <body>
 <form action="/pet/edit" method="POST">
-    <%-- ТУТ БЕРУТЬСЯ ДАНІ З МОДЕЛІ PET --%>
     <h1>Изменить данные питомца</h1>
     <table>
         <tr>
@@ -51,6 +50,11 @@
         </tr>
     </table>
     <input type="submit" value="Изменить"/>
+</form>
+
+<%-- Cancel the editing --%>
+<form action="/user/${pet.id}" method="GET">
+    <input type="submit" value="Отменить"/>
 </form>
 </body>
 </html>
