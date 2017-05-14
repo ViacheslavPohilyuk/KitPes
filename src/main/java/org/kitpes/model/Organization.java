@@ -10,7 +10,7 @@ public class Organization {
     private String name;
     private String address;
     private Long cellNumber;
-    private Time oppeningHours;
+    private Time openingHours;
     private String workingDays;
 
     public Organization() {
@@ -19,9 +19,9 @@ public class Organization {
     public Organization(String name,
                         String address,
                         Long cellNumber,
-                        Time oppeningHours,
+                        Time openingHours,
                         String workingDays ) {
-        this(null, name, address, cellNumber, oppeningHours, workingDays);
+        this(null, name, address, cellNumber, openingHours, workingDays);
     }
 
     public Organization(
@@ -29,13 +29,13 @@ public class Organization {
             String name,
             String address,
             Long cellNumber,
-            Time oppeningHours,
+            Time openingHours,
             String workingDays) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.cellNumber = cellNumber;
-        this.oppeningHours = oppeningHours;
+        this.openingHours = openingHours;
         this.workingDays = workingDays;
     }
 
@@ -71,12 +71,12 @@ public class Organization {
         this.cellNumber = cellNumber;
     }
 
-    public Time getOppeningHours() {
-        return oppeningHours;
+    public Time getOpeningHours() {
+        return openingHours;
     }
 
-    public void setOppeningHours(Time oppeningHours) {
-        this.oppeningHours = oppeningHours;
+     public void setOpeningHours(Time openingHours) {
+        this.openingHours = openingHours;
     }
 
     public String getWorkingDays() {
@@ -93,7 +93,7 @@ public class Organization {
                 "name='" + name + '\'' +
                 ", address='" + address + '\'' +
                 ", cellNumber=" + cellNumber +
-                ", oppeningHours=" + oppeningHours +
+                ", openingHours=" + openingHours +
                 ", workingDays='" + workingDays + '\'' +
                 '}';
     }
