@@ -1,4 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
+
 <%--
   Created by IntelliJ IDEA.
   User: mac
@@ -10,36 +13,32 @@
 <html>
 <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <title>Регистрация</title>
+    <link rel="stylesheet" type="text/css"
+          href="<c:url value="/resources/style.css" />">
 </head>
 <body>
 <h1>Регистрация</h1>
-<form method="POST" accept-charset="UTF-8">
-    <table>
-        <tr>
-            <td>Логин:</td>
-            <td><input type="text" name="username" content="text/html; charset=utf-8"/><br/></td>
-        </tr>
-        <tr>
-            <td>Имя:</td>
-            <td><input type="text" name="firstName" content="text/html; charset=utf-8"/><br/></td>
-        </tr>
-        <tr>
-            <td>Фамилия:</td>
-            <td><input type="text" name="lastName" content="text/html; charset=utf-8"/><br/></td>
-        </tr>
-        <tr>
-            <td>email:</td>
-            <td><input type="email" name="email" content="text/html; charset=utf-8"/><br/></td>
-        </tr>
-        <tr>
-            <td>Пароль:</td>
-            <td><input type="password" name="password" content="text/html; charset=utf-8"/><br/></td>
-        </tr>
-    </table>
-    <input type="submit" value="Подтвердить" />
-</form>
+
+<sf:form method="POST" commandName="user" acceptCharset="UTF-8">
+    <sf:errors path="*" element="div" cssClass="errors"/>
+    <sf:label path="username"
+              cssErrorClass="error">Логин:</sf:label>
+    <sf:input path="username" cssErrorClass="error"/><br/>
+    <sf:label path="firstName"
+              cssErrorClass="error">Имя:</sf:label>
+    <sf:input path="firstName" cssErrorClass="error"/><br/>
+    <sf:label path="lastName"
+              cssErrorClass="error">Фамилия:</sf:label>
+    <sf:input path="lastName" cssErrorClass="error"/><br/>
+    <sf:label path="email"
+              cssErrorClass="error">Email:</sf:label>
+    <sf:input path="email" cssErrorClass="error"/><br/>
+    <sf:label path="password"
+              cssErrorClass="error">Пароль:</sf:label>
+    <sf:password path="password" cssErrorClass="error"/><br/>
+    <input type="submit" value="Подтвердить"/>
+</sf:form>
 </body>
 </html>
-

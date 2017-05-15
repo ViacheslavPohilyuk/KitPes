@@ -34,10 +34,10 @@ public class User {
     public User() {
     }
 
-    /*public User(String email,
+    public User(String email,
                 String password) {
         this(null, null, null, null, email, password);
-    }*/
+    }
 
     public User(String username,
                 String firstName,
@@ -65,9 +65,7 @@ public class User {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public void setId(Long id) { this.id = id; }
 
     public String getUsername() {
         return username;
@@ -119,23 +117,5 @@ public class User {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        User user = (User) o;
-
-        if (!email.equals(user.email)) return false;
-        return password.equals(user.password);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = email.hashCode();
-        result = 31 * result + password.hashCode();
-        return result;
     }
 }

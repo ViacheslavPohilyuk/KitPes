@@ -1,5 +1,6 @@
 package org.kitpes.web.controller.entity;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.kitpes.data.pet.PetRepository;
 import org.kitpes.entity.Pet;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,8 +55,11 @@ public class PetController {
         Pet pet = petRepository.readOne(id);
 
         // If can't find a pet with required id
-        if(pet.getId() == null)
-            return "pet/noID";
+        String msg = "<h3>Нет питомца с таким идентификатором!</h3>";
+        if(pet.getId() == null) {
+            model.addAttribute("message",msg);
+            return "message";
+        }
 
         model.addAttribute(pet);
         return "pet/pet";
@@ -75,8 +79,11 @@ public class PetController {
         Pet pet = petRepository.readOne(id);
 
         // If can't find a pet with required id
-        if(pet.getId() == null)
-            return "pet/noID";
+        String msg = "<h3>Нет питомца с таким идентификатором!</h3>";
+        if(pet.getId() == null) {
+            model.addAttribute("message",msg);
+            return "message";
+        }
 
         model.addAttribute(pet);
         return "pet/edit";
@@ -89,10 +96,16 @@ public class PetController {
      * @return message about an operation
      */
     @RequestMapping(value = "/edit", method = POST)
-    public String updateID(Pet pet) {
+    public String updateID(Pet pet, Model model) {
         int countUpdated = petRepository.updateOne(pet);
-        if (countUpdated == 0)
-            return "pet/noID";
+
+        // If can't find a pet with required id
+        String msg = "<h3>Нет питомца с таким идентификатором!</h3>";
+        if (countUpdated == 0) {
+            model.addAttribute("message",msg);
+            return "message";
+        }
+
         return "redirect:/pet/" + pet.getId();
     }
 
@@ -102,10 +115,16 @@ public class PetController {
      * @param id an id of a pet
      */
     @RequestMapping(value = "/delete/{id}", method = GET)
-    public String deleteID(@PathVariable long id) {
+    public String deleteID(@PathVariable long id, Model model) {
         int countDeleted = petRepository.deleteOne(id);
-        if (countDeleted == 0)
-            return "pet/noID";
+
+        // If can't find a pet with required id
+        String msg = "<h3>Нет питомца с таким идентификатором!</h3>";
+        if (countDeleted == 0) {
+            model.addAttribute("message",msg);
+            return "message";
+        }
+
         return "redirect:/pet";
     }
 

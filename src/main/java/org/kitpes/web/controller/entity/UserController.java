@@ -55,8 +55,11 @@ public class UserController {
         User user = userRepository.readOne(id);
 
         // If can't find a user with required id
-        if(user.getId() == null)
-            return "user/noID";
+        String msg = "<h3>Нет пользователя с таким идентификатором!</h3>";
+        if(user.getId() == null) {
+            model.addAttribute("message", msg);
+            return "message";
+        }
 
         model.addAttribute(user);
         return "user/userProfile";
@@ -76,8 +79,11 @@ public class UserController {
         User user =  userRepository.readOne(id);
 
         // If can't find a user with required id
-        if(user.getId() == null)
-            return "user/noID";
+        String msg = "<h3>Нет пользователя с таким идентификатором!</h3>";
+        if(user.getId() == null) {
+            model.addAttribute("message", msg);
+            return "message";
+        }
 
         model.addAttribute(user);
         return "user/edit";
@@ -90,10 +96,14 @@ public class UserController {
      * @return message about an operation
      */
     @RequestMapping(value = "/edit", method = POST)
-    public String updateID(User user) {
+    public String updateID(User user, Model model) {
         int countUpdated =  userRepository.updateOne(user);
-        if (countUpdated == 0)
-            return "user/noID";
+
+        String msg = "<h3>Нет пользователя с таким идентификатором!</h3>";
+        if(countUpdated == 0) {
+            model.addAttribute("message", msg);
+            return "message";
+        }
         return "redirect:/user/" + user.getId();
     }
 
@@ -103,10 +113,14 @@ public class UserController {
      * @param id an id of a user
      */
     @RequestMapping(value = "/delete/{id}", method = GET)
-    public String deleteID(@PathVariable long id) {
+    public String deleteID(@PathVariable long id, Model model) {
         int countDeleted =  userRepository.deleteOne(id);
-        if (countDeleted == 0)
-            return "user/noID";
+
+        String msg = "<h3>Нет пользователя с таким идентификатором!</h3>";
+        if(countDeleted == 0) {
+            model.addAttribute("message", msg);
+            return "message";
+        }
         return "redirect:/user";
     }
 
@@ -116,7 +130,8 @@ public class UserController {
      * @return jsp for create a new user
      */
     @RequestMapping(value = "/register", method = GET)
-    public String registerForm() {
+    public String registerForm(Model model) {
+        model.addAttribute(new User());
         return "user/register";
     }
 
@@ -141,7 +156,8 @@ public class UserController {
      * This method returns the authorization form
      */
     @RequestMapping(value = "/auth", method = GET)
-    public String authForm() {
+    public String authForm(Model model) {
+        model.addAttribute(new User());
         return "user/auth";
     }
 
@@ -152,7 +168,12 @@ public class UserController {
      * @return jsp with html form of a user's profile with required id
      */
     @RequestMapping(value = "/auth", method = POST)
-    public String enter(User user) {
+    public String enter(@Valid User user, Errors errors) {
+        /* Validation */
+        if (errors.hasErrors()) {
+            return "user/auth";
+        }
+
         /* Getting an user with required email and password from the db*/
         user = userRepository.readByEmailAndPass(user.getEmail(), user.getPassword());
 
@@ -160,6 +181,6 @@ public class UserController {
          * profile of this user.
          * Otherwise, program will redirect to the authorization page
          * */
-        return (user != null)? "redirect:/user/" + user.getId() : "redirect:/auth/";
+        return (user.getId() != null)? "redirect:/user/" + user.getId() : "redirect:/auth/";
     }
 }
