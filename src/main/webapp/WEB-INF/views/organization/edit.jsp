@@ -24,23 +24,19 @@
         </tr>
         <tr>
             <td>cellNumber:</td>
-            <td><input type="number" name="age" value="<c:out value="${pet.age}" />"/></td>
+            <td><input type="number" name="cellNumber" value="<c:out value="${organization.cellNumber}" />"/></td>
         </tr>
         <tr>
-            <td>sex:</td>
-            <td><input type="text" name="sex" value="<c:out value="${pet.sex}" />"/></td>
+            <td>openingHours:</td>
+            <td><input type="time" name="openingHours" value="<c:out value="${organization.openingHours}" />"/></td>
+        </tr>
+        <tr>
+            <td>workingDays:</td>
+            <td><input type="text" name="workingDays" value="<c:out value="${organization.workingDays}" />"/></td>
         </tr>
         <tr>
             <td>description:</td>
-            <td><input type="text" name="description" value="<c:out value="${pet.description}" />"/></td>
-        </tr>
-        <tr>
-            <td>status:</td>
-            <td><input type="text" name="status" value="<c:out value="${pet.status}" />"/></td>
-        </tr>
-        <tr>
-            <td>organization:</td>
-            <td><input type="text" name="organization" value="<c:out value="${pet.organization}" />"/></td>
+            <td><input type="text" name="description" value="<c:out value="${organization.description}" />"/></td>
         </tr>
     </table>
     <input type="submit" value="Изменить"/>

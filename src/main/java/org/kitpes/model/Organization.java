@@ -12,6 +12,7 @@ public class Organization {
     private Long cellNumber;
     private Time openingHours;
     private String workingDays;
+    private String description;
 
     public Organization() {
     }
@@ -20,8 +21,9 @@ public class Organization {
                         String address,
                         Long cellNumber,
                         Time openingHours,
-                        String workingDays ) {
-        this(null, name, address, cellNumber, openingHours, workingDays);
+                        String workingDays,
+                        String description) {
+        this(null, name, address, cellNumber, openingHours, workingDays, description);
     }
 
     public Organization(
@@ -30,13 +32,15 @@ public class Organization {
             String address,
             Long cellNumber,
             Time openingHours,
-            String workingDays) {
+            String workingDays,
+            String description) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.cellNumber = cellNumber;
         this.openingHours = openingHours;
         this.workingDays = workingDays;
+        this.description = description;
     }
 
     public Long getId() {
@@ -87,6 +91,14 @@ public class Organization {
         this.workingDays = workingDays;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        description = description;
+    }
+
     @Override
     public String toString() {
         return "Organization{" +
@@ -95,6 +107,7 @@ public class Organization {
                 ", cellNumber=" + cellNumber +
                 ", openingHours=" + openingHours +
                 ", workingDays='" + workingDays + '\'' +
+                ", description='" + description + '\'' +
                 '}';
     }
 
