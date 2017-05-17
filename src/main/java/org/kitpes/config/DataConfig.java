@@ -16,17 +16,21 @@ import java.sql.SQLException;
 public class DataConfig {
 
     @Bean
-    public DataSource dataSource() throws SQLException, ClassNotFoundException {
+    public DataSource dataSource() {
         /* Database connection data */
-        String url = "jdbc:mysql://mysql-t2micro.c6wjr65m2iif.us-west-2.rds.amazonaws.com:3306";
-        String db = "students_assistant";
-        String username = "student";
-        String password = "student";
+        String url = "jdbc:mysql://hngomrlb3vfq3jcr.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306";
+        String db = "ydtnrkg2yazh7r4c";
+        String username = "gt61wylco9krv1qj";
+        String password = "vzca9pd5nlaalmhj";
+
+        /* Connection parameters */
+        String encoding = "useUnicode=true&characterEncoding=utf-8";
+        String ssl = "autoReconnect=true&useSSL=false";
 
         /* Set driver and connection data */
         DriverManagerDataSource ds = new DriverManagerDataSource();
         ds.setDriverClassName("com.mysql.jdbc.Driver");
-        ds.setUrl(url + "/" + db);
+        ds.setUrl(url + "/" + db + "?" + encoding + "&" + ssl);
         ds.setUsername(username);
         ds.setPassword(password);
         return ds;
