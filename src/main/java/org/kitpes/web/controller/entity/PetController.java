@@ -54,14 +54,6 @@ public class PetController {
     public String pet(@PathVariable long id,
                       Model model) {
         Pet pet = petRepository.readOne(id);
-
-        // If can't find a pet with required id
-        String msg = "Нет питомца с таким идентификатором!";
-        if (pet.getId() == null) {
-            model.addAttribute("message", msg);
-            return "message";
-        }
-
         model.addAttribute(pet);
         return "pet/pet";
     }
@@ -78,14 +70,6 @@ public class PetController {
     public String updatedGet(@PathVariable long id,
                              Model model) {
         Pet pet = petRepository.readOne(id);
-
-        // If can't find a pet with required id
-        String msg = "Нет питомца с таким идентификатором!";
-        if (pet.getId() == null) {
-            model.addAttribute("message", msg);
-            return "message";
-        }
-
         model.addAttribute(pet);
         return "pet/edit";
     }
@@ -98,15 +82,7 @@ public class PetController {
      */
     @RequestMapping(value = "/edit", method = POST)
     public String updateID(Pet pet, Model model) {
-        int countUpdated = petRepository.updateOne(pet);
-
-        // If can't find a pet with required id
-        String msg = "Нет питомца с таким идентификатором!";
-        if (countUpdated == 0) {
-            model.addAttribute("message", msg);
-            return "message";
-        }
-
+        petRepository.updateOne(pet);
         return "redirect:/pet/" + pet.getId();
     }
 
@@ -117,15 +93,7 @@ public class PetController {
      */
     @RequestMapping(value = "/delete/{id}", method = GET)
     public String deleteID(@PathVariable long id, Model model) {
-        int countDeleted = petRepository.deleteOne(id);
-
-        // If can't find a pet with required id
-        String msg = "Нет питомца с таким идентификатором!";
-        if (countDeleted == 0) {
-            model.addAttribute("message", msg);
-            return "message";
-        }
-
+        petRepository.deleteOne(id);
         return "redirect:/pet";
     }
 

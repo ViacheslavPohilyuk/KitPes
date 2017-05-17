@@ -62,13 +62,6 @@ public class UserController {
     public String user(@PathVariable long id,
                       Model model) {
         User user = userRepository.readOne(id);
-
-        /* If can't find a user with required id */
-        String msg = "Нет пользователя с таким идентификатором!";
-        if(user.getId() == null) {
-            model.addAttribute("message", msg);
-            return "message";
-        }
         model.addAttribute(user);
 
         /* Reading all pets from the db with an id of this user */
@@ -89,14 +82,6 @@ public class UserController {
     public String updatedGet(@PathVariable long id,
                              Model model) {
         User user =  userRepository.readOne(id);
-
-        // If can't find a user with required id
-        String msg = "Нет пользователя с таким идентификатором!";
-        if(user.getId() == null) {
-            model.addAttribute("message", msg);
-            return "message";
-        }
-
         model.addAttribute(user);
         return "user/edit";
     }
@@ -109,13 +94,7 @@ public class UserController {
      */
     @RequestMapping(value = "/edit", method = POST)
     public String updateID(User user, Model model) {
-        int countUpdated =  userRepository.updateOne(user);
-
-        String msg = "Нет пользователя с таким идентификатором!";
-        if(countUpdated == 0) {
-            model.addAttribute("message", msg);
-            return "message";
-        }
+        userRepository.updateOne(user);
         return "redirect:/user/" + user.getId();
     }
 
@@ -126,13 +105,7 @@ public class UserController {
      */
     @RequestMapping(value = "/delete/{id}", method = GET)
     public String deleteID(@PathVariable long id, Model model) {
-        int countDeleted =  userRepository.deleteOne(id);
-
-        String msg = "Нет пользователя с таким идентификатором!";
-        if(countDeleted == 0) {
-            model.addAttribute("message", msg);
-            return "message";
-        }
+        userRepository.deleteOne(id);
         return "redirect:/user";
     }
 

@@ -38,32 +38,25 @@ public class JdbcPetRepository implements PetRepository {
 
     public Pet readOne(long id) {
         Pet pet;
-        try {
-            pet = jdbc.queryForObject(
-                    "SELECT * FROM pets" +
-                            " WHERE id = ?",
-                    new PetRowMapper(), id);
-        } catch (EmptyResultDataAccessException e) {
-            /* Assigning empty Pet instance to {@code pet} valuable
-             if program can't find pet with required id in the db */
-            pet = new Pet();
-        }
+
+        pet = jdbc.queryForObject(
+                "SELECT * FROM pets" +
+                        " WHERE id = ?",
+                new PetRowMapper(), id);
         return pet;
     }
 
-    public int deleteOne(long id) {
+    public void deleteOne(long id) {
         // define query arguments
         Object[] params = {id};
         // define SQL types of the arguments
         int[] types = {Types.BIGINT};
-        int countDeleted = jdbc.update("DELETE FROM pets" +
+        jdbc.update("DELETE FROM pets" +
                         " WHERE id = ?",
                 params, types);
-
-        return countDeleted;
     }
 
-    public int updateOne(Pet pet) {
+    public void updateOne(Pet pet) {
         String updateStatement = " UPDATE pets"
                 + " SET name=?, animal=?, age=?, sex=?, description=?, status=?, organization=?"
                 + " WHERE id=?";
@@ -78,7 +71,7 @@ public class JdbcPetRepository implements PetRepository {
                 pet.getOrganization(),
                 pet.getId()};
 
-        return jdbc.update(updateStatement, updatedDataAndID);
+        jdbc.update(updateStatement, updatedDataAndID);
     }
 
     public long save(Pet pet) {

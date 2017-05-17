@@ -14,9 +14,9 @@ public interface PetRepository {
 
     public Pet readOne(long id);
 
-    public int deleteOne(long id);
+    public void deleteOne(long id);
 
-    public int updateOne(Pet pet);
+    public void updateOne(Pet pet);
 
     public long save(Pet pet);
 }
