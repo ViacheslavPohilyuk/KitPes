@@ -12,6 +12,7 @@ public class Pet {
     private String description; // description about a pet
     private String status; // if a pet need to be treated
     private String organization; // an organization that a pet is bound
+    private Long userID = null;
 
     public Pet() {
     }
@@ -22,9 +23,10 @@ public class Pet {
                String sex,
                String description,
                String status,
-               String organization
+               String organization,
+               Long userID
     ) {
-        this(null, name, animal, age, sex, description, status, organization);
+        this(null, name, animal, age, sex, description, status, organization, userID);
     }
 
     public Pet(Long id,
@@ -34,7 +36,8 @@ public class Pet {
                String sex,
                String description,
                String status,
-               String organization
+               String organization,
+               Long userID
     ) {
         this.id = id;
         this.name = name;
@@ -44,6 +47,7 @@ public class Pet {
         this.organization = organization;
         this.age = age;
         this.sex = sex;
+        this.userID = userID;
     }
 
     public Long getId() {
@@ -110,16 +114,26 @@ public class Pet {
         this.sex = sex;
     }
 
+    public Long getUserID() {
+        return userID;
+    }
+
+    public void setUserID(Long userID) {
+        this.userID = userID;
+    }
+
     @Override
     public String toString() {
         return "Pet{" +
-                "name='" + name + '\'' +
-                ", type='" + animal + '\'' +
-                ", status='" + status + '\'' +
-                ", description='" + description + '\'' +
-                ", organization='" + organization + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", animal='" + animal + '\'' +
                 ", age=" + age +
-                ", sex=" + sex +
+                ", sex='" + sex + '\'' +
+                ", description='" + description + '\'' +
+                ", status='" + status + '\'' +
+                ", organization='" + organization + '\'' +
+                ", userID=" + userID +
                 '}';
     }
 }

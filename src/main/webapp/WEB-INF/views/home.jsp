@@ -19,4 +19,3 @@
     <a href="<c:url value="/user/register" />">Регистрация</a>
 </body>
 </html>
-]

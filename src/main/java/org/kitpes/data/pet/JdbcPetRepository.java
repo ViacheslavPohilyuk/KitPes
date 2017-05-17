@@ -29,6 +29,13 @@ public class JdbcPetRepository implements PetRepository {
                 new PetRowMapper());
     }
 
+    public List<Pet> readbyUserID(long userID) {
+        return jdbc.query(
+                "SELECT * FROM pets" +
+                        " WHERE user_id = ?",
+                new PetRowMapper(), userID);
+    }
+
     public Pet readOne(long id) {
         Pet pet;
         try {
@@ -75,8 +82,8 @@ public class JdbcPetRepository implements PetRepository {
     }
 
     public long save(Pet pet) {
-        final String insertSQL = "INSERT INTO pets (name, animal, age, sex, description, status, organization)" +
-                " VALUES (?, ?, ?, ?, ?, ?, ?)";
+        final String insertSQL = "INSERT INTO pets (name, animal, age, sex, description, status, organization, user_id)" +
+                " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbc.update((connection) -> {
                     PreparedStatement ps =
@@ -88,6 +95,7 @@ public class JdbcPetRepository implements PetRepository {
                     ps.setString(5, pet.getDescription());
                     ps.setString(6, pet.getStatus());
                     ps.setString(7, pet.getOrganization());
+                    ps.setLong(8, pet.getUserID());
                     return ps;
                 },
                 keyHolder);
@@ -98,6 +106,7 @@ public class JdbcPetRepository implements PetRepository {
     private static class PetRowMapper implements RowMapper<Pet>, Serializable {
         PetRowMapper() {
         }
+
         public Pet mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new Pet(rs.getLong("id"),
                     rs.getString("name"),
@@ -106,7 +115,8 @@ public class JdbcPetRepository implements PetRepository {
                     rs.getString("sex"),
                     rs.getString("description"),
                     rs.getString("status"),
-                    rs.getString("organization"));
+                    rs.getString("organization"),
+                    rs.getLong("user_id"));
         }
     }
 }

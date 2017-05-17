@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -55,9 +56,9 @@ public class PetController {
         Pet pet = petRepository.readOne(id);
 
         // If can't find a pet with required id
-        String msg = "<h3>Нет питомца с таким идентификатором!</h3>";
-        if(pet.getId() == null) {
-            model.addAttribute("message",msg);
+        String msg = "Нет питомца с таким идентификатором!";
+        if (pet.getId() == null) {
+            model.addAttribute("message", msg);
             return "message";
         }
 
@@ -79,9 +80,9 @@ public class PetController {
         Pet pet = petRepository.readOne(id);
 
         // If can't find a pet with required id
-        String msg = "<h3>Нет питомца с таким идентификатором!</h3>";
-        if(pet.getId() == null) {
-            model.addAttribute("message",msg);
+        String msg = "Нет питомца с таким идентификатором!";
+        if (pet.getId() == null) {
+            model.addAttribute("message", msg);
             return "message";
         }
 
@@ -100,9 +101,9 @@ public class PetController {
         int countUpdated = petRepository.updateOne(pet);
 
         // If can't find a pet with required id
-        String msg = "<h3>Нет питомца с таким идентификатором!</h3>";
+        String msg = "Нет питомца с таким идентификатором!";
         if (countUpdated == 0) {
-            model.addAttribute("message",msg);
+            model.addAttribute("message", msg);
             return "message";
         }
 
@@ -119,9 +120,9 @@ public class PetController {
         int countDeleted = petRepository.deleteOne(id);
 
         // If can't find a pet with required id
-        String msg = "<h3>Нет питомца с таким идентификатором!</h3>";
+        String msg = "Нет питомца с таким идентификатором!";
         if (countDeleted == 0) {
-            model.addAttribute("message",msg);
+            model.addAttribute("message", msg);
             return "message";
         }
 
@@ -134,7 +135,10 @@ public class PetController {
      * @return jsp for create a new pet
      */
     @RequestMapping(value = "/new", method = GET)
-    public String petForm() {
+    public String petForm(Model model,
+                          @RequestParam(value = "userID", required = false) Long userID) {
+        if (userID != null)
+            model.addAttribute("userID", userID);
         return "pet/new";
     }
 
@@ -146,7 +150,14 @@ public class PetController {
      */
     @RequestMapping(value = "/new", method = POST)
     public String create(Pet pet) {
+        Long userID = pet.getUserID();
         long key = petRepository.save(pet);
+
+        /* Redirection to the user's page */
+        if(userID != null) {
+            return "redirect:/user/" + userID;
+        }
+
         return "redirect:/pet/" + key;
     }
 }
