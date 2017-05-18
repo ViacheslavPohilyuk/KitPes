@@ -1,7 +1,7 @@
 package org.kitpes.data.pet;
 
 import org.kitpes.entity.Pet;
-import org.kitpes.model.Pet;
+import org.kitpes.entity.Pet;
 
 import java.util.List;
 

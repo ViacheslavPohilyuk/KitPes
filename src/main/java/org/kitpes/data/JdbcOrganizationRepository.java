@@ -1,7 +1,6 @@
 package org.kitpes.data;
 
 import org.kitpes.entity.Organization;
-import org.kitpes.model.Pet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
@@ -25,11 +24,15 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
     public JdbcOrganizationRepository(JdbcOperations jdbc) { this.jdbc = jdbc;}
 
     @Override
+    public List<Organization> readbyUserID(long userID) {
+        return null;
+    }
+
+    @Override
     public List<Organization> readAll() {
         return jdbc.query(
                 "SELECT * FROM organization",
-                new Orga
-        );
+                new OrganizationRowMapper());
     }
 
     @Override
@@ -56,14 +59,15 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
         OrganizationRowMapper() {
         }
         public Organization mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return new Organization(rs.getLong("id"),
+            return new Organization(
+                    rs.getLong("id"),
                     rs.getString("name"),
-                    rs.getString("animal"),
-                    rs.getInt("age"),
-                    rs.getString("sex"),
-                    rs.getString("description"),
-                    rs.getString("status"),
-                    rs.getString("organization"));
+                    rs.getString("address"),
+                    rs.getLong("cell_number"),
+                    rs.getTime("opening_hours"),
+                    rs.getString("working_days"),
+                    rs.getString("description")
+            );
         }
     }
 }
