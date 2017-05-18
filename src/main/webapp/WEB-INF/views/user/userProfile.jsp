@@ -92,7 +92,7 @@
 
             <%-- All organizations of this user --%>
             <div class="listTitle">
-                <ul class="organizationList">
+                <ul class="organizationList" >
                     <table border="1">
                         <h3>Организации пользователя</h3>
                         <a href="<c:url value="/organization/new?userID=${user.id}" />">добавить организацию</a>
