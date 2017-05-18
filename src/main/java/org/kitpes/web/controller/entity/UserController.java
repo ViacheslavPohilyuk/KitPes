@@ -1,7 +1,9 @@
 package org.kitpes.web.controller.entity;
 
+import org.kitpes.data.organization.OrganizationRepository;
 import org.kitpes.data.pet.PetRepository;
 import org.kitpes.data.user.UserRepository;
+import org.kitpes.entity.Organization;
 import org.kitpes.entity.Pet;
 import org.kitpes.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,7 @@ public class UserController {
 
     private UserRepository userRepository;
     private PetRepository petRepository;
+    private OrganizationRepository organizationRepository;
 
     @Autowired
     public UserController(UserRepository userRepository) {
@@ -35,6 +38,11 @@ public class UserController {
     @Autowired
     public void setPetRepository(PetRepository petRepository) {
         this.petRepository = petRepository;
+    }
+
+    @Autowired
+    public void setOrganizationRepository(OrganizationRepository organizationRepository) {
+        this.organizationRepository = organizationRepository;
     }
 
     /**
@@ -66,7 +74,11 @@ public class UserController {
 
         /* Reading all pets from the db with an id of this user */
         List<Pet> pet = petRepository.readbyUserID(id);
+        /* Reading all organizations from the db with an id of this user */
+        List<Organization> organization  = organizationRepository.readbyUserID(id);
+
         model.addAttribute("petList", pet);
+        model.addAttribute("organizationList", organization);
         return "user/userProfile";
     }
 

@@ -12,7 +12,7 @@
 <head>
     <title>Вход</title>
     <link rel="stylesheet" type="text/css"
-          href="<c:url value="/resources/style.css" />">
+          href="<c:url value="/resources/page.css" />">
 </head>
 <body>
 <h1>Вход</h1>

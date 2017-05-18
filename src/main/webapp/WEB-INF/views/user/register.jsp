@@ -16,7 +16,7 @@
     <meta charset="utf-8"/>
     <title>Регистрация</title>
     <link rel="stylesheet" type="text/css"
-          href="<c:url value="/resources/style.css" />">
+          href="<c:url value="/resources/page.css" />">
 </head>
 <body>
 <h1>Регистрация</h1>

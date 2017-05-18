@@ -1,0 +1,21 @@
+label.error {
+	color: red;
+}
+
+input.error {
+	background-color: #ffcccc;
+}
+
+div.errors {
+	background-color: #ffcccc;
+	border: 2px solid red;
+}
+
+div.authError {
+	background-color: #ffcccc;
+	border: 2px solid red;
+}
+
+div.listTitle {
+	display: inline-block;
+}

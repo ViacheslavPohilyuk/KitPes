@@ -24,7 +24,6 @@
                 <tr>
                     <td>
                         <div id="pet_<c:out value="pet.id"/>">
-                            id: <c:out value="${pet.id}"/><br/>
                             name: <c:out value="${pet.name}"/><br/>
                             animal: <c:out value="${pet.animal}"/><br/>
                             age: <c:out value="${pet.age}"/><br/>

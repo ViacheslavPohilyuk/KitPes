@@ -1,45 +1,94 @@
 package org.kitpes.entity;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * Created by mac on 11.04.17.
  */
 public class Organization {
+    private Long id;
+    @NotNull
+    @Size(min = 2, max = 16)
     private String name;
-    private String number;
-    private String country;
-    private String city;
+    @NotNull
+    @Size(min = 2, max = 50)
+    private String address;
+    private String description;
 
-    public Organization(String name, String number, String country, String city) {
-        this.name = name;
-        this.number = number;
-        this.country = country;
-        this.city = city;
+    private Long userID = null;
+
+    public Organization() {
     }
 
-    public String getName() { return name; }
+    public Organization(String name,
+                        String address,
+                        String description,
+                        Long userID) {
+        this(null, name, address, description, userID);
+    }
 
-    public void setName(String name) { this.name = name; }
+    public Organization(
+            Long id,
+            String name,
+            String address,
+            String description,
+            Long userID
+    ) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.description = description;
+        this.userID = userID;
+    }
 
-    public String getNumber() { return number; }
+    public Long getId() {
+        return id;
+    }
 
-    public void setNumber(String number) { this.number = number; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getCountry() { return this.country; }
+    public String getName() {
+        return name;
+    }
 
-    public void setCountry(String country) { this.country = country; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public String getCity() { return this.city; }
+    public String getAddress() {
+        return address;
+    }
 
-    public void setCity(String city) { this.city = city; }
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        description = description;
+    }
+
+    public Long getUserID() {
+        return userID;
+    }
+
+    public void setUserID(Long userID) {
+        this.userID = userID;
+    }
 
     @Override
     public String toString() {
         return "Organization{" +
-                "name='" + name + '\'' +
-                ", number='" + number + '\'' +
-                ", country='" + country + '\'' +
-                ", city='" + city + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", description='" + description + '\'' +
                 '}';
     }
 }

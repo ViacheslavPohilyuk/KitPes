@@ -92,8 +92,16 @@ public class PetController {
      * @param id an id of a pet
      */
     @RequestMapping(value = "/delete/{id}", method = GET)
-    public String deleteID(@PathVariable long id) {
+    public String deleteID(@PathVariable long id,
+                           @RequestParam(value = "userID", required = false) Long userID) {
         petRepository.deleteOne(id);
+
+        /* If pet have been deleted from a user's profile,
+         * it will redirect to a user's one
+         */
+        if (userID != null)
+            return "redirect:/user/" + userID;
+
         return "redirect:/pet";
     }
 
