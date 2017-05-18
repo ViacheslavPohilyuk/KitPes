@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.Email;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 /**
  * Created by mac on 11.04.17.
@@ -30,6 +31,8 @@ public class User {
     @NotNull
     @Size(min = 5, max = 25)
     private String password;
+
+    private List<Pet> pets = null;
 
     public User() {
     }
@@ -59,6 +62,14 @@ public class User {
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+    }
+
+    public List<Pet> getPets() {
+        return pets;
+    }
+
+    public void setPets(List<Pet> pets) {
+        this.pets = pets;
     }
 
     public Long getId() {

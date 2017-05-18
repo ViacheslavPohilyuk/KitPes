@@ -15,3 +15,7 @@ div.authError {
 	background-color: #ffcccc;
 	border: 2px solid red;
 }
+
+div.listTitle {
+	display: inline-block;
+}

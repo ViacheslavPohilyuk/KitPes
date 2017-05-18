@@ -13,9 +13,9 @@ public interface UserRepository {
 
     public User readByEmailAndPass(String email, String password);
 
-    public int deleteOne(long id);
+    public void deleteOne(long id);
 
-    public int updateOne(User user);
+    public void updateOne(User user);
 
     public long save(User user);
 }

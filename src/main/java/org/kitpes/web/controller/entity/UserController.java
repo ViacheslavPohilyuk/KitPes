@@ -1,6 +1,8 @@
 package org.kitpes.web.controller.entity;
 
+import org.kitpes.data.pet.PetRepository;
 import org.kitpes.data.user.UserRepository;
+import org.kitpes.entity.Pet;
 import org.kitpes.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,10 +25,16 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class UserController {
 
     private UserRepository userRepository;
+    private PetRepository petRepository;
 
     @Autowired
     public UserController(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    @Autowired
+    public void setPetRepository(PetRepository petRepository) {
+        this.petRepository = petRepository;
     }
 
     /**
@@ -38,6 +46,7 @@ public class UserController {
     @RequestMapping(method = GET)
     public String users(Model model) {
         List<User> users =  userRepository.readAll();
+
         model.addAttribute("userList", users);
         return "user/all";
     }
@@ -53,15 +62,11 @@ public class UserController {
     public String user(@PathVariable long id,
                       Model model) {
         User user = userRepository.readOne(id);
-
-        // If can't find a user with required id
-        String msg = "<h3>Нет пользователя с таким идентификатором!</h3>";
-        if(user.getId() == null) {
-            model.addAttribute("message", msg);
-            return "message";
-        }
-
         model.addAttribute(user);
+
+        /* Reading all pets from the db with an id of this user */
+        List<Pet> pet = petRepository.readbyUserID(id);
+        model.addAttribute("petList", pet);
         return "user/userProfile";
     }
 
@@ -77,14 +82,6 @@ public class UserController {
     public String updatedGet(@PathVariable long id,
                              Model model) {
         User user =  userRepository.readOne(id);
-
-        // If can't find a user with required id
-        String msg = "<h3>Нет пользователя с таким идентификатором!</h3>";
-        if(user.getId() == null) {
-            model.addAttribute("message", msg);
-            return "message";
-        }
-
         model.addAttribute(user);
         return "user/edit";
     }
@@ -97,13 +94,7 @@ public class UserController {
      */
     @RequestMapping(value = "/edit", method = POST)
     public String updateID(User user, Model model) {
-        int countUpdated =  userRepository.updateOne(user);
-
-        String msg = "<h3>Нет пользователя с таким идентификатором!</h3>";
-        if(countUpdated == 0) {
-            model.addAttribute("message", msg);
-            return "message";
-        }
+        userRepository.updateOne(user);
         return "redirect:/user/" + user.getId();
     }
 
@@ -114,13 +105,7 @@ public class UserController {
      */
     @RequestMapping(value = "/delete/{id}", method = GET)
     public String deleteID(@PathVariable long id, Model model) {
-        int countDeleted =  userRepository.deleteOne(id);
-
-        String msg = "<h3>Нет пользователя с таким идентификатором!</h3>";
-        if(countDeleted == 0) {
-            model.addAttribute("message", msg);
-            return "message";
-        }
+        userRepository.deleteOne(id);
         return "redirect:/user";
     }
 
@@ -183,4 +168,5 @@ public class UserController {
          * */
         return (user.getId() != null)? "redirect:/user/" + user.getId() : "redirect:/auth/";
     }
+
 }

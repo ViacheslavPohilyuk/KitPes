@@ -28,46 +28,30 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     public User readOne(long id) {
-        User user;
-        try {
-            user = jdbc.queryForObject(
-                    "SELECT * FROM users" +
-                            " WHERE id = ?",
-                    new UserRowMapper(), id);
-        } catch (EmptyResultDataAccessException e) {
-            /* Assigning empty user instance to {@code user} valuable
-             if program can't find user with required id in the db */
-            user = new User();
-        }
-        return user;
+        return jdbc.queryForObject(
+                "SELECT * FROM users" +
+                        " WHERE id = ?",
+                new UserRowMapper(), id);
     }
 
     public User readByEmailAndPass(String email, String password) {
-        User user;
-        try {
-            user = jdbc.queryForObject(
-                    "SELECT * FROM users" +
-                            " WHERE email = ? AND pass = ?",
-                    new UserRowMapper(), email, password);
-        } catch (EmptyResultDataAccessException e) {
-            user = new User();
-        }
-        return user;
+        return jdbc.queryForObject(
+                "SELECT * FROM users" +
+                        " WHERE email = ? AND pass = ?",
+                new UserRowMapper(), email, password);
     }
 
-    public int deleteOne(long id) {
+    public void deleteOne(long id) {
         // define query arguments
         Object[] params = {id};
         // define SQL types of the arguments
         int[] types = {Types.BIGINT};
-        int countDeleted = jdbc.update("DELETE FROM users" +
+        jdbc.update("DELETE FROM users" +
                         " WHERE id = ?",
                 params, types);
-
-        return countDeleted;
     }
 
-    public int updateOne(User user) {
+    public void updateOne(User user) {
         String updateStatement = " UPDATE users"
                 + " SET username=?, firstName=?, lastName=?, email=?, pass=?"
                 + " WHERE id=?";
@@ -80,8 +64,8 @@ public class JdbcUserRepository implements UserRepository {
                 user.getPassword(),
                 user.getId()
         };
-        
-        return jdbc.update(updateStatement, updatedDataAndID);
+
+        jdbc.update(updateStatement, updatedDataAndID);
     }
 
     public long save(User user) {

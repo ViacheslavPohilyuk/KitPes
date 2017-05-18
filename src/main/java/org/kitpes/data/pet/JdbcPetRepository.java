@@ -4,9 +4,9 @@ import java.io.Serializable;
 import java.sql.*;
 import java.util.List;
 
+import org.kitpes.entity.Pet;
 import org.kitpes.model.Pet;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -29,34 +29,34 @@ public class JdbcPetRepository implements PetRepository {
                 new PetRowMapper());
     }
 
+    public List<Pet> readbyUserID(long userID) {
+        return jdbc.query(
+                "SELECT * FROM pets" +
+                        " WHERE user_id = ?",
+                new PetRowMapper(), userID);
+    }
+
     public Pet readOne(long id) {
         Pet pet;
-        try {
-            pet = jdbc.queryForObject(
-                    "SELECT * FROM pets" +
-                            " WHERE id = ?",
-                    new PetRowMapper(), id);
-        } catch (EmptyResultDataAccessException e) {
-            /* Assigning empty Pet instance to {@code pet} valuable
-             if program can't find pet with required id in the db */
-            pet = new Pet();
-        }
+
+        pet = jdbc.queryForObject(
+                "SELECT * FROM pets" +
+                        " WHERE id = ?",
+                new PetRowMapper(), id);
         return pet;
     }
 
-    public int deleteOne(long id) {
+    public void deleteOne(long id) {
         // define query arguments
         Object[] params = {id};
         // define SQL types of the arguments
         int[] types = {Types.BIGINT};
-        int countDeleted = jdbc.update("DELETE FROM pets" +
+        jdbc.update("DELETE FROM pets" +
                         " WHERE id = ?",
                 params, types);
-
-        return countDeleted;
     }
 
-    public int updateOne(Pet pet) {
+    public void updateOne(Pet pet) {
         String updateStatement = " UPDATE pets"
                 + " SET name=?, animal=?, age=?, sex=?, description=?, status=?, organization=?"
                 + " WHERE id=?";
@@ -71,12 +71,12 @@ public class JdbcPetRepository implements PetRepository {
                 pet.getOrganization(),
                 pet.getId()};
 
-        return jdbc.update(updateStatement, updatedDataAndID);
+        jdbc.update(updateStatement, updatedDataAndID);
     }
 
     public long save(Pet pet) {
-        final String insertSQL = "INSERT INTO pets (name, animal, age, sex, description, status, organization)" +
-                " VALUES (?, ?, ?, ?, ?, ?, ?)";
+        final String insertSQL = "INSERT INTO pets (name, animal, age, sex, description, status, organization, user_id)" +
+                " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbc.update((connection) -> {
                     PreparedStatement ps =
@@ -88,6 +88,7 @@ public class JdbcPetRepository implements PetRepository {
                     ps.setString(5, pet.getDescription());
                     ps.setString(6, pet.getStatus());
                     ps.setString(7, pet.getOrganization());
+                    ps.setLong(8, pet.getUserID());
                     return ps;
                 },
                 keyHolder);
@@ -98,6 +99,7 @@ public class JdbcPetRepository implements PetRepository {
     private static class PetRowMapper implements RowMapper<Pet>, Serializable {
         PetRowMapper() {
         }
+
         public Pet mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new Pet(rs.getLong("id"),
                     rs.getString("name"),
@@ -106,7 +108,8 @@ public class JdbcPetRepository implements PetRepository {
                     rs.getString("sex"),
                     rs.getString("description"),
                     rs.getString("status"),
-                    rs.getString("organization"));
+                    rs.getString("organization"),
+                    rs.getLong("user_id"));
         }
     }
 }
