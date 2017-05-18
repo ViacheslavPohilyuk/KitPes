@@ -38,7 +38,7 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
     public Organization readOne(long id) {
         return jdbc.queryForObject(
                 "SELECT * FROM organizations" +
-                        "WHERE id = ?",
+                        " WHERE id = ?",
                 new OrganizationRowMapper(), id
         );
     }
@@ -47,8 +47,8 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
     public void deleteOne(long id) {
         Object[] params = {id};
         int[] types = {Types.BIGINT};
-        jdbc.update("DELETE FROM users"
-                        + "WHERE id = ?",
+        jdbc.update("DELETE FROM organizations"
+                        + " WHERE id = ?",
                 params, types
         );
     }
@@ -56,8 +56,8 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
     @Override
     public void updateOne(Organization organization) {
         String updateStatement = "UPDATE organizations"
-                + "SET name=?, address=?, description=?"
-                + "WHERE id=?";
+                + " SET name=?, address=?, description=?"
+                + " WHERE id=?";
 
         Object[] updateDataAndID = {
                 organization.getName(),
@@ -78,7 +78,7 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
                             connection.prepareStatement(insertSQL, new String[]{"id"});
                     ps.setString(1, organization.getName());
                     ps.setString(2, organization.getAddress());
-                    ps.setString(5, organization.getDescription());
+                    ps.setString(3, organization.getDescription());
                     return ps;
                 },
                 keyHolder);

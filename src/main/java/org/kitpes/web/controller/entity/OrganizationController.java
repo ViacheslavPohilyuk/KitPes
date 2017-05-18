@@ -83,6 +83,7 @@ public class OrganizationController {
     @RequestMapping(value = "/edit", method = POST)
     public String updateID(Organization organization, Model model) {
         organizationRepository.updateOne(organization);
+        System.out.println(organization.toString());
         return "redirect:/organization/" + organization.getId();
     }
 
@@ -102,10 +103,10 @@ public class OrganizationController {
      *
      * @return jsp for create a new organization
      */
-    @RequestMapping(value = "/register", method = GET)
+    @RequestMapping(value = "/new", method = GET)
     public String registerOrganizationForm(Model model) {
         model.addAttribute(new Organization());
-        return "organization/register";
+        return "organization/new";
     }
 
     /**
@@ -114,11 +115,11 @@ public class OrganizationController {
      * @param organization org instance that was created from the web-form fields data
      * @return jsp with data of a new org
      */
-    @RequestMapping(value = "/register", method = POST)
+    @RequestMapping(value = "/new", method = POST)
     public String create(@Valid Organization organization, Errors errors) {
         /* Validation */
         if (errors.hasErrors()) {
-            return "organization/register";
+            return "organization/new";
         }
         long key = organizationRepository.save(organization);
         return "redirect:/organization/";

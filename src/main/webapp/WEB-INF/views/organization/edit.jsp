@@ -23,18 +23,6 @@
             <td><input type="text" name="address" value="<c:out value="${organization.address}" />"/></td>
         </tr>
         <tr>
-            <td>cellNumber:</td>
-            <td><input type="number" name="cellNumber" value="<c:out value="${organization.cellNumber}" />"/></td>
-        </tr>
-        <tr>
-            <td>openingHours:</td>
-            <td><input type="time" name="openingHours" value="<c:out value="${organization.openingHours}" />"/></td>
-        </tr>
-        <tr>
-            <td>workingDays:</td>
-            <td><input type="text" name="workingDays" value="<c:out value="${organization.workingDays}" />"/></td>
-        </tr>
-        <tr>
             <td>description:</td>
             <td><input type="text" name="description" value="<c:out value="${organization.description}" />"/></td>
         </tr>

@@ -20,9 +20,7 @@
                             id: <c:out value="${organization.id}"/><br/>
                             name: <c:out value="${organization.name}"/><br/>
                             address: <c:out value="${organization.address}"/><br/>
-                            cellNumber: <c:out value="${organization.cellNumber}"/><br/>
-                            openingHours: <c:out value="${organization.openingHours}"/><br/>
-                            workingDays: <c:out value="${organization.workingDays}"/><br/>
+                            description: <c:out value="${organization.description}"/><br/>
                             <a href="<c:url value="/organization/edit/${organization.id}" />">редактировать</a> |
                             <a href="<c:url value="/organization/delete/${organization.id}" />">удалить</a>
                         </div>
