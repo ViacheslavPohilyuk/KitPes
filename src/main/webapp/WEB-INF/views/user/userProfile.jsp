@@ -12,13 +12,27 @@
 <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
     <meta charset="utf-8"/>
-    <link rel="stylesheet" type="text/css"
-          href="<c:url value="/resources/style.css" />">
+    <%-- <link rel="stylesheet" type="text/css"
+          href="<c:url value="/resources/style.css" />"> --%>
     <title>Профиль пользователя</title>
 </head>
 <body>
 <h1>Профиль пользователя <c:out value="${user.username}"/></h1>
+
+
 <table>
+    <tr>
+        <td>
+            <form method="POST" action="/fileupload" enctype="multipart/form-data">
+                <label>Аватар</label>:
+                <input type="file"
+                       name="profilePicture"
+                       accept="image/jpeg,image/png,image/gif"/><br/>
+                <input type="hidden" name="userID" value="<c:out value="${user.id}"/>"/>
+                <input type="submit" value="Добавить"/>
+            </form>
+        </td>
+    </tr>
     <tr>
         <td>Логин:</td>
         <td><c:out value="${user.username}"/><br/></td>
@@ -74,5 +88,6 @@
         </div>
     </tr>
 </table>
+
 </body>
 </html>

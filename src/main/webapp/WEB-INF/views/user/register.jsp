@@ -23,21 +23,53 @@
 
 <sf:form method="POST" commandName="user" acceptCharset="UTF-8">
     <sf:errors path="*" element="div" cssClass="errors"/>
-    <sf:label path="username"
-              cssErrorClass="error">Логин:</sf:label>
-    <sf:input path="username" cssErrorClass="error"/><br/>
-    <sf:label path="firstName"
-              cssErrorClass="error">Имя:</sf:label>
-    <sf:input path="firstName" cssErrorClass="error"/><br/>
-    <sf:label path="lastName"
-              cssErrorClass="error">Фамилия:</sf:label>
-    <sf:input path="lastName" cssErrorClass="error"/><br/>
-    <sf:label path="email"
-              cssErrorClass="error">Email:</sf:label>
-    <sf:input path="email" cssErrorClass="error"/><br/>
-    <sf:label path="password"
-              cssErrorClass="error">Пароль:</sf:label>
-    <sf:password path="password" cssErrorClass="error"/><br/>
+    <table>
+        <tr>
+            <td>
+                <sf:label path="username"
+                          cssErrorClass="error">Логин:</sf:label>
+            </td>
+            <td>
+                <sf:input path="username" cssErrorClass="error"/><br/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <sf:label path="firstName"
+                          cssErrorClass="error">Имя:</sf:label>
+            </td>
+            <td>
+                <sf:input path="firstName" cssErrorClass="error"/><br/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <sf:label path="lastName"
+                          cssErrorClass="error">Фамилия:</sf:label>
+            </td>
+            <td>
+                <sf:input path="lastName" cssErrorClass="error"/><br/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <sf:label path="email"
+                          cssErrorClass="error">Email:</sf:label>
+            </td>
+            <td>
+                <sf:input path="email" cssErrorClass="error"/><br/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <sf:label path="password"
+                          cssErrorClass="error">Пароль:</sf:label>
+            </td>
+            <td>
+                <sf:password path="password" cssErrorClass="error"/><br/>
+            </td>
+        </tr>
+    </table>
     <input type="submit" value="Подтвердить"/>
 </sf:form>
 </body>

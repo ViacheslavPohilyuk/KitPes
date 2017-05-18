@@ -81,7 +81,7 @@ public class PetController {
      * @return message about an operation
      */
     @RequestMapping(value = "/edit", method = POST)
-    public String updateID(Pet pet, Model model) {
+    public String updateID(Pet pet) {
         petRepository.updateOne(pet);
         return "redirect:/pet/" + pet.getId();
     }
@@ -92,7 +92,7 @@ public class PetController {
      * @param id an id of a pet
      */
     @RequestMapping(value = "/delete/{id}", method = GET)
-    public String deleteID(@PathVariable long id, Model model) {
+    public String deleteID(@PathVariable long id) {
         petRepository.deleteOne(id);
         return "redirect:/pet";
     }

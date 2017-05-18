@@ -17,16 +17,18 @@
 <body>
 <h1>Вход</h1>
 
-<sf:form method="POST" commandName="user">
-    <sf:errors path="username" element="div" cssClass="errors"/>
-    <sf:errors path="password" element="div" cssClass="errors"/>
-    <sf:label path="username"
-              cssErrorClass="error">Логин:</sf:label>
-    <sf:input path="username" cssErrorClass="error"/><br/>
-    <sf:label path="password"
-              cssErrorClass="error">Пароль:</sf:label>
-    <sf:password path="password" cssErrorClass="error"/><br/>
+<form method="POST">
+    <table>
+        <tr>
+            <td>Логин:</td>
+            <td><input type="text" name="username"/> <br/></td>
+        </tr>
+        <tr>
+            <td>Пароль:</td>
+            <td><input type="text" name="password"/> <br/></td>
+        </tr>
+    </table>
     <input type="submit" value="Подтвердить"/>
-</sf:form>
+</form>
 </body>
 </html>

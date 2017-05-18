@@ -93,7 +93,7 @@ public class UserController {
      * @return message about an operation
      */
     @RequestMapping(value = "/edit", method = POST)
-    public String updateID(User user, Model model) {
+    public String updateID(User user) {
         userRepository.updateOne(user);
         return "redirect:/user/" + user.getId();
     }
@@ -104,7 +104,7 @@ public class UserController {
      * @param id an id of a user
      */
     @RequestMapping(value = "/delete/{id}", method = GET)
-    public String deleteID(@PathVariable long id, Model model) {
+    public String deleteID(@PathVariable long id) {
         userRepository.deleteOne(id);
         return "redirect:/user";
     }
