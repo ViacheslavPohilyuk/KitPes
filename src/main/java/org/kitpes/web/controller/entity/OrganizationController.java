@@ -1,6 +1,6 @@
 package org.kitpes.web.controller.entity;
 
-import org.kitpes.data.OrganizationRepository;
+import org.kitpes.data.organization.OrganizationRepository;
 import org.kitpes.entity.Organization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

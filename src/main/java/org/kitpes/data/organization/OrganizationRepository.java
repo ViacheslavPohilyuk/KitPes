@@ -1,4 +1,4 @@
-package org.kitpes.data;
+package org.kitpes.data.organization;
 
 import org.kitpes.entity.Organization;
 
@@ -9,15 +9,15 @@ import java.util.List;
  */
 public interface OrganizationRepository {
 
-    public List<Organization> readbyUserID(long userID);
-
     public List<Organization> readAll();
 
     public Organization readOne(long id);
 
-    public int deleteOne(long id);
+    public Organization readByEmailAndPass(String email, String password);
 
-    public int updateOne(Organization organization);
+    public void deleteOne(long id);
+
+    public void updateOne(Organization organization);
 
     public long save(Organization organization);
 }
