@@ -5,9 +5,12 @@ import org.kitpes.entity.Organization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -51,11 +54,6 @@ public class OrganizationController {
     public String organization(@PathVariable long id,
                       Model model) {
         Organization organization = organizationRepository.readOne(id);
-
-        // If can't find a org with required id
-        if(organization.getId() == null)
-            return "organization/noID";
-
         model.addAttribute(organization);
         return "organization/organization";
     }
@@ -72,11 +70,6 @@ public class OrganizationController {
     public String updatedGet(@PathVariable long id,
                              Model model) {
         Organization organization= organizationRepository.readOne(id);
-
-        // If can't find a org with required id
-        if(organization.getId() == null)
-            return "org/noID";
-
         model.addAttribute(organization);
         return "organization/edit";
     }
@@ -88,10 +81,8 @@ public class OrganizationController {
      * @return message about an operation
      */
     @RequestMapping(value = "/edit", method = POST)
-    public String updateID(Organization organization) {
-        int countUpdated = organizationRepository.updateOne(organization);
-        if (countUpdated == 0)
-            return "organization/noID";
+    public String updateID(Organization organization, Model model) {
+        organizationRepository.updateOne(organization);
         return "redirect:/organization/" + organization.getId();
     }
 
@@ -102,9 +93,7 @@ public class OrganizationController {
      */
     @RequestMapping(value = "/delete/{id}", method = GET)
     public String deleteID(@PathVariable long id) {
-        int countDeleted = organizationRepository.deleteOne(id);
-        if (countDeleted == 0)
-            return "organization/noID";
+        organizationRepository.deleteOne(id);
         return "redirect:/organization";
     }
 
@@ -113,9 +102,10 @@ public class OrganizationController {
      *
      * @return jsp for create a new organization
      */
-    @RequestMapping(value = "/new", method = GET)
-    public String organizationForm() {
-        return "organization/new";
+    @RequestMapping(value = "/register", method = GET)
+    public String registerOrganizationForm(Model model) {
+        model.addAttribute(new Organization());
+        return "organization/register";
     }
 
     /**
@@ -124,9 +114,45 @@ public class OrganizationController {
      * @param organization org instance that was created from the web-form fields data
      * @return jsp with data of a new org
      */
-    @RequestMapping(value = "/new", method = POST)
-    public String create(Organization organization) {
+    @RequestMapping(value = "/register", method = POST)
+    public String create(@Valid Organization organization, Errors errors) {
+        /* Validation */
+        if (errors.hasErrors()) {
+            return "organization/register";
+        }
         long key = organizationRepository.save(organization);
-        return "redirect:/organization/" + key;
+        return "redirect:/organization/";
+    }
+
+    /**
+     * This method returns the authorization form
+     */
+    @RequestMapping(value = "/auth", method = GET)
+    public String authForm(Model model) {
+        model.addAttribute(new Organization());
+        return "organization/auth";
+    }
+
+    /**
+     * Authorization process
+     *
+     * @param organization object of a {@code Organization} class
+     * @return jsp with html form of a organization's profile with required id
+     */
+    @RequestMapping(value = "/auth", method = POST)
+    public String enter(@Valid Organization organization, Errors errors) {
+        /* Validation */
+        if (errors.hasErrors()) {
+            return "organization/auth";
+        }
+
+        /* Getting an user with required email and password from the db*/
+        organization = organizationRepository.readByEmailAndPass(organization.getEmail(), organization.getPassword());
+
+        /* If user with such email and password exists in the db, program will redirect to the
+         * profile of this user.
+         * Otherwise, program will redirect to the authorization page
+         * */
+        return (organization.getId() != null)? "redirect:/organization/" + organization.getId() : "redirect:/auth/";
     }
 }

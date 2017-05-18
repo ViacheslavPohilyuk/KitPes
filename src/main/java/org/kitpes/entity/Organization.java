@@ -1,5 +1,9 @@
 package org.kitpes.entity;
 
+import org.hibernate.validator.constraints.Email;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.sql.Time;
 
 /**
@@ -7,14 +11,39 @@ import java.sql.Time;
  */
 public class Organization {
     private Long id;
+    @NotNull
+    @Size(min=2, max=16)
     private String name;
+    @NotNull
+    @Size(min=2, max=50)
     private String address;
+    @Size(min=2, max=16)
     private Long cellNumber;
+    @NotNull
+    @Size(min=2, max=16)
     private Time openingHours;
+    @NotNull
+    @Size(min=2, max=16)
     private String workingDays;
+
     private String description;
 
+    @NotNull
+    @Email
+    private String email;
+
+    @NotNull
+    @Size(min = 5, max = 25)
+    private String password;
+
     public Organization() {
+    }
+
+    public Organization(String email,
+                        String password) {
+        this(null, null, null,
+                null, null, null,
+                null, email, password);
     }
 
     public Organization(String name,
@@ -22,8 +51,10 @@ public class Organization {
                         Long cellNumber,
                         Time openingHours,
                         String workingDays,
-                        String description) {
-        this(null, name, address, cellNumber, openingHours, workingDays, description);
+                        String description,
+                        String email,
+                        String password) {
+        this(null, name, address, cellNumber, openingHours, workingDays, description, email, password);
     }
 
     public Organization(
@@ -33,7 +64,9 @@ public class Organization {
             Long cellNumber,
             Time openingHours,
             String workingDays,
-            String description) {
+            String description,
+            String email,
+            String password) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -41,6 +74,8 @@ public class Organization {
         this.openingHours = openingHours;
         this.workingDays = workingDays;
         this.description = description;
+        this.email = email;
+        this.password = password;
     }
 
     public Long getId() {
@@ -99,15 +134,35 @@ public class Organization {
         description = description;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
     @Override
     public String toString() {
         return "Organization{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
                 ", cellNumber=" + cellNumber +
                 ", openingHours=" + openingHours +
                 ", workingDays='" + workingDays + '\'' +
                 ", description='" + description + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
                 '}';
     }
 
