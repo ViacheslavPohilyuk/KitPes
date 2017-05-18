@@ -44,15 +44,6 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
     }
 
     @Override
-    public Organization readByEmailAndPass(String email, String password) {
-        return jdbc.queryForObject(
-                "SELECT * FROM organizations" +
-                "WHERE email = ? AND pass = ?",
-                new OrganizationRowMapper(), email, password
-        );
-    }
-
-    @Override
     public void deleteOne(long id) {
         Object[] params = {id};
         int[] types = {Types.BIGINT};
@@ -65,15 +56,12 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
     @Override
     public void updateOne(Organization organization) {
         String updateStatement = "UPDATE organizations"
-                + "SET name=?, address=?, cell_number=?, opening_hours=?, working_days=?, description=?"
+                + "SET name=?, address=?, description=?"
                 + "WHERE id=?";
 
         Object[] updateDataAndID = {
                 organization.getName(),
                 organization.getAddress(),
-                organization.getCellNumber(),
-                organization.getOpeningHours(),
-                organization.getWorkingDays(),
                 organization.getDescription(),
                 organization.getId()
         };
@@ -82,17 +70,14 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
 
     @Override
     public long save(Organization organization) {
-        final String insertSQL = "INSERT INTO organizations (name, address, cell_number, opening_hours, working_days, description)" +
-                " VALUES (?, ?, ?, ?, ?, ?)";
+        final String insertSQL = "INSERT INTO organizations (name, address,description)" +
+                " VALUES (?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbc.update((connection) -> {
                     PreparedStatement ps =
                             connection.prepareStatement(insertSQL, new String[]{"id"});
                     ps.setString(1, organization.getName());
                     ps.setString(2, organization.getAddress());
-                    ps.setLong(3, organization.getCellNumber());
-                    ps.setTime(4, organization.getOpeningHours());
-                    ps.setString(5, organization.getWorkingDays());
                     ps.setString(5, organization.getDescription());
                     return ps;
                 },
@@ -109,9 +94,6 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
                     rs.getLong("id"),
                     rs.getString("name"),
                     rs.getString("address"),
-                    rs.getLong("cell_number"),
-                    rs.getTime("opening_hours"),
-                    rs.getString("working_days"),
                     rs.getString("description")
             );
         }

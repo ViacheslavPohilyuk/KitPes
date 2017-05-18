@@ -13,8 +13,6 @@ public interface OrganizationRepository {
 
     public Organization readOne(long id);
 
-    public Organization readByEmailAndPass(String email, String password);
-
     public void deleteOne(long id);
 
     public void updateOne(Organization organization);

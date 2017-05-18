@@ -123,36 +123,4 @@ public class OrganizationController {
         long key = organizationRepository.save(organization);
         return "redirect:/organization/";
     }
-
-    /**
-     * This method returns the authorization form
-     */
-    @RequestMapping(value = "/auth", method = GET)
-    public String authForm(Model model) {
-        model.addAttribute(new Organization());
-        return "organization/auth";
-    }
-
-    /**
-     * Authorization process
-     *
-     * @param organization object of a {@code Organization} class
-     * @return jsp with html form of a organization's profile with required id
-     */
-    @RequestMapping(value = "/auth", method = POST)
-    public String enter(@Valid Organization organization, Errors errors) {
-        /* Validation */
-        if (errors.hasErrors()) {
-            return "organization/auth";
-        }
-
-        /* Getting an user with required email and password from the db*/
-        organization = organizationRepository.readByEmailAndPass(organization.getEmail(), organization.getPassword());
-
-        /* If user with such email and password exists in the db, program will redirect to the
-         * profile of this user.
-         * Otherwise, program will redirect to the authorization page
-         * */
-        return (organization.getId() != null)? "redirect:/organization/" + organization.getId() : "redirect:/auth/";
-    }
 }

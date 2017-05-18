@@ -17,65 +17,27 @@ public class Organization {
     @NotNull
     @Size(min=2, max=50)
     private String address;
-    @Size(min=2, max=16)
-    private Long cellNumber;
-    @NotNull
-    @Size(min=2, max=16)
-    private Time openingHours;
-    @NotNull
-    @Size(min=2, max=16)
-    private String workingDays;
-
     private String description;
-
-    @NotNull
-    @Email
-    private String email;
-
-    @NotNull
-    @Size(min = 5, max = 25)
-    private String password;
 
     public Organization() {
     }
 
-    public Organization(String email,
-                        String password) {
-        this(null, null, null,
-                null, null, null,
-                null, email, password);
-    }
-
     public Organization(String name,
                         String address,
-                        Long cellNumber,
-                        Time openingHours,
-                        String workingDays,
-                        String description,
-                        String email,
-                        String password) {
-        this(null, name, address, cellNumber, openingHours, workingDays, description, email, password);
+                        String description) {
+        this(null, name, address, description);
     }
 
     public Organization(
             Long id,
             String name,
             String address,
-            Long cellNumber,
-            Time openingHours,
-            String workingDays,
-            String description,
-            String email,
-            String password) {
+            String description
+            ) {
         this.id = id;
         this.name = name;
         this.address = address;
-        this.cellNumber = cellNumber;
-        this.openingHours = openingHours;
-        this.workingDays = workingDays;
         this.description = description;
-        this.email = email;
-        this.password = password;
     }
 
     public Long getId() {
@@ -102,53 +64,11 @@ public class Organization {
         this.address = address;
     }
 
-    public Long getCellNumber() {
-        return cellNumber;
-    }
-
-    public void setCellNumber(Long cellNumber) {
-        this.cellNumber = cellNumber;
-    }
-
-    public Time getOpeningHours() {
-        return openingHours;
-    }
-
-     public void setOpeningHours(Time openingHours) {
-        this.openingHours = openingHours;
-    }
-
-    public String getWorkingDays() {
-        return workingDays;
-    }
-
-    public void setWorkingDays(String workingDays) {
-        this.workingDays = workingDays;
-    }
-
     public String getDescription() {
         return description;
     }
-
     public void setDescription(String description) {
         description = description;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     @Override
@@ -157,13 +77,7 @@ public class Organization {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
-                ", cellNumber=" + cellNumber +
-                ", openingHours=" + openingHours +
-                ", workingDays='" + workingDays + '\'' +
                 ", description='" + description + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
                 '}';
     }
-
 }
