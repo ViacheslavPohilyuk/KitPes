@@ -1,9 +1,6 @@
 package org.kitpes.data.organization;
 
-import com.sun.tools.corba.se.idl.constExpr.Or;
-import org.kitpes.data.pet.JdbcPetRepository;
 import org.kitpes.entity.Organization;
-import org.kitpes.entity.Pet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
