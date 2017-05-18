@@ -1,6 +1,6 @@
 package org.kitpes.data;
 
-import org.kitpes.model.Organization;
+import org.kitpes.entity.Organization;
 import org.kitpes.model.Pet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcOperations;

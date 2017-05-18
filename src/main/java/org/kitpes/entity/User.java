@@ -1,4 +1,4 @@
-package org.kitpes.model;
+package org.kitpes.entity;
 
 import org.hibernate.validator.constraints.Email;
 

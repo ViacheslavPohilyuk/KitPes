@@ -1,4 +1,4 @@
-package org.kitpes.model;
+package org.kitpes.entity;
 
 import java.sql.Time;
 

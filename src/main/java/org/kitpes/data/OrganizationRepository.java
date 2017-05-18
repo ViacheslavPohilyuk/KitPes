@@ -1,6 +1,6 @@
 package org.kitpes.data;
 
-import org.kitpes.model.Organization;
+import org.kitpes.entity.Organization;
 
 import java.util.List;
 
