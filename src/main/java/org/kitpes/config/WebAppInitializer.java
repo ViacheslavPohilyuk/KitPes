@@ -34,6 +34,6 @@ public class WebAppInitializer
     @Override
     protected void customizeRegistration(ServletRegistration.Dynamic registration) {
         registration.setMultipartConfig(
-                new MultipartConfigElement("/tmp/kitpes/uploads", 2097152, 4194304, 0));
+                new MultipartConfigElement("/tmp", 2097152, 4194304, 0));
     }
 }
