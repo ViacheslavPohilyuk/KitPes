@@ -1,7 +1,6 @@
 package org.kitpes.entity;
 
 import org.hibernate.validator.constraints.Email;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
@@ -34,20 +33,25 @@ public class User {
 
     private List<Pet> pets = null;
 
+    private List<Organization> organizations = null;
+
+    private String profileImgURL = "/resources/images/profile.png";
+
     public User() {
     }
 
     public User(String email,
                 String password) {
-        this(null, null, null, null, email, password);
+        this(null, null, null, null, email, password, null);
     }
 
     public User(String username,
                 String firstName,
                 String lastName,
                 String email,
-                String password) {
-        this(null, username, firstName, lastName, email, password);
+                String password,
+                String profileImgURL) {
+        this(null, username, firstName, lastName, email, password, profileImgURL);
     }
 
     public User(Long id,
@@ -55,13 +59,31 @@ public class User {
                 String firstName,
                 String lastName,
                 String email,
-                String password) {
+                String password,
+                String profileImgURL) {
         this.id = id;
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.profileImgURL = profileImgURL;
+    }
+
+    public String getProfileImgURL() {
+        return profileImgURL;
+    }
+
+    public void setProfileImgURL(String profileImgURL) {
+        this.profileImgURL = profileImgURL;
+    }
+
+    public List<Organization> getOrganizations() {
+        return organizations;
+    }
+
+    public void setOrganizations(List<Organization> organizations) {
+        this.organizations = organizations;
     }
 
     public List<Pet> getPets() {

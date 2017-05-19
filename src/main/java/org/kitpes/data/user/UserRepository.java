@@ -17,5 +17,7 @@ public interface UserRepository {
 
     public void updateOne(User user);
 
+    public void updateOneProfileImage(String profileImage, long id);
+
     public long save(User user);
 }

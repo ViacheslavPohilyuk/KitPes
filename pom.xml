@@ -109,13 +109,27 @@
             <version>2.2.1</version>
         </dependency>
 
-
         <!--MysQL-->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.40</version>
         </dependency>
+
+        <!-- Cloudinary-http44 -->
+        <dependency>
+            <groupId>com.cloudinary</groupId>
+            <artifactId>cloudinary-http44</artifactId>
+            <version>1.7.0</version>
+        </dependency>
+
+        <!-- Cloudinary-taglib -->
+        <dependency>
+            <groupId>com.cloudinary</groupId>
+            <artifactId>cloudinary-taglib</artifactId>
+            <version>1.11.0</version>
+        </dependency>
+
     </dependencies>
     <build>
         <plugins>

@@ -68,9 +68,19 @@ public class JdbcUserRepository implements UserRepository {
         jdbc.update(updateStatement, updatedDataAndID);
     }
 
+    public void updateOneProfileImage(String profileImage, long id) {
+        String updateStatement = " UPDATE users"
+                + " SET profile_image=?"
+                + " WHERE id=?";
+
+        Object[] updatedDataAndID = { profileImage, id };
+
+        jdbc.update(updateStatement, updatedDataAndID);
+    }
+
     public long save(User user) {
-        final String insertSQL = "INSERT INTO users (username, firstName, lastName, email, pass)" +
-                " VALUES (?, ?, ?, ?, ?)";
+        final String insertSQL = "INSERT INTO users (username, firstName, lastName, email, pass, profile_image)" +
+                " VALUES (?, ?, ?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbc.update((connection) -> {
                     PreparedStatement ps =
@@ -80,6 +90,7 @@ public class JdbcUserRepository implements UserRepository {
                     ps.setString(3, user.getLastName());
                     ps.setString(4, user.getEmail());
                     ps.setString(5, user.getPassword());
+                    ps.setString(6, user.getProfileImgURL());
                     return ps;
                 },
                 keyHolder);
@@ -97,7 +108,8 @@ public class JdbcUserRepository implements UserRepository {
                     rs.getString("firstName"),
                     rs.getString("lastName"),
                     rs.getString("email"),
-                    rs.getString("pass"));
+                    rs.getString("pass"),
+                    rs.getString("profile_image"));
         }
     }
 }

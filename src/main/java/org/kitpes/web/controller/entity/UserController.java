@@ -70,15 +70,12 @@ public class UserController {
     public String user(@PathVariable long id,
                       Model model) {
         User user = userRepository.readOne(id);
-        model.addAttribute(user);
-
         /* Reading all pets from the db with an id of this user */
-        List<Pet> pet = petRepository.readbyUserID(id);
+        user.setPets(petRepository.readbyUserID(id));
         /* Reading all organizations from the db with an id of this user */
-        List<Organization> organization  = organizationRepository.readbyUserID(id);
+        user.setOrganizations(organizationRepository.readbyUserID(id));
 
-        model.addAttribute("petList", pet);
-        model.addAttribute("organizationList", organization);
+        model.addAttribute(user);
         return "user/userProfile";
     }
 

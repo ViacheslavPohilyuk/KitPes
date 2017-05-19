@@ -1,7 +1,4 @@
-<%@ page import="java.io.File" %>
-<%@ page import="java.nio.file.Files" %>
-<%@ page import="java.nio.file.Path" %>
-<%@ page import="java.nio.file.Paths" %><%--
+<%--
   Created by IntelliJ IDEA.
   User: mac
   Date: 04.05.17
@@ -22,12 +19,11 @@
 <body>
 <h1>Профиль пользователя <c:out value="${user.username}"/></h1>
 
-
 <table>
     <tr>
         <td>
             <label>Аватар:</label><br/>
-            <img alt="profile" width="200" height="200" src="<c:url value="/resources/images/profile.png" />"/>
+            <img alt="profile" width="200" height="200" id="profileImage" src="${user.profileImgURL}"/>
             <form method="POST" action="/fileupload" enctype="multipart/form-data">
                 <input type="file"
                        name="profilePicture"
@@ -69,7 +65,7 @@
                     <table border="1">
                         <h3>Питомцы пользователя</h3>
                         <a href="<c:url value="/pet/new?userID=${user.id}" />">добавить питомца</a>
-                        <c:forEach var="pet" items="${petList}">
+                        <c:forEach var="pet" items="${user.pets}">
                             <tr>
                                 <td>
                                     <div id="pet_<c:out value="pet.id"/>">
@@ -92,19 +88,18 @@
 
             <%-- All organizations of this user --%>
             <div class="listTitle">
-                <ul class="organizationList" >
+                <ul class="organizationList">
                     <table border="1">
                         <h3>Организации пользователя</h3>
                         <a href="<c:url value="/organization/new?userID=${user.id}" />">добавить организацию</a>
-                        <c:forEach var="organization" items="${organizationList}">
+                        <c:forEach var="organization" items="${user.organizations}">
                             <tr>
                                 <td>
                                     <div id="organization<c:out value="organization.id"/>">
                                         name: <c:out value="${organization.name}"/><br/>
                                         address: <c:out value="${organization.address}"/><br/>
                                         description: <c:out value="${organization.description}"/><br/>
-                                        <a href="<c:url value="/organization/edit/${organization.id}" />">редактировать</a>
-                                        |
+                                        <a href="<c:url value="/organization/edit/${organization.id}" />">редактировать</a> |
                                         <a href="<c:url value="/organization/delete/${organization.id}?userID=${user.id}" />">удалить</a>
                                     </div>
                                 </td>
