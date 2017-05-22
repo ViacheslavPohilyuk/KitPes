@@ -20,8 +20,7 @@
     <h1>Питомцы</h1>
     <ul class="petList">
         <table border="1">
-            <c:forEach var="pet" items="${petList}" />
-
+            <c:forEach var="pet" items="${petList}">
                 <tr>
                     <td>
                         <div id="pet_<c:out value="pet.id"/>">
@@ -31,12 +30,8 @@
                             sex: <c:out value="${pet.sex}"/><br/>
                             description: <c:out value="${pet.description}"/><br/>
                             status: <c:out value="${pet.status}"/><br/>
+                            <a href="<c:url value="/pet/${pet.id}" />">Перейти в профиль</a>
                         </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <a href="<c:url value="/pet/${pet.id}" />">Перейти в профиль</a>
                     </td>
                 </tr>
             </c:forEach>
