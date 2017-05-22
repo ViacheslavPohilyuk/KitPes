@@ -19,6 +19,7 @@
           href="<c:url value="/resources/page.css" />">
 </head>
 <body>
+<a href="<c:url value="/" />">На главную</a><br/>
 <h1>Регистрация</h1>
 
 <sf:form method="POST" commandName="user" acceptCharset="UTF-8">

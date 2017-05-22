@@ -14,6 +14,8 @@
     <title>Редактировать данные</title>
 </head>
 <body>
+<a href="<c:url value="/" />">На главную</a> |
+<a href="<c:url value="/user/${user.id}" />">В профиль</a>
 <form action="/user/edit" method="POST">
     <h1>Редактировать данные</h1>
     <table>

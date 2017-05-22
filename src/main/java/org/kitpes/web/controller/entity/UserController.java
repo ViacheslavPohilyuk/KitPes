@@ -3,8 +3,6 @@ package org.kitpes.web.controller.entity;
 import org.kitpes.data.organization.OrganizationRepository;
 import org.kitpes.data.pet.PetRepository;
 import org.kitpes.data.user.UserRepository;
-import org.kitpes.entity.Organization;
-import org.kitpes.entity.Pet;
 import org.kitpes.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,7 +25,9 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class UserController {
 
     private UserRepository userRepository;
+
     private PetRepository petRepository;
+
     private OrganizationRepository organizationRepository;
 
     @Autowired

@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
@@ -38,7 +37,7 @@ public class FileUploadController {
         Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
         String profileImage = (String)uploadResult.get("url");
         System.out.println("ID: " + userID + ", URL: " + profileImage);
-        userRepository.updateOneProfileImage(profileImage, userID);
+        userRepository.updateProfileImage(profileImage, userID);
         return "redirect:/user/" + userID;
     }
 }

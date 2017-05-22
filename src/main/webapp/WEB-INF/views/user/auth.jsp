@@ -15,6 +15,7 @@
           href="<c:url value="/resources/page.css" />">
 </head>
 <body>
+<a href="<c:url value="/" />">На главную</a><br/>
 <h1>Вход</h1>
 
 <form method="POST">

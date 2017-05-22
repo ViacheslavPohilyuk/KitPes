@@ -68,7 +68,7 @@ public class JdbcUserRepository implements UserRepository {
         jdbc.update(updateStatement, updatedDataAndID);
     }
 
-    public void updateOneProfileImage(String profileImage, long id) {
+    public void updateProfileImage(String profileImage, long id) {
         String updateStatement = " UPDATE users"
                 + " SET profile_image=?"
                 + " WHERE id=?";

@@ -5,7 +5,7 @@
 
 <html>
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <title>Организации</title>
 </head>
 <body>
@@ -14,18 +14,36 @@
     <ul class="organizationList">
         <table border="1">
             <c:forEach var="organization" items="${organizationList}">
-                <tr>
-                    <td>
-                        <div id="organization_<c:out value="organization.id"/>">
-                            id: <c:out value="${organization.id}"/><br/>
-                            name: <c:out value="${organization.name}"/><br/>
-                            address: <c:out value="${organization.address}"/><br/>
-                            description: <c:out value="${organization.description}"/><br/>
-                            <a href="<c:url value="/organization/edit/${organization.id}" />">редактировать</a> |
-                            <a href="<c:url value="/organization/delete/${organization.id}" />">удалить</a>
-                        </div>
-                    </td>
-                </tr>
+                <table>
+                    <tr>
+                        <td>
+                            name:
+                        <td>
+                            <c:out value="${organization.name}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            address:
+                        </td>
+                        <td>
+                            <c:out value="${organization.address}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            description:
+                        </td>
+                        <td>
+                            <c:out value="${organization.description}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a href="<c:url value="/organization/${organization.id}" />">Перейти в профиль</a>
+                        </td>
+                    </tr>
+                </table>
             </c:forEach>
         </table>
     </ul>

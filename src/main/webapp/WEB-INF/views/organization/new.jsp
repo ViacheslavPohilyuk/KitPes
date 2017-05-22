@@ -3,11 +3,13 @@
 
 <html>
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <title>Добавить организейшн</title>
 </head>
 <body>
-<h1>Добавить организейшн</h1>
+<a href="<c:url value="/" />">На главную</a> |
+<a href="<c:url value="/user/${userID}" />">В профиль</a>
+<h1>Добавить организацию</h1>
 <form action="/organization/new" method="POST">
     <table>
         <tr>

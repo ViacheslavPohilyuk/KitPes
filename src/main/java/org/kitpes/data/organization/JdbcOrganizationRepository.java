@@ -46,8 +46,7 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
         return jdbc.queryForObject(
                 "SELECT * FROM organizations" +
                         " WHERE id = ?",
-                new OrganizationRowMapper(), id
-        );
+                new OrganizationRowMapper(), id);
     }
 
     @Override
@@ -72,12 +71,13 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
                 organization.getDescription(),
                 organization.getId()
         };
+
         jdbc.update(updateStatement, updateDataAndID);
     }
 
     @Override
     public long save(Organization organization) {
-        final String insertSQL = "INSERT INTO organizations (name, address,description, user_id)" +
+        final String insertSQL = "INSERT INTO organizations (name, address, description, user_id)" +
                 " VALUES (?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbc.update((connection) -> {

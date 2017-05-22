@@ -5,49 +5,52 @@ package org.kitpes.entity;
  */
 public class Pet {
     private Long id;
+
     private String name;
-    private String animal; // cat, dog etc.
+
+    /* cat, dog etc. */
+    private String animal;
+
     private int age;
+
     private String sex;
-    private String description; // description about a pet
-    private String status; // if a pet need to be treated
-    private String organization; // an organization that a pet is bound
+
+    /* description about a pet */
+    private String description;
+
+    /* health of a pet */
+    private String status;
+
+    /* the reference to the user entity */
     private Long userID = null;
+
+    /* the reference to the organization entity */
+    private Long organizationID = null;
+
+    /* URL of a profile picture of a pet */
+    private String profileImgURL = "/resources/images/profile.png";
 
     public Pet() {
     }
 
-    public Pet(String name,
-               String animal,
-               int age,
-               String sex,
-               String description,
-               String status,
-               String organization,
-               Long userID
-    ) {
-        this(null, name, animal, age, sex, description, status, organization, userID);
+    public Pet(String name, String animal, int age, String sex, String description,
+               String status, Long userID, Long organizationID) {
+        this(null, name, animal, age, sex, description,
+                status, userID, organizationID);
     }
 
-    public Pet(Long id,
-               String name,
-               String animal,
-               int age,
-               String sex,
-               String description,
-               String status,
-               String organization,
-               Long userID
+    public Pet(Long id, String name, String animal, int age, String sex,
+               String description, String status, Long userID, Long organizationID
     ) {
         this.id = id;
         this.name = name;
         this.animal = animal;
         this.status = status;
         this.description = description;
-        this.organization = organization;
         this.age = age;
         this.sex = sex;
         this.userID = userID;
+        this.organizationID = organizationID;
     }
 
     public Long getId() {
@@ -90,14 +93,6 @@ public class Pet {
         this.description = description;
     }
 
-    public String getOrganization() {
-        return organization;
-    }
-
-    public void setOrganization(String oraginzation) {
-        this.organization = oraginzation;
-    }
-
     public int getAge() {
         return age;
     }
@@ -122,6 +117,22 @@ public class Pet {
         this.userID = userID;
     }
 
+    public Long getOrganizationID() {
+        return organizationID;
+    }
+
+    public void setOrganizationID(Long organizationID) {
+        this.organizationID = organizationID;
+    }
+
+    public String getProfileImgURL() {
+        return profileImgURL;
+    }
+
+    public void setProfileImgURL(String profileImgURL) {
+        this.profileImgURL = profileImgURL;
+    }
+
     @Override
     public String toString() {
         return "Pet{" +
@@ -132,8 +143,8 @@ public class Pet {
                 ", sex='" + sex + '\'' +
                 ", description='" + description + '\'' +
                 ", status='" + status + '\'' +
-                ", organization='" + organization + '\'' +
                 ", userID=" + userID +
+                ", organizationID=" + organizationID +
                 '}';
     }
 }

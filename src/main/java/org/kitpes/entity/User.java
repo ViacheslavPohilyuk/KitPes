@@ -37,8 +37,7 @@ public class User {
 
     private String profileImgURL = "/resources/images/profile.png";
 
-    public User() {
-    }
+    public User() { }
 
     public User(String email,
                 String password) {
@@ -54,13 +53,7 @@ public class User {
         this(null, username, firstName, lastName, email, password, profileImgURL);
     }
 
-    public User(Long id,
-                String username,
-                String firstName,
-                String lastName,
-                String email,
-                String password,
-                String profileImgURL) {
+    public User(Long id, String username, String firstName, String lastName, String email, String password, String profileImgURL) {
         this.id = id;
         this.username = username;
         this.firstName = firstName;

@@ -7,6 +7,8 @@
     <title>Organization</title>
 </head>
 <body>
+<a href="<c:url value="/" />">На главную</a> |
+<a href="<c:url value="/organization/${organization.id}" />">В профиль организации</a>
 <form action="/organization/edit" method="POST">
     <h1>Изменить данные организации</h1>
     <table>

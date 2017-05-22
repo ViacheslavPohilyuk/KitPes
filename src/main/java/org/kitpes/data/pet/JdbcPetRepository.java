@@ -13,14 +13,23 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import javax.sql.DataSource;
+
 @Repository
 public class JdbcPetRepository implements PetRepository {
 
     private JdbcOperations jdbc;
 
+    private DataSource dataSource;
+
     @Autowired
     public JdbcPetRepository(JdbcOperations jdbc) {
         this.jdbc = jdbc;
+    }
+
+    @Autowired
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     public List<Pet> readAll() {
@@ -34,6 +43,13 @@ public class JdbcPetRepository implements PetRepository {
                 "SELECT * FROM pets" +
                         " WHERE user_id = ?",
                 new PetRowMapper(), userID);
+    }
+
+    public List<Pet> readbyOrganizationID(long organizationID) {
+        return jdbc.query(
+                "SELECT * FROM pets" +
+                        " WHERE organization_id = ?",
+                new PetRowMapper(), organizationID);
     }
 
     public Pet readOne(long id) {
@@ -58,7 +74,7 @@ public class JdbcPetRepository implements PetRepository {
 
     public void updateOne(Pet pet) {
         String updateStatement = " UPDATE pets"
-                + " SET name=?, animal=?, age=?, sex=?, description=?, status=?, organization=?"
+                + " SET name=?, animal=?, age=?, sex=?, description=?, status=?"
                 + " WHERE id=?";
 
         Object[] updatedDataAndID = {
@@ -68,14 +84,13 @@ public class JdbcPetRepository implements PetRepository {
                 pet.getSex(),
                 pet.getDescription(),
                 pet.getStatus(),
-                pet.getOrganization(),
                 pet.getId()};
 
         jdbc.update(updateStatement, updatedDataAndID);
     }
 
     public long save(Pet pet) {
-        final String insertSQL = "INSERT INTO pets (name, animal, age, sex, description, status, organization, user_id)" +
+        final String insertSQL = "INSERT INTO pets (name, animal, age, sex, description, status, user_id, organization_id)" +
                 " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbc.update((connection) -> {
@@ -87,8 +102,22 @@ public class JdbcPetRepository implements PetRepository {
                     ps.setString(4, pet.getSex());
                     ps.setString(5, pet.getDescription());
                     ps.setString(6, pet.getStatus());
-                    ps.setString(7, pet.getOrganization());
-                    ps.setLong(8, pet.getUserID());
+
+                    /* Setting userID and organizationID */
+                    Long userID  = pet.getUserID();
+                    Long organizationID = pet.getOrganizationID();
+
+                    /* Set userID with some id or null */
+                    if(userID != null)
+                        ps.setLong(7, userID);
+                    else
+                        ps.setNull(7, Types.BIGINT);
+
+                    /* Set organizationID with some id or null */
+                    if(organizationID != null)
+                        ps.setLong(8, organizationID);
+                    else
+                        ps.setNull(8, Types.BIGINT);
                     return ps;
                 },
                 keyHolder);
@@ -108,8 +137,8 @@ public class JdbcPetRepository implements PetRepository {
                     rs.getString("sex"),
                     rs.getString("description"),
                     rs.getString("status"),
-                    rs.getString("organization"),
-                    rs.getLong("user_id"));
+                    rs.getLong("user_id"),
+                    rs.getLong("organization_id"));
         }
     }
 }

@@ -14,6 +14,8 @@
     <title>Pet</title>
 </head>
 <body>
+<a href="<c:url value="/" />">На главную</a> |
+<a href="<c:url value="/pet/${pet.id}?userID=${pet.userID}" />">В профиль питомца</a>
 <form action="/pet/edit" method="POST">
     <h1>Изменить данные питомца</h1>
     <table>
@@ -44,17 +46,8 @@
             <td>status:</td>
             <td><input type="text" name="status" value="<c:out value="${pet.status}" />"/></td>
         </tr>
-        <tr>
-            <td>organization:</td>
-            <td><input type="text" name="organization" value="<c:out value="${pet.organization}" />"/></td>
-        </tr>
     </table>
     <input type="submit" value="Изменить"/>
-</form>
-
-<%-- Cancel the editing --%>
-<form action="/user/${pet.id}" method="GET">
-    <input type="submit" value="Отменить"/>
 </form>
 </body>
 </html>

@@ -1,39 +1,30 @@
 package org.kitpes.entity;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import java.util.List;
 
 /**
  * Created by mac on 11.04.17.
  */
 public class Organization {
     private Long id;
-    @NotNull
-    @Size(min = 2, max = 16)
+
     private String name;
-    @NotNull
-    @Size(min = 2, max = 50)
+
     private String address;
+
     private String description;
+
+    private List<Pet> pets = null;
 
     private Long userID = null;
 
     public Organization() {
     }
 
-    public Organization(String name,
-                        String address,
-                        String description,
-                        Long userID) {
+    public Organization(String name, String address, String description, Long userID) {
         this(null, name, address, description, userID);
     }
 
-    public Organization(
-            Long id,
-            String name,
-            String address,
-            String description,
-            Long userID
+    public Organization(Long id, String name, String address, String description, Long userID
     ) {
         this.id = id;
         this.name = name;
@@ -71,8 +62,12 @@ public class Organization {
     }
 
     public void setDescription(String description) {
-        description = description;
+        this.description = description;
     }
+
+    public List<Pet> getPets() { return pets; }
+
+    public void setPets(List<Pet> pets) { this.pets = pets; }
 
     public Long getUserID() {
         return userID;

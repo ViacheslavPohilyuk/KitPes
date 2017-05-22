@@ -17,6 +17,7 @@
     <title>Профиль пользователя</title>
 </head>
 <body>
+<a href="<c:url value="/" />">На главную</a><br/>
 <h1>Профиль пользователя <c:out value="${user.username}"/></h1>
 
 <table>
@@ -54,8 +55,7 @@
         <td><c:out value="${user.password}"/><br/></td>
     </tr>
     <tr>
-        <td><a href="<c:url value="/user/edit/${user.id}" />">редактировать</a> |
-            <a href="<c:url value="/user/delete/${user.id}" />">удалить</a></td>
+        <td><a href="<c:url value="/user/edit/${user.id}" />">редактировать</a></td>
     </tr>
     <tr>
         <td>
@@ -69,15 +69,45 @@
                             <tr>
                                 <td>
                                     <div id="pet_<c:out value="pet.id"/>">
-                                        name: <c:out value="${pet.name}"/><br/>
-                                        animal: <c:out value="${pet.animal}"/><br/>
-                                        age: <c:out value="${pet.age}"/><br/>
-                                        sex: <c:out value="${pet.sex}"/><br/>
-                                        description: <c:out value="${pet.description}"/><br/>
-                                        status: <c:out value="${pet.status}"/><br/>
-                                        organization: <c:out value="${pet.organization}"/><br/>
-                                        <a href="<c:url value="/pet/edit/${pet.id}" />">редактировать</a> |
-                                        <a href="<c:url value="/pet/delete/${pet.id}?userID=${user.id}" />">удалить</a>
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    name: <c:out value="${pet.name}"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    animal: <c:out value="${pet.animal}"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    age: <c:out value="${pet.age}"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    sex: <c:out value="${pet.sex}"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    description: <c:out value="${pet.description}"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    status: <c:out value="${pet.status}"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <a href="<c:url value="/pet/${pet.id}?userID=${user.id}" />">
+                                                        Перейти в профиль
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </table>
                                     </div>
                                 </td>
                             </tr>
@@ -96,11 +126,37 @@
                             <tr>
                                 <td>
                                     <div id="organization<c:out value="organization.id"/>">
-                                        name: <c:out value="${organization.name}"/><br/>
-                                        address: <c:out value="${organization.address}"/><br/>
-                                        description: <c:out value="${organization.description}"/><br/>
-                                        <a href="<c:url value="/organization/edit/${organization.id}" />">редактировать</a> |
-                                        <a href="<c:url value="/organization/delete/${organization.id}?userID=${user.id}" />">удалить</a>
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    name:
+                                                <td>
+                                                    <c:out value="${organization.name}"/><br/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    address:
+                                                </td>
+                                                <td>
+                                                    <c:out value="${organization.address}"/><br/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    description:
+                                                </td>
+                                                <td>
+                                                    <c:out value="${organization.description}"/><br/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <a href="<c:url value="/organization/${organization.id}" />">
+                                                        Перейти в профиль</a>
+                                                </td>
+                                            </tr>
+                                        </table>
                                     </div>
                                 </td>
                             </tr>

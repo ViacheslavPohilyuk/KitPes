@@ -15,6 +15,21 @@
     <title>Добавить нового питомца</title>
 </head>
 <body>
+
+<a href="<c:url value="/" />">На главную</a> |
+
+<%-- Resolving the redirection to a user's page or organisation's one --%>
+<c:set var="redirection"/>
+<c:choose>
+    <c:when test="${userID != null}">
+        <a href="<c:url value="/user/${userID}" />">В профиль</a>
+    </c:when>
+    <c:otherwise>
+        <a href="<c:url value="/user/${userOrgID}" />">В профиль</a> |
+        <a href="<c:url value="/organization/${organizationID}" />">В профиль организации</a>
+    </c:otherwise>
+</c:choose>
+
 <h1>Добавить нового питомца</h1>
 <form action="/pet/new" method="POST" accept-charset="UTF-8">
     <table>
@@ -43,11 +58,10 @@
             <td><input type="text" name="status"/><br/></td>
         </tr>
         <tr>
-            <td>organization:</td>
-            <td><input type="text" name="organization"/><br/></td>
+            <td><input type="hidden" name="userID" value="<c:out value="${userID}"/>"/></td>
         </tr>
         <tr>
-            <td><input type="hidden" name="userID" value="<c:out value="${userID}"/>"/></td>
+            <td><input type="hidden" name="organizationID" value="<c:out value="${organizationID}"/>"/></td>
         </tr>
     </table>
     <input type="submit" value="Создать"/>

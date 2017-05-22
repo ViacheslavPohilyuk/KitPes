@@ -9,15 +9,15 @@ import java.util.List;
  */
 public interface OrganizationRepository {
 
-    public List<Organization> readAll();
+    List<Organization> readAll();
 
-    public List<Organization> readbyUserID(long userID);
+    List<Organization> readbyUserID(long userID);
 
-    public Organization readOne(long id);
+    Organization readOne(long id);
 
-    public void deleteOne(long id);
+    void deleteOne(long id);
 
-    public void updateOne(Organization organization);
+    void updateOne(Organization organization);
 
-    public long save(Organization organization);
+    long save(Organization organization);
 }

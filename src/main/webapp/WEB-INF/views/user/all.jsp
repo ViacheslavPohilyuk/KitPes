@@ -26,27 +26,26 @@
                         <table>
                             <tr>
                                 <td>Логин:</td>
-                                <td><c:out value="${user.username}"/><br/></td>
+                                <td><c:out value="${user.username}"/></td>
                             </tr>
                             <tr>
                                 <td>Имя:</td>
-                                <td><c:out value="${user.firstName}"/><br/></td>
+                                <td><c:out value="${user.firstName}"/></td>
                             </tr>
                             <tr>
                                 <td>Фамилия:</td>
-                                <td><c:out value="${user.lastName}"/><br/></td>
+                                <td><c:out value="${user.lastName}"/></td>
                             </tr>
                             <tr>
                                 <td>Email:</td>
-                                <td><c:out value="${user.email}"/><br/></td>
+                                <td><c:out value="${user.email}"/></td>
                             </tr>
                             <tr>
                                 <td>Пароль:</td>
-                                <td><c:out value="${user.password}"/><br/></td>
+                                <td><c:out value="${user.password}"/></td>
                             </tr>
                             <tr>
-                                <td><a href="<c:url value="/user/edit/${user.id}" />">редактировать</a> |
-                                    <a href="<c:url value="/user/delete/${user.id}" />">удалить</a></td>
+                                <td><a href="<c:url value="/user/${user.id}" />">Перейти в профиль</a></td>
                             </tr>
                         </table>
                     </td>

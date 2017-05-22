@@ -9,15 +9,17 @@ import java.util.List;
  * Created by mac on 08.05.17.
  */
 public interface PetRepository {
-    public List<Pet> readbyUserID(long userID);
+    List<Pet> readbyUserID(long userID);
 
-    public List<Pet> readAll();
+    List<Pet> readbyOrganizationID(long organizationID);
 
-    public Pet readOne(long id);
+    List<Pet> readAll();
 
-    public void deleteOne(long id);
+    Pet readOne(long id);
 
-    public void updateOne(Pet pet);
+    void deleteOne(long id);
 
-    public long save(Pet pet);
+    void updateOne(Pet pet);
+
+    long save(Pet pet);
 }

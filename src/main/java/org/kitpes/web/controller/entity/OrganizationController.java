@@ -1,6 +1,7 @@
 package org.kitpes.web.controller.entity;
 
 import org.kitpes.data.organization.OrganizationRepository;
+import org.kitpes.data.pet.PetRepository;
 import org.kitpes.entity.Organization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,9 +24,16 @@ public class OrganizationController {
 
     private OrganizationRepository organizationRepository;
 
+    private PetRepository petRepository;
+
     @Autowired
     public OrganizationController(OrganizationRepository organizationRepository) {
         this.organizationRepository = organizationRepository;
+    }
+
+    @Autowired
+    public void setPetRepository(PetRepository petRepository) {
+        this.petRepository = petRepository;
     }
 
     /**
@@ -52,6 +60,10 @@ public class OrganizationController {
     public String organization(@PathVariable long id,
                       Model model) {
         Organization organization = organizationRepository.readOne(id);
+
+        /* Reading all pets from the db with an id of this organization */
+        organization.setPets(petRepository.readbyOrganizationID(id));
+
         model.addAttribute("organization", organization);
         return "organization/organization";
     }
@@ -67,7 +79,7 @@ public class OrganizationController {
     @RequestMapping(value = "/edit/{id}", method = GET)
     public String updatedGet(@PathVariable long id,
                              Model model) {
-        Organization organization= organizationRepository.readOne(id);
+        Organization organization = organizationRepository.readOne(id);
         model.addAttribute(organization);
         return "organization/edit";
     }
@@ -81,7 +93,6 @@ public class OrganizationController {
     @RequestMapping(value = "/edit", method = POST)
     public String updateID(Organization organization, Model model) {
         organizationRepository.updateOne(organization);
-        System.out.println(organization.toString());
         return "redirect:/organization/" + organization.getId();
     }
 
@@ -95,7 +106,7 @@ public class OrganizationController {
                            @RequestParam(value = "userID", required = false) Long userID) {
         organizationRepository.deleteOne(id);
 
-        /* If pet have been deleted from a user's profile,
+        /* If organization have been deleted from a user's profile,
          * it will redirect to a user's one
          */
         if (userID != null)

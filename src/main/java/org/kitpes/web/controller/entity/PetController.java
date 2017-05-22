@@ -1,6 +1,5 @@
 package org.kitpes.web.controller.entity;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.kitpes.data.pet.PetRepository;
 import org.kitpes.entity.Pet;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,9 +51,15 @@ public class PetController {
      */
     @RequestMapping(value = "/{id}", method = GET)
     public String pet(@PathVariable long id,
-                      Model model) {
+                      Model model,
+                      @RequestParam(value = "userID", required = false) Long userID,
+                      @RequestParam(value = "organizationID", required = false) Long organizationID,
+                      @RequestParam(value = "userOrgID", required = false) Long userOrgID) {
+        model = addIDsToModel(model, userID, organizationID, userOrgID);
+
         Pet pet = petRepository.readOne(id);
         model.addAttribute(pet);
+
         return "pet/pet";
     }
 
@@ -93,14 +98,17 @@ public class PetController {
      */
     @RequestMapping(value = "/delete/{id}", method = GET)
     public String deleteID(@PathVariable long id,
-                           @RequestParam(value = "userID", required = false) Long userID) {
+                           @RequestParam(value = "userID", required = false) Long userID,
+                           @RequestParam(value = "organizationID", required = false) Long organizationID) {
         petRepository.deleteOne(id);
 
-        /* If pet have been deleted from a user's profile,
-         * it will redirect to a user's one
+        /* If pet have been deleted from a user's/org's profile,
+         * it will redirect to a user's/org's one
          */
         if (userID != null)
             return "redirect:/user/" + userID;
+        if (organizationID != null)
+            return "redirect:/organization/" + organizationID;
 
         return "redirect:/pet";
     }
@@ -112,9 +120,10 @@ public class PetController {
      */
     @RequestMapping(value = "/new", method = GET)
     public String petForm(Model model,
-                          @RequestParam(value = "userID", required = false) Long userID) {
-        if (userID != null)
-            model.addAttribute("userID", userID);
+                          @RequestParam(value = "userID", required = false) Long userID,
+                          @RequestParam(value = "organizationID", required = false) Long organizationID,
+                          @RequestParam(value = "userOrgID", required = false) Long userOrgID) {
+        model = addIDsToModel(model, userID, organizationID, userOrgID);
         return "pet/new";
     }
 
@@ -127,13 +136,28 @@ public class PetController {
     @RequestMapping(value = "/new", method = POST)
     public String create(Pet pet) {
         Long userID = pet.getUserID();
+        Long organizationID = pet.getOrganizationID();
+
+        System.out.println(pet.toString());
         long key = petRepository.save(pet);
 
-        /* Redirection to the user's page */
-        if(userID != null) {
+        /* Redirection to an user's or organization's page */
+        if (userID != null) {
             return "redirect:/user/" + userID;
+        } else if (organizationID != null) {
+            return "redirect:/organization/" + organizationID;
         }
 
         return "redirect:/pet/" + key;
+    }
+
+    private Model addIDsToModel(Model model, Long userID, Long organizationID, Long userOrgID) {
+        if (userID != null)
+            model.addAttribute("userID", userID);
+        else if (organizationID != null) {
+            model.addAttribute("organizationID", organizationID);
+            model.addAttribute("userOrgID", userOrgID);
+        }
+        return model;
     }
 }
