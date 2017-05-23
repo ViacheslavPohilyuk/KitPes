@@ -17,20 +17,22 @@ public class Organization {
 
     private Long userID = null;
 
+    private String profileImgURL = "/resources/images/default_org.png";
+
     public Organization() {
     }
 
-    public Organization(String name, String address, String description, Long userID) {
-        this(null, name, address, description, userID);
+    public Organization(String name, String address, String description, Long userID, String profileImgURL) {
+        this(null, name, address, description, userID, profileImgURL);
     }
 
-    public Organization(Long id, String name, String address, String description, Long userID
-    ) {
+    public Organization(Long id, String name, String address, String description, Long userID, String profileImgURL) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.description = description;
         this.userID = userID;
+        this.profileImgURL = profileImgURL;
     }
 
     public Long getId() {
@@ -77,6 +79,14 @@ public class Organization {
         this.userID = userID;
     }
 
+    public String getProfileImgURL() {
+        return profileImgURL;
+    }
+
+    public void setProfileImgURL(String profileImgURL) {
+        this.profileImgURL = profileImgURL;
+    }
+
     @Override
     public String toString() {
         return "Organization{" +
@@ -84,6 +94,9 @@ public class Organization {
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
                 ", description='" + description + '\'' +
+                ", pets=" + pets +
+                ", userID=" + userID +
+                ", profileImgURL='" + profileImgURL + '\'' +
                 '}';
     }
 }

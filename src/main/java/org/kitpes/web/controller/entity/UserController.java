@@ -1,5 +1,7 @@
 package org.kitpes.web.controller.entity;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import org.kitpes.data.organization.OrganizationRepository;
 import org.kitpes.data.pet.PetRepository;
 import org.kitpes.data.user.UserRepository;
@@ -10,9 +12,14 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -30,6 +37,8 @@ public class UserController {
 
     private OrganizationRepository organizationRepository;
 
+    private Cloudinary cloudinary;
+
     @Autowired
     public UserController(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -43,6 +52,11 @@ public class UserController {
     @Autowired
     public void setOrganizationRepository(OrganizationRepository organizationRepository) {
         this.organizationRepository = organizationRepository;
+    }
+
+    @Autowired
+    public void setCloudService(Cloudinary cloudinary) {
+        this.cloudinary = cloudinary;
     }
 
     /**
@@ -71,7 +85,7 @@ public class UserController {
                       Model model) {
         User user = userRepository.readOne(id);
         /* Reading all pets from the db with an id of this user */
-        user.setPets(petRepository.readbyUserID(id));
+        user.setPets(petRepository.readByUserID(id));
         /* Reading all organizations from the db with an id of this user */
         user.setOrganizations(organizationRepository.readbyUserID(id));
 
@@ -178,4 +192,20 @@ public class UserController {
         return (user.getId() != null)? "redirect:/user/" + user.getId() : "redirect:/auth/";
     }
 
+    /**
+     *
+     * @param file
+     * @param userID
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value= "/fileupload", method = RequestMethod.POST)
+    public String processUpload(@RequestPart("profilePicture") MultipartFile file,
+                                Long userID) throws IOException {
+
+        Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+        String profileImage = (String)uploadResult.get("url");
+        userRepository.updateProfileImage(profileImage, userID);
+        return "redirect:/user/" + userID;
+    }
 }

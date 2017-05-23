@@ -26,49 +26,29 @@
     <sf:errors path="*" element="div" cssClass="errors"/>
     <table>
         <tr>
-            <td>
-                <sf:label path="username"
-                          cssErrorClass="error">Логин:</sf:label>
-            </td>
-            <td>
-                <sf:input path="username" cssErrorClass="error"/><br/>
-            </td>
+            <td><sf:label path="username"
+                          cssErrorClass="error">Логин:</sf:label></td>
+            <td><sf:input path="username" cssErrorClass="error"/></td>
         </tr>
         <tr>
-            <td>
-                <sf:label path="firstName"
-                          cssErrorClass="error">Имя:</sf:label>
-            </td>
-            <td>
-                <sf:input path="firstName" cssErrorClass="error"/><br/>
-            </td>
+            <td><sf:label path="firstName"
+                          cssErrorClass="error">Имя:</sf:label></td>
+            <td><sf:input path="firstName" cssErrorClass="error"/></td>
         </tr>
         <tr>
-            <td>
-                <sf:label path="lastName"
-                          cssErrorClass="error">Фамилия:</sf:label>
-            </td>
-            <td>
-                <sf:input path="lastName" cssErrorClass="error"/><br/>
-            </td>
+            <td><sf:label path="lastName"
+                          cssErrorClass="error">Фамилия:</sf:label></td>
+            <td><sf:input path="lastName" cssErrorClass="error"/></td>
         </tr>
         <tr>
-            <td>
-                <sf:label path="email"
-                          cssErrorClass="error">Email:</sf:label>
-            </td>
-            <td>
-                <sf:input path="email" cssErrorClass="error"/><br/>
-            </td>
+            <td><sf:label path="email"
+                          cssErrorClass="error">Email:</sf:label></td>
+            <td><sf:input path="email" cssErrorClass="error"/></td>
         </tr>
         <tr>
-            <td>
-                <sf:label path="password"
-                          cssErrorClass="error">Пароль:</sf:label>
-            </td>
-            <td>
-                <sf:password path="password" cssErrorClass="error"/><br/>
-            </td>
+            <td><sf:label path="password"
+                          cssErrorClass="error">Пароль:</sf:label></td>
+            <td><sf:password path="password" cssErrorClass="error"/></td>
         </tr>
     </table>
     <input type="submit" value="Подтвердить"/>

@@ -75,10 +75,21 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
         jdbc.update(updateStatement, updateDataAndID);
     }
 
+    public void updateProfileImage(String profileImage, long id) {
+        String updateStatement = " UPDATE organizations"
+                + " SET profile_image=?"
+                + " WHERE id=?";
+
+        System.out.println("jdbc: " + profileImage);
+        Object[] updatedDataAndID = { profileImage, id };
+
+        jdbc.update(updateStatement, updatedDataAndID);
+    }
+
     @Override
     public long save(Organization organization) {
-        final String insertSQL = "INSERT INTO organizations (name, address, description, user_id)" +
-                " VALUES (?, ?, ?, ?)";
+        final String insertSQL = "INSERT INTO organizations (name, address, description, user_id, profile_image)" +
+                " VALUES (?, ?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbc.update((connection) -> {
                     PreparedStatement ps =
@@ -87,6 +98,7 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
                     ps.setString(2, organization.getAddress());
                     ps.setString(3, organization.getDescription());
                     ps.setLong(4, organization.getUserID());
+                    ps.setString(5, organization.getProfileImgURL());
                     return ps;
                 },
                 keyHolder);
@@ -103,7 +115,8 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
                     rs.getString("name"),
                     rs.getString("address"),
                     rs.getString("description"),
-                    rs.getLong("user_id")
+                    rs.getLong("user_id"),
+                    rs.getString("profile_image")
             );
         }
     }

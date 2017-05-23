@@ -1,16 +1,19 @@
 package org.kitpes.web.controller.entity;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import org.kitpes.data.pet.PetRepository;
 import org.kitpes.entity.Pet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -24,9 +27,16 @@ public class PetController {
 
     private PetRepository petRepository;
 
+    private Cloudinary cloudinary;
+
     @Autowired
     public PetController(PetRepository petRepository) {
         this.petRepository = petRepository;
+    }
+
+    @Autowired
+    public void setCloudService(Cloudinary cloudinary) {
+        this.cloudinary = cloudinary;
     }
 
     /**
@@ -159,5 +169,23 @@ public class PetController {
             model.addAttribute("userOrgID", userOrgID);
         }
         return model;
+    }
+
+    /**
+     *
+     * @param file
+     * @param petID
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "/fileupload", method = RequestMethod.POST)
+    public String processUpload(@RequestPart("profilePicture") MultipartFile file,
+                                Long petID) throws IOException {
+
+        Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+        String profileImage = (String) uploadResult.get("url");
+        System.out.println("profileImage: " + profileImage + "\npetID: " + petID);
+        petRepository.updateProfileImage(profileImage, petID);
+        return "redirect:/pet/" + petID;
     }
 }

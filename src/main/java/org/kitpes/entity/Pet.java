@@ -28,20 +28,20 @@ public class Pet {
     private Long organizationID = null;
 
     /* URL of a profile picture of a pet */
-    private String profileImgURL = "/resources/images/profile.png";
+    private String profileImgURL = "/resources/images/default_pet.jpg";
 
     public Pet() {
     }
 
     public Pet(String name, String animal, int age, String sex, String description,
-               String status, Long userID, Long organizationID) {
+               String status, Long userID, Long organizationID, String profileImgURL) {
         this(null, name, animal, age, sex, description,
-                status, userID, organizationID);
+                status, userID, organizationID, profileImgURL);
     }
 
     public Pet(Long id, String name, String animal, int age, String sex,
-               String description, String status, Long userID, Long organizationID
-    ) {
+               String description, String status, Long userID, Long organizationID,
+               String profileImgURL) {
         this.id = id;
         this.name = name;
         this.animal = animal;
@@ -51,6 +51,7 @@ public class Pet {
         this.sex = sex;
         this.userID = userID;
         this.organizationID = organizationID;
+        this.profileImgURL = profileImgURL;
     }
 
     public Long getId() {
@@ -145,6 +146,7 @@ public class Pet {
                 ", status='" + status + '\'' +
                 ", userID=" + userID +
                 ", organizationID=" + organizationID +
+                ", profileImgURL='" + profileImgURL + '\'' +
                 '}';
     }
 }

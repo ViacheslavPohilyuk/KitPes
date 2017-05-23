@@ -9,7 +9,7 @@ import java.util.List;
  * Created by mac on 08.05.17.
  */
 public interface PetRepository {
-    List<Pet> readbyUserID(long userID);
+    List<Pet> readByUserID(long userID);
 
     List<Pet> readbyOrganizationID(long organizationID);
 
@@ -20,6 +20,8 @@ public interface PetRepository {
     void deleteOne(long id);
 
     void updateOne(Pet pet);
+
+    void updateProfileImage(String profileImage, long id);
 
     long save(Pet pet);
 }

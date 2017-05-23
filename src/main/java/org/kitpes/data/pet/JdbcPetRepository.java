@@ -38,7 +38,7 @@ public class JdbcPetRepository implements PetRepository {
                 new PetRowMapper());
     }
 
-    public List<Pet> readbyUserID(long userID) {
+    public List<Pet> readByUserID(long userID) {
         return jdbc.query(
                 "SELECT * FROM pets" +
                         " WHERE user_id = ?",
@@ -89,9 +89,20 @@ public class JdbcPetRepository implements PetRepository {
         jdbc.update(updateStatement, updatedDataAndID);
     }
 
+    public void updateProfileImage(String profileImage, long id) {
+        String updateStatement = " UPDATE pets"
+                + " SET profile_image=?"
+                + " WHERE id=?";
+
+        System.out.println("jdbc: " + profileImage);
+        Object[] updatedDataAndID = { profileImage, id };
+
+        jdbc.update(updateStatement, updatedDataAndID);
+    }
+
     public long save(Pet pet) {
-        final String insertSQL = "INSERT INTO pets (name, animal, age, sex, description, status, user_id, organization_id)" +
-                " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        final String insertSQL = "INSERT INTO pets (name, animal, age, sex, description, status, user_id, organization_id, profile_image)" +
+                " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbc.update((connection) -> {
                     PreparedStatement ps =
@@ -118,6 +129,8 @@ public class JdbcPetRepository implements PetRepository {
                         ps.setLong(8, organizationID);
                     else
                         ps.setNull(8, Types.BIGINT);
+
+                    ps.setString(9, pet.getProfileImgURL());
                     return ps;
                 },
                 keyHolder);
@@ -138,7 +151,8 @@ public class JdbcPetRepository implements PetRepository {
                     rs.getString("description"),
                     rs.getString("status"),
                     rs.getLong("user_id"),
-                    rs.getLong("organization_id"));
+                    rs.getLong("organization_id"),
+                    rs.getString("profile_image"));
         }
     }
 }

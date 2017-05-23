@@ -22,20 +22,20 @@
 <%-- Resolving the redirection to a user's page or organisation's one --%>
 <c:set var="redirection"/>
 <c:choose>
-    <c:when test="${userID != null}">
+    <c:when test="${pet.userID != 0}">
         <%-- To an user's profile--%>
-        <a href="<c:url value="/user/${userID}" />">В профиль</a>
+        <a href="<c:url value="/user/${pet.userID}" />">В профиль</a>
 
         <%-- Assign redirection for the delete operation--%>
-        <c:set var="redirection" value="userID=${userID}"/>
+        <c:set var="redirection" value="userID=${pet.userID}"/>
     </c:when>
     <c:otherwise>
         <%-- To an organization's profile--%>
         <a href="<c:url value="/user/${userOrgID}" />">В профиль</a> |
-        <a href="<c:url value="/organization/${organizationID}" />">В профиль организации</a>
+        <a href="<c:url value="/organization/${pet.organizationID}" />">В профиль организации</a>
 
         <%-- Assign redirection for the delete operation--%>
-        <c:set var="redirection" value="organizationID=${organizationID}"/>
+        <c:set var="redirection" value="organizationID=${pet.organizationID}"/>
     </c:otherwise>
 </c:choose>
 
@@ -43,33 +43,34 @@
 <table>
     <tr>
         <td>
-            name: <c:out value="${pet.name}"/><br/>
+            <label>Аватар:</label><br/>
+            <img alt="profile" width="240" height="200" id="profileImage" src="${pet.profileImgURL}"/>
+            <form method="POST" action="/pet/fileupload" enctype="multipart/form-data">
+                <input type="file"
+                       name="profilePicture"
+                       accept="image/jpeg,image/png,image/gif"/><br/>
+                <input type="hidden" name="petID" value="<c:out value="${pet.id}"/>"/>
+                <input type="submit" value="Добавить"/>
+            </form>
         </td>
     </tr>
     <tr>
-        <td>
-            animal: <c:out value="${pet.animal}"/><br/>
-        </td>
+        <td>name: <c:out value="${pet.name}"/></td>
     </tr>
     <tr>
-        <td>
-            age: <c:out value="${pet.age}"/><br/>
-        </td>
+        <td>animal: <c:out value="${pet.animal}"/></td>
     </tr>
     <tr>
-        <td>
-            sex: <c:out value="${pet.sex}"/><br/>
-        </td>
+        <td>age: <c:out value="${pet.age}"/></td>
     </tr>
     <tr>
-        <td>
-            description: <c:out value="${pet.description}"/><br/>
-        </td>
+        <td>sex: <c:out value="${pet.sex}"/></td>
     </tr>
     <tr>
-        <td>
-            status: <c:out value="${pet.status}"/><br/>
-        </td>
+        <td>description: <c:out value="${pet.description}"/></td>
+    </tr>
+    <tr>
+        <td>status: <c:out value="${pet.status}"/></td>
     </tr>
     <tr>
         <td>

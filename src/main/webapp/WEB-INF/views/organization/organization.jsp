@@ -17,26 +17,28 @@
 <table>
     <tr>
         <td>
-            name:
-        <td>
-            <c:out value="${organization.name}"/><br/>
+            <label>Аватар:</label><br/>
+            <img alt="profile" width="240" height="200" id="profileImage" src="${organization.profileImgURL}"/>
+            <form method="POST" action="/organization/fileupload" enctype="multipart/form-data">
+                <input type="file"
+                       name="profilePicture"
+                       accept="image/jpeg,image/png,image/gif"/><br/>
+                <input type="hidden" name="organizationID" value="<c:out value="${organization.id}"/>"/>
+                <input type="submit" value="Добавить"/>
+            </form>
         </td>
     </tr>
     <tr>
-        <td>
-            address:
-        </td>
-        <td>
-            <c:out value="${organization.address}"/><br/>
-        </td>
+        <td>name:</td>
+        <td><c:out value="${organization.name}"/></td>
     </tr>
     <tr>
-        <td>
-            description:
-        </td>
-        <td>
-            <c:out value="${organization.description}"/><br/>
-        </td>
+        <td>address:</td>
+        <td><c:out value="${organization.address}"/></td>
+    </tr>
+    <tr>
+        <td>description:</td>
+        <td><c:out value="${organization.description}"/></td>
     </tr>
     <tr>
         <td>
@@ -45,17 +47,16 @@
         </td>
     </tr>
 
-
     <%-- All pets of this organization --%>
     <tr>
         <td>
             <div class="listTitle">
+                <h3>Питомцы организации</h3>
+                <a href="<c:url value="/pet/new?organizationID=${organization.id}&userOrgID=${organization.userID}"/>">
+                    добавить питомца
+                </a>
                 <ul class="petList">
                     <table border="1">
-                        <h3>Питомцы организации</h3>
-                        <a href="<c:url value="/pet/new?organizationID=${organization.id}&userOrgID=${organization.userID}"/>">
-                            добавить питомца
-                        </a>
                         <c:forEach var="pet" items="${organization.pets}">
                             <tr>
                                 <td>
@@ -63,39 +64,43 @@
                                         <table>
                                             <tr>
                                                 <td>
-                                                    name: <c:out value="${pet.name}"/>
+                                                    <img alt="profile" width="120" height="100" id="petImage"
+                                                         src="${pet.profileImgURL}"/>
                                                 </td>
-                                            </tr>
-                                            <tr>
                                                 <td>
-                                                    animal: <c:out value="${pet.animal}"/>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    age: <c:out value="${pet.age}"/>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    sex: <c:out value="${pet.sex}"/>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    description: <c:out value="${pet.description}"/>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    status: <c:out value="${pet.status}"/>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <a href="<c:url value="/pet/${pet.id}?organizationID=${organization.id}&userOrgID=${organization.userID}" />">
-                                                        Перейти в профиль
-                                                    </a>
+                                                    <table>
+                                                        <tr>
+                                                            <td>name:</td>
+                                                            <td><c:out value="${pet.name}"/></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>animal:</td>
+                                                            <td><c:out value="${pet.animal}"/></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>age:</td>
+                                                            <td><c:out value="${pet.age}"/></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>sex:</td>
+                                                            <td><c:out value="${pet.sex}"/></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>description:</td>
+                                                            <td><c:out value="${pet.description}"/></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>status:</td>
+                                                            <td><c:out value="${pet.status}"/></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <a href="<c:url value="/pet/${pet.id}?userID=${user.id}" />">
+                                                                    Перейти в профиль
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
                                                 </td>
                                             </tr>
                                         </table>

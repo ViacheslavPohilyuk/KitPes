@@ -19,5 +19,7 @@ public interface OrganizationRepository {
 
     void updateOne(Organization organization);
 
+    void updateProfileImage(String profileImage, long id);
+
     long save(Organization organization);
 }

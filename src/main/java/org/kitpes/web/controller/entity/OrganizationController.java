@@ -1,16 +1,19 @@
 package org.kitpes.web.controller.entity;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import org.kitpes.data.organization.OrganizationRepository;
 import org.kitpes.data.pet.PetRepository;
 import org.kitpes.entity.Organization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -26,6 +29,8 @@ public class OrganizationController {
 
     private PetRepository petRepository;
 
+    private Cloudinary cloudinary;
+
     @Autowired
     public OrganizationController(OrganizationRepository organizationRepository) {
         this.organizationRepository = organizationRepository;
@@ -34,6 +39,11 @@ public class OrganizationController {
     @Autowired
     public void setPetRepository(PetRepository petRepository) {
         this.petRepository = petRepository;
+    }
+
+    @Autowired
+    public void setCloudService(Cloudinary cloudinary) {
+        this.cloudinary = cloudinary;
     }
 
     /**
@@ -145,5 +155,23 @@ public class OrganizationController {
         }
 
         return "redirect:/organization/" + key;
+    }
+
+    /**
+     *
+     * @param file
+     * @param organizationID
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value= "/fileupload", method = RequestMethod.POST)
+    public String processUpload(@RequestPart("profilePicture") MultipartFile file,
+                                Long organizationID) throws IOException {
+
+        Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+        String profileImage = (String)uploadResult.get("url");
+        System.out.println("profileImage: " + profileImage + "\norganizationID: " + organizationID);
+        organizationRepository.updateProfileImage(profileImage, organizationID);
+        return "redirect:/organization/" + organizationID;
     }
 }

@@ -1,21 +1,21 @@
 label.error {
-	color: red;
+    color: red;
 }
 
 input.error {
-	background-color: #ffcccc;
+    background-color: #ffcccc;
 }
 
 div.errors {
-	background-color: #ffcccc;
-	border: 2px solid red;
+    background-color: #ffcccc;
+    border: 2px solid red;
 }
 
 div.authError {
-	background-color: #ffcccc;
-	border: 2px solid red;
+    background-color: #ffcccc;
+    border: 2px solid red;
 }
 
 div.listTitle {
-	display: inline-block;
+    display: inline-block;
 }

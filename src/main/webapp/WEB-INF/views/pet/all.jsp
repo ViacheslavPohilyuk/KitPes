@@ -16,6 +16,7 @@
     <title>Питомцы</title>
 </head>
 <body>
+
 <div class="listTitle">
     <h1>Питомцы</h1>
     <ul class="petList">
@@ -23,14 +24,54 @@
             <c:forEach var="pet" items="${petList}">
                 <tr>
                     <td>
+                            <%-- Resolving the redirection to a user's page or organisation's one --%>
+                        <c:set var="redirection"/>
+                        <c:choose>
+                            <c:when test="${pet.userID != 0}">
+                                <%-- Assign redirection for the delete operation--%>
+                                <c:set var="redirection" value="userID=${pet.userID}"/>
+                            </c:when>
+                            <c:otherwise>
+                                <%-- Assign redirection for the delete operation--%>
+                                <c:set var="redirection" value="organizationID=${pet.organizationID}"/>
+                            </c:otherwise>
+                        </c:choose>
+
                         <div id="pet_<c:out value="pet.id"/>">
-                            name: <c:out value="${pet.name}"/><br/>
-                            animal: <c:out value="${pet.animal}"/><br/>
-                            age: <c:out value="${pet.age}"/><br/>
-                            sex: <c:out value="${pet.sex}"/><br/>
-                            description: <c:out value="${pet.description}"/><br/>
-                            status: <c:out value="${pet.status}"/><br/>
-                            <a href="<c:url value="/pet/${pet.id}" />">Перейти в профиль</a>
+                            <table>
+                                <tr>
+                                    <td>
+                                        <img alt="profile" width="120" height="100" id="petImage"
+                                             src="${pet.profileImgURL}"/>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            <tr>
+                                                <td>name: <c:out value="${pet.name}"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td>animal: <c:out value="${pet.animal}"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td>age: <c:out value="${pet.age}"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td>sex: <c:out value="${pet.sex}"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td>description: <c:out value="${pet.description}"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td>status: <c:out value="${pet.status}"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td><a href="<c:url value="/pet/${pet.id}?${redirection}" />">
+                                                    Перейти в профиль</a></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
                     </td>
                 </tr>
