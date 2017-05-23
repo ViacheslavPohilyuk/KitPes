@@ -95,7 +95,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td>
-                                                                <a href="<c:url value="/pet/${pet.id}?userID=${user.id}" />">
+                                                                <a href="<c:url value="/pet/${pet.id}?organizationID=${organization.id}&userOrgID=${organization.userID}" />">
                                                                     Перейти в профиль
                                                                 </a>
                                                             </td>
