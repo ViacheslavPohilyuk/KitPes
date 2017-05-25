@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.io.IOException;
@@ -87,7 +88,7 @@ public class UserController {
         /* Reading all pets from the db with an id of this user */
         user.setPets(petRepository.readByUserID(id));
         /* Reading all organizations from the db with an id of this user */
-        user.setOrganizations(organizationRepository.readbyUserID(id));
+        user.setOrganizations(organizationRepository.readByUserID(id));
 
         model.addAttribute(user);
         return "user/userProfile";
@@ -193,11 +194,12 @@ public class UserController {
     }
 
     /**
+     * Processing image files those user uploads on an user's
+     * profile page
      *
-     * @param file
-     * @param userID
-     * @return
-     * @throws IOException
+     * @param file image that is an avatar of an user
+     * @param userID id of an user
+     * @return redirection to an user's profile page
      */
     @RequestMapping(value= "/fileupload", method = RequestMethod.POST)
     public String processUpload(@RequestPart("profilePicture") MultipartFile file,
@@ -207,5 +209,19 @@ public class UserController {
         String profileImage = (String)uploadResult.get("url");
         userRepository.updateProfileImage(profileImage, userID);
         return "redirect:/user/" + userID;
+    }
+
+    /**
+     * IT'S SPRING SECURITY SAMPLE
+     */
+    @RequestMapping(value = "/admin", method = RequestMethod.GET)
+    public ModelAndView adminPage() {
+
+        ModelAndView model = new ModelAndView();
+        model.addObject("title", "Spring Security Hello World");
+        model.addObject("message", "This is protected page - Admin Page!");
+        model.setViewName("admin");
+
+        return model;
     }
 }

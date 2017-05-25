@@ -11,7 +11,7 @@ public interface OrganizationRepository {
 
     List<Organization> readAll();
 
-    List<Organization> readbyUserID(long userID);
+    List<Organization> readByUserID(long userID);
 
     Organization readOne(long id);
 

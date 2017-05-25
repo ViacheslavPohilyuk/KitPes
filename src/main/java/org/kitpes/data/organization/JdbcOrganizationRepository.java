@@ -27,6 +27,10 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
     @Autowired
     public JdbcOrganizationRepository(JdbcOperations jdbc) { this.jdbc = jdbc;}
 
+    /**
+     * Getting all the organizations from the db
+     * @return a list of organizations
+     */
     @Override
     public List<Organization> readAll() {
         return jdbc.query(
@@ -34,13 +38,24 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
                 new OrganizationRowMapper());
     }
 
-    public List<Organization> readbyUserID(long userID) {
+    /**
+     * Getting a list of organizations with required user's id
+     * @param userID a host id of this organization
+     * @return a list of organizations
+     */
+    public List<Organization> readByUserID(long userID) {
         return jdbc.query(
                 "SELECT * FROM organizations" +
                         " WHERE user_id = ?",
                 new JdbcOrganizationRepository.OrganizationRowMapper(), userID);
     }
 
+    /**
+     * Getting an organization with suitable id
+     *
+     * @param id organization's id
+     * @return an instance of the Organization class
+     */
     @Override
     public Organization readOne(long id) {
         return jdbc.queryForObject(
@@ -49,16 +64,25 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
                 new OrganizationRowMapper(), id);
     }
 
+    /**
+     * Delete an organization with suitable id
+     * @param id organization's id
+     */
     @Override
     public void deleteOne(long id) {
         Object[] params = {id};
         int[] types = {Types.BIGINT};
+
         jdbc.update("DELETE FROM organizations"
                         + " WHERE id = ?",
                 params, types
         );
     }
 
+    /**
+     * Changing data of received organization in the db
+     * @param organization an instance of the Organization class
+     */
     @Override
     public void updateOne(Organization organization) {
         String updateStatement = "UPDATE organizations"
@@ -75,6 +99,12 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
         jdbc.update(updateStatement, updateDataAndID);
     }
 
+    /**
+     * This method needs for getting url of an organization's profile image
+     *
+     * @param profileImage url string of profile image of an organization
+     * @param id id of the required organization
+     */
     public void updateProfileImage(String profileImage, long id) {
         String updateStatement = " UPDATE organizations"
                 + " SET profile_image=?"
@@ -86,6 +116,13 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
         jdbc.update(updateStatement, updatedDataAndID);
     }
 
+    /**
+     * Insert a new organization's data to the db, and return
+     * auto-generated key, that is id of this organization
+     *
+     * @param organization an instance of Organization class
+     * @return auto-generated key from the db
+     */
     @Override
     public long save(Organization organization) {
         final String insertSQL = "INSERT INTO organizations (name, address, description, user_id, profile_image)" +
@@ -106,6 +143,9 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
         return (long) keyHolder.getKey();
     }
 
+    /**
+     * This row mapper class needs to get all data of some organization from the db
+     */
     private static class OrganizationRowMapper implements RowMapper<Organization>, Serializable {
         OrganizationRowMapper() {
         }

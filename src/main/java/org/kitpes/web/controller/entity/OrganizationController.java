@@ -72,7 +72,7 @@ public class OrganizationController {
         Organization organization = organizationRepository.readOne(id);
 
         /* Reading all pets from the db with an id of this organization */
-        organization.setPets(petRepository.readbyOrganizationID(id));
+        organization.setPets(petRepository.readByOrganizationID(id));
 
         model.addAttribute("organization", organization);
         return "organization/organization";
@@ -158,11 +158,12 @@ public class OrganizationController {
     }
 
     /**
+     * Processing image files those user uploads on an organization's
+     * profile page
      *
-     * @param file
-     * @param organizationID
-     * @return
-     * @throws IOException
+     * @param file image that is an avatar of an organization
+     * @param organizationID id of an organization
+     * @return redirection to an organization's profile page
      */
     @RequestMapping(value= "/fileupload", method = RequestMethod.POST)
     public String processUpload(@RequestPart("profilePicture") MultipartFile file,

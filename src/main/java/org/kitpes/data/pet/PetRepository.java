@@ -11,7 +11,7 @@ import java.util.List;
 public interface PetRepository {
     List<Pet> readByUserID(long userID);
 
-    List<Pet> readbyOrganizationID(long organizationID);
+    List<Pet> readByOrganizationID(long organizationID);
 
     List<Pet> readAll();
 

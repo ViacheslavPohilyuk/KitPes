@@ -23,10 +23,21 @@ public class JdbcUserRepository implements UserRepository {
         this.jdbc = jdbc;
     }
 
+    /**
+     * Getting all the users from the db
+     *
+     * @return a list of users
+     */
     public List<User> readAll() {
         return jdbc.query("SELECT * FROM users", new UserRowMapper());
     }
 
+    /**
+     * Getting an user with suitable id
+     *
+     * @param id user's id
+     * @return an instance of the user class
+     */
     public User readOne(long id) {
         return jdbc.queryForObject(
                 "SELECT * FROM users" +
@@ -34,6 +45,13 @@ public class JdbcUserRepository implements UserRepository {
                 new UserRowMapper(), id);
     }
 
+    /**
+     * Getting an user with suitable email and password
+     *
+     * @param email an user's email
+     * @param password an user's password
+     * @return an instance of the User class
+     */
     public User readByEmailAndPass(String email, String password) {
         return jdbc.queryForObject(
                 "SELECT * FROM users" +
@@ -41,6 +59,11 @@ public class JdbcUserRepository implements UserRepository {
                 new UserRowMapper(), email, password);
     }
 
+    /**
+     * Delete an user with suitable id
+     *
+     * @param id user's id
+     */
     public void deleteOne(long id) {
         // define query arguments
         Object[] params = {id};
@@ -51,6 +74,11 @@ public class JdbcUserRepository implements UserRepository {
                 params, types);
     }
 
+    /**
+     * Changing data of received user in the db
+     *
+     * @param user an instance of the user class
+     */
     public void updateOne(User user) {
         String updateStatement = " UPDATE users"
                 + " SET username=?, firstName=?, lastName=?, email=?, pass=?"
@@ -68,16 +96,29 @@ public class JdbcUserRepository implements UserRepository {
         jdbc.update(updateStatement, updatedDataAndID);
     }
 
+    /**
+     * This method needs for getting url of an user's profile image
+     *
+     * @param profileImage url string of profile image of an user
+     * @param id           id of the required user
+     */
     public void updateProfileImage(String profileImage, long id) {
         String updateStatement = " UPDATE users"
                 + " SET profile_image=?"
                 + " WHERE id=?";
 
-        Object[] updatedDataAndID = { profileImage, id };
+        Object[] updatedDataAndID = {profileImage, id};
 
         jdbc.update(updateStatement, updatedDataAndID);
     }
 
+    /**
+     * Insert a new user's data to the db, and return
+     * auto-generated key, that is id of this user
+     *
+     * @param user an instance of user class
+     * @return auto-generated key from the db
+     */
     public long save(User user) {
         final String insertSQL = "INSERT INTO users (username, firstName, lastName, email, pass, profile_image)" +
                 " VALUES (?, ?, ?, ?, ?, ?)";
@@ -98,6 +139,9 @@ public class JdbcUserRepository implements UserRepository {
         return (long) keyHolder.getKey();
     }
 
+    /**
+     * This row mapper class needs to get all data of some user from the db
+     */
     private static class UserRowMapper implements RowMapper<User>, Serializable {
         UserRowMapper() {
         }

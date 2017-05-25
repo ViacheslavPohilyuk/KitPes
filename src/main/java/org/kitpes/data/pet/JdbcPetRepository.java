@@ -20,24 +20,26 @@ public class JdbcPetRepository implements PetRepository {
 
     private JdbcOperations jdbc;
 
-    private DataSource dataSource;
-
     @Autowired
     public JdbcPetRepository(JdbcOperations jdbc) {
         this.jdbc = jdbc;
     }
 
-    @Autowired
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
-
+    /**
+     * Getting all the pets from the db
+     * @return a list of pets
+     */
     public List<Pet> readAll() {
         return jdbc.query(
                 "SELECT * FROM pets",
                 new PetRowMapper());
     }
 
+    /**
+     * Getting a list of pets with required user's id
+     * @param userID a host id of this pet
+     * @return a list of pets
+     */
     public List<Pet> readByUserID(long userID) {
         return jdbc.query(
                 "SELECT * FROM pets" +
@@ -45,12 +47,19 @@ public class JdbcPetRepository implements PetRepository {
                 new PetRowMapper(), userID);
     }
 
-    public List<Pet> readbyOrganizationID(long organizationID) {
+    /**
+     * Getting an pet with suitable id
+     *
+     * @param petID a pet's id
+     * @return an instance of the pet class
+     */
+    public List<Pet> readByOrganizationID(long petID) {
         return jdbc.query(
                 "SELECT * FROM pets" +
                         " WHERE organization_id = ?",
-                new PetRowMapper(), organizationID);
+                new PetRowMapper(), petID);
     }
+
 
     public Pet readOne(long id) {
         Pet pet;
@@ -62,6 +71,10 @@ public class JdbcPetRepository implements PetRepository {
         return pet;
     }
 
+    /**
+     * Delete an pet with suitable id
+     * @param id pet's id
+     */
     public void deleteOne(long id) {
         // define query arguments
         Object[] params = {id};
@@ -72,6 +85,10 @@ public class JdbcPetRepository implements PetRepository {
                 params, types);
     }
 
+    /**
+     * Changing data of received pet in the db
+     * @param pet an instance of the pet class
+     */
     public void updateOne(Pet pet) {
         String updateStatement = " UPDATE pets"
                 + " SET name=?, animal=?, age=?, sex=?, description=?, status=?"
@@ -89,6 +106,12 @@ public class JdbcPetRepository implements PetRepository {
         jdbc.update(updateStatement, updatedDataAndID);
     }
 
+    /**
+     * This method needs for getting url of an pet's profile image
+     *
+     * @param profileImage url string of profile image of an pet
+     * @param id id of the required pet
+     */
     public void updateProfileImage(String profileImage, long id) {
         String updateStatement = " UPDATE pets"
                 + " SET profile_image=?"
@@ -100,6 +123,13 @@ public class JdbcPetRepository implements PetRepository {
         jdbc.update(updateStatement, updatedDataAndID);
     }
 
+    /**
+     * Insert a new pet's data to the db, and return
+     * auto-generated key, that is id of this pet.
+     *
+     * @param pet an instance of pet class
+     * @return auto-generated key from the db
+     */
     public long save(Pet pet) {
         final String insertSQL = "INSERT INTO pets (name, animal, age, sex, description, status, user_id, organization_id, profile_image)" +
                 " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -114,9 +144,9 @@ public class JdbcPetRepository implements PetRepository {
                     ps.setString(5, pet.getDescription());
                     ps.setString(6, pet.getStatus());
 
-                    /* Setting userID and organizationID */
+                    /* Setting userID and petID */
                     Long userID  = pet.getUserID();
-                    Long organizationID = pet.getOrganizationID();
+                    Long petID = pet.getOrganizationID();
 
                     /* Set userID with some id or null */
                     if(userID != null)
@@ -124,9 +154,9 @@ public class JdbcPetRepository implements PetRepository {
                     else
                         ps.setNull(7, Types.BIGINT);
 
-                    /* Set organizationID with some id or null */
-                    if(organizationID != null)
-                        ps.setLong(8, organizationID);
+                    /* Set petID with some id or null */
+                    if(petID != null)
+                        ps.setLong(8, petID);
                     else
                         ps.setNull(8, Types.BIGINT);
 
@@ -138,6 +168,9 @@ public class JdbcPetRepository implements PetRepository {
         return (long) keyHolder.getKey();
     }
 
+    /**
+     * This row mapper class needs to get all data of some pet from the db
+     */
     private static class PetRowMapper implements RowMapper<Pet>, Serializable {
         PetRowMapper() {
         }

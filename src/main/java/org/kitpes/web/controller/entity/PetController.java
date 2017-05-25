@@ -172,11 +172,12 @@ public class PetController {
     }
 
     /**
+     * Processing image files those user uploads on an pet's
+     * profile page
      *
-     * @param file
-     * @param petID
-     * @return
-     * @throws IOException
+     * @param file image that is an avatar of an pet
+     * @param petID id of an pet
+     * @return redirection to an pet's profile page
      */
     @RequestMapping(value = "/fileupload", method = RequestMethod.POST)
     public String processUpload(@RequestPart("profilePicture") MultipartFile file,
