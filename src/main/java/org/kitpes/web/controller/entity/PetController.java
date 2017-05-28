@@ -2,6 +2,7 @@ package org.kitpes.web.controller.entity;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import org.kitpes.config.cloud.CloudService;
 import org.kitpes.data.pet.PetRepository;
 import org.kitpes.entity.Pet;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class PetController {
 
     private PetRepository petRepository;
 
-    private Cloudinary cloudinary;
+    private CloudService cloudService;
 
     @Autowired
     public PetController(PetRepository petRepository) {
@@ -35,8 +36,8 @@ public class PetController {
     }
 
     @Autowired
-    public void setCloudService(Cloudinary cloudinary) {
-        this.cloudinary = cloudinary;
+    public void setCloudService(CloudService cloudService) {
+        this.cloudService = cloudService;
     }
 
     /**
@@ -183,7 +184,7 @@ public class PetController {
     public String processUpload(@RequestPart("profilePicture") MultipartFile file,
                                 Long petID) throws IOException {
 
-        Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+        Map uploadResult = ((Cloudinary) cloudService.getConnection()).uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
         String profileImage = (String) uploadResult.get("url");
         System.out.println("profileImage: " + profileImage + "\npetID: " + petID);
         petRepository.updateProfileImage(profileImage, petID);

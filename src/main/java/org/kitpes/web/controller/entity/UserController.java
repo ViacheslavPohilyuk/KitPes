@@ -2,18 +2,19 @@ package org.kitpes.web.controller.entity;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+
+import org.kitpes.config.cloud.CloudService;
 import org.kitpes.data.organization.OrganizationRepository;
 import org.kitpes.data.pet.PetRepository;
 import org.kitpes.data.user.UserRepository;
 import org.kitpes.entity.User;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestPart;
+
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -38,7 +39,7 @@ public class UserController {
 
     private OrganizationRepository organizationRepository;
 
-    private Cloudinary cloudinary;
+    private CloudService cloudService;
 
     @Autowired
     public UserController(UserRepository userRepository) {
@@ -56,8 +57,8 @@ public class UserController {
     }
 
     @Autowired
-    public void setCloudService(Cloudinary cloudinary) {
-        this.cloudinary = cloudinary;
+    public void setCloudService(CloudService cloudService) {
+        this.cloudService = cloudService;
     }
 
     /**
@@ -164,7 +165,7 @@ public class UserController {
     /**
      * This method returns the authorization form
      */
-    @RequestMapping(value = "/auth", method = GET)
+    @RequestMapping(value = "/login", method = GET)
     public String authForm(Model model) {
         model.addAttribute(new User());
         return "user/auth";
@@ -176,11 +177,11 @@ public class UserController {
      * @param user object of a {@code User} class
      * @return jsp with html form of a user's profile with required id
      */
-    @RequestMapping(value = "/auth", method = POST)
+    @RequestMapping(value = "/login", method = POST)
     public String enter(@Valid User user, Errors errors) {
         /* Validation */
         if (errors.hasErrors()) {
-            return "user/auth";
+            return "login";
         }
 
         /* Getting an user with required email and password from the db*/
@@ -205,7 +206,7 @@ public class UserController {
     public String processUpload(@RequestPart("profilePicture") MultipartFile file,
                                 Long userID) throws IOException {
 
-        Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+        Map uploadResult = ((Cloudinary) cloudService.getConnection()).uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
         String profileImage = (String)uploadResult.get("url");
         userRepository.updateProfileImage(profileImage, userID);
         return "redirect:/user/" + userID;

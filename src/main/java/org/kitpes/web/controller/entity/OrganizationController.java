@@ -2,6 +2,7 @@ package org.kitpes.web.controller.entity;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import org.kitpes.config.cloud.CloudService;
 import org.kitpes.data.organization.OrganizationRepository;
 import org.kitpes.data.pet.PetRepository;
 import org.kitpes.entity.Organization;
@@ -29,7 +30,7 @@ public class OrganizationController {
 
     private PetRepository petRepository;
 
-    private Cloudinary cloudinary;
+    private CloudService cloudService;
 
     @Autowired
     public OrganizationController(OrganizationRepository organizationRepository) {
@@ -42,8 +43,8 @@ public class OrganizationController {
     }
 
     @Autowired
-    public void setCloudService(Cloudinary cloudinary) {
-        this.cloudinary = cloudinary;
+    public void setCloudService(CloudService cloudService) {
+        this.cloudService = cloudService;
     }
 
     /**
@@ -169,7 +170,7 @@ public class OrganizationController {
     public String processUpload(@RequestPart("profilePicture") MultipartFile file,
                                 Long organizationID) throws IOException {
 
-        Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+        Map uploadResult = ((Cloudinary) cloudService.getConnection()).uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
         String profileImage = (String)uploadResult.get("url");
         System.out.println("profileImage: " + profileImage + "\norganizationID: " + organizationID);
         organizationRepository.updateProfileImage(profileImage, organizationID);

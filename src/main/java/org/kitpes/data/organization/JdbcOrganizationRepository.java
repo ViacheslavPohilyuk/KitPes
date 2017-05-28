@@ -1,5 +1,6 @@
 package org.kitpes.data.organization;
 
+import org.kitpes.data.pet.PetRepository;
 import org.kitpes.entity.Organization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcOperations;
@@ -25,10 +26,13 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
     private JdbcOperations jdbc;
 
     @Autowired
-    public JdbcOrganizationRepository(JdbcOperations jdbc) { this.jdbc = jdbc;}
+    public JdbcOrganizationRepository(JdbcOperations jdbc) {
+        this.jdbc = jdbc;
+    }
 
     /**
      * Getting all the organizations from the db
+     *
      * @return a list of organizations
      */
     @Override
@@ -40,6 +44,7 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
 
     /**
      * Getting a list of organizations with required user's id
+     *
      * @param userID a host id of this organization
      * @return a list of organizations
      */
@@ -66,10 +71,12 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
 
     /**
      * Delete an organization with suitable id
+     *
      * @param id organization's id
      */
     @Override
     public void deleteOne(long id) {
+        /* Deleting an organization with a suitable id */
         Object[] params = {id};
         int[] types = {Types.BIGINT};
 
@@ -81,6 +88,7 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
 
     /**
      * Changing data of received organization in the db
+     *
      * @param organization an instance of the Organization class
      */
     @Override
@@ -103,7 +111,7 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
      * This method needs for getting url of an organization's profile image
      *
      * @param profileImage url string of profile image of an organization
-     * @param id id of the required organization
+     * @param id           id of the required organization
      */
     public void updateProfileImage(String profileImage, long id) {
         String updateStatement = " UPDATE organizations"
@@ -111,7 +119,7 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
                 + " WHERE id=?";
 
         System.out.println("jdbc: " + profileImage);
-        Object[] updatedDataAndID = { profileImage, id };
+        Object[] updatedDataAndID = {profileImage, id};
 
         jdbc.update(updateStatement, updatedDataAndID);
     }
@@ -149,6 +157,7 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
     private static class OrganizationRowMapper implements RowMapper<Organization>, Serializable {
         OrganizationRowMapper() {
         }
+
         public Organization mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new Organization(
                     rs.getLong("id"),
