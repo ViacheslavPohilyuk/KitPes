@@ -13,6 +13,8 @@ public interface OrganizationRepository {
 
     List<Organization> readByUserID(long userID);
 
+    Organization readOneByName(String name);
+
     Organization readOne(long id);
 
     void deleteOne(long id);

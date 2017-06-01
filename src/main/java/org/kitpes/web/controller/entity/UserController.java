@@ -69,7 +69,7 @@ public class UserController {
      */
     @RequestMapping(method = GET)
     public String users(Model model) {
-        List<User> users =  userRepository.readAll();
+        List<User> users = userRepository.readAll();
 
         model.addAttribute("userList", users);
         return "user/all";
@@ -84,7 +84,7 @@ public class UserController {
      */
     @RequestMapping(value = "/{id}", method = GET)
     public String user(@PathVariable long id,
-                      Model model) {
+                       Model model) {
         User user = userRepository.readOne(id);
         /* Reading all pets from the db with an id of this user */
         user.setPets(petRepository.readByUserID(id));
@@ -106,7 +106,7 @@ public class UserController {
     @RequestMapping(value = "/edit/{id}", method = GET)
     public String updatedGet(@PathVariable long id,
                              Model model) {
-        User user =  userRepository.readOne(id);
+        User user = userRepository.readOne(id);
         model.addAttribute(user);
         return "user/edit";
     }
@@ -191,23 +191,26 @@ public class UserController {
          * profile of this user.
          * Otherwise, program will redirect to the authorization page
          * */
-        return (user.getId() != null)? "redirect:/user/" + user.getId() : "redirect:/auth/";
+        return (user.getId() != null) ? "redirect:/user/" + user.getId() : "redirect:/auth/";
     }
 
     /**
      * Processing image files those user uploads on an user's
      * profile page
      *
-     * @param file image that is an avatar of an user
+     * @param file   image that is an avatar of an user
      * @param userID id of an user
      * @return redirection to an user's profile page
      */
-    @RequestMapping(value= "/fileupload", method = RequestMethod.POST)
+    @RequestMapping(value = "/fileupload", method = RequestMethod.POST)
     public String processUpload(@RequestPart("profilePicture") MultipartFile file,
                                 Long userID) throws IOException {
+        Map uploadResult = ((Cloudinary) cloudService
+                .getConnection())
+                .uploader()
+                .upload(file.getBytes(), ObjectUtils.emptyMap());
 
-        Map uploadResult = ((Cloudinary) cloudService.getConnection()).uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
-        String profileImage = (String)uploadResult.get("url");
+        String profileImage = (String) uploadResult.get("url");
         userRepository.updateProfileImage(profileImage, userID);
         return "redirect:/user/" + userID;
     }

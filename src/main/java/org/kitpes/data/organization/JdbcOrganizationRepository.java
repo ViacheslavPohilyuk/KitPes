@@ -43,19 +43,6 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
     }
 
     /**
-     * Getting a list of organizations with required user's id
-     *
-     * @param userID a host id of this organization
-     * @return a list of organizations
-     */
-    public List<Organization> readByUserID(long userID) {
-        return jdbc.query(
-                "SELECT * FROM organizations" +
-                        " WHERE user_id = ?",
-                new JdbcOrganizationRepository.OrganizationRowMapper(), userID);
-    }
-
-    /**
      * Getting an organization with suitable id
      *
      * @param id organization's id
@@ -67,6 +54,32 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
                 "SELECT * FROM organizations" +
                         " WHERE id = ?",
                 new OrganizationRowMapper(), id);
+    }
+
+    /**
+     * Getting an organization with suitable name
+     *
+     * @param name a name of an organization
+     * @return an organization with required name
+     */
+    public Organization readOneByName(String name) {
+        return jdbc.queryForObject(
+                "SELECT * FROM organizations" +
+                        " WHERE name = ?",
+                new JdbcOrganizationRepository.OrganizationRowMapper(), name);
+    }
+
+    /**
+     * Getting a list of organizations with required user's id
+     *
+     * @param userID a host id of this organization
+     * @return a list of organizations
+     */
+    public List<Organization> readByUserID(long userID) {
+        return jdbc.query(
+                "SELECT * FROM organizations" +
+                        " WHERE user_id = ?",
+                new JdbcOrganizationRepository.OrganizationRowMapper(), userID);
     }
 
     /**
@@ -155,8 +168,7 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
      * This row mapper class needs to get all data of some organization from the db
      */
     private static class OrganizationRowMapper implements RowMapper<Organization>, Serializable {
-        OrganizationRowMapper() {
-        }
+        OrganizationRowMapper() { }
 
         public Organization mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new Organization(

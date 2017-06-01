@@ -13,6 +13,8 @@
     <title>KitPes</title>
 </head>
 <body>
+    <a href="<c:url value="/pet" />">Приютить</a>
+
     <h1>Welcome to KitPes</h1>
 
     <a href="<c:url value="/user/auth" />">Вход</a> |

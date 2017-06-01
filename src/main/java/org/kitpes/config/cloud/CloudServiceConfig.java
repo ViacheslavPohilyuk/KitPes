@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class CloudServiceConfig {
-
     @Bean
     public CloudService cloudSource() {
         return new CloudinaryCloud();

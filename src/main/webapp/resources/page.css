@@ -19,3 +19,7 @@ div.authError {
 div.listTitle {
     display: inline-block;
 }
+
+div.pet {
+    display: inline-block;
+}

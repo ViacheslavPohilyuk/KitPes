@@ -33,8 +33,9 @@ public class Pet {
     public Pet() {
     }
 
-    public Pet(String name, String animal, int age, String sex, String description,
-               String status, Long userID, Long organizationID, String profileImgURL) {
+   public Pet(String name, String animal, int age, String sex,
+               String description, String status, Long userID, Long organizationID,
+               String profileImgURL) {
         this(null, name, animal, age, sex, description,
                 status, userID, organizationID, profileImgURL);
     }

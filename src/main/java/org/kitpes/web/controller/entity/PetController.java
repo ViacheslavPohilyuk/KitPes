@@ -3,7 +3,9 @@ package org.kitpes.web.controller.entity;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import org.kitpes.config.cloud.CloudService;
+import org.kitpes.data.organization.OrganizationRepository;
 import org.kitpes.data.pet.PetRepository;
+import org.kitpes.entity.Organization;
 import org.kitpes.entity.Pet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,9 +14,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletRequest;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -28,6 +35,8 @@ public class PetController {
 
     private PetRepository petRepository;
 
+    private OrganizationRepository organizationRepository;
+
     private CloudService cloudService;
 
     @Autowired
@@ -40,6 +49,11 @@ public class PetController {
         this.cloudService = cloudService;
     }
 
+    @Autowired
+    public void setOrganizationRepository(OrganizationRepository organizationRepository) {
+        this.organizationRepository = organizationRepository;
+    }
+
     /**
      * Getting all pets
      *
@@ -47,8 +61,54 @@ public class PetController {
      * @return list of Pet objects
      */
     @RequestMapping(method = GET)
-    public String pets(Model model) {
+    public String pets(ServletRequest request, Model model) {
+
+        class PetFilter {
+            private List<Pet> petFiltered;
+
+            private PetFilter(List<Pet> pets) {
+                this.petFiltered = pets;
+            }
+
+            private List<Pet> filtering() {
+                String species = request.getParameter("species");
+                if (!species.equals("species"))
+                    petFiltered = petFiltered.stream().filter(p -> p.getAnimal().equals(species))
+                            .collect(Collectors.toList());
+
+                String sex = request.getParameter("sex");
+                if (!sex.equals("sex"))
+                    petFiltered = petFiltered.stream().filter(p -> p.getSex().equals(sex))
+                            .collect(Collectors.toList());
+
+                String status = request.getParameter("status");
+                if (!status.equals("status"))
+                    petFiltered = petFiltered.stream().filter(p -> p.getStatus().equals(status))
+                            .collect(Collectors.toList());
+
+                String org = request.getParameter("org");
+                if (!org.equals("org"))
+                    petFiltered = petFiltered.stream().filter(p -> p.getOrganizationID().equals(Long.parseLong(org)))
+                            .collect(Collectors.toList());
+
+                String age = request.getParameter("age");
+                if (!age.equals("age")) {
+                    int numAge = Integer.parseInt(age);
+                    petFiltered = petFiltered.stream()
+                            .filter(p -> (p.getAge() > 5) || (p.getAge() >= numAge && p.getAge() <= (numAge + 1)))
+                            .collect(Collectors.toList());
+                }
+                return petFiltered;
+            }
+        }
+
         List<Pet> pets = petRepository.readAll();
+        if (request.getParameter("species") != null) {
+            pets = (new PetFilter(pets).filtering());
+        }
+
+        List<Organization> orgs = organizationRepository.readAll();
+        model.addAttribute("orgs", orgs);
         model.addAttribute("petList", pets);
         return "pet/all";
     }
@@ -176,15 +236,18 @@ public class PetController {
      * Processing image files those user uploads on an pet's
      * profile page
      *
-     * @param file image that is an avatar of an pet
+     * @param file  image that is an avatar of an pet
      * @param petID id of an pet
      * @return redirection to an pet's profile page
      */
     @RequestMapping(value = "/fileupload", method = RequestMethod.POST)
     public String processUpload(@RequestPart("profilePicture") MultipartFile file,
                                 Long petID) throws IOException {
+        Map uploadResult = ((Cloudinary) cloudService
+                .getConnection())
+                .uploader()
+                .upload(file.getBytes(), ObjectUtils.emptyMap());
 
-        Map uploadResult = ((Cloudinary) cloudService.getConnection()).uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
         String profileImage = (String) uploadResult.get("url");
         System.out.println("profileImage: " + profileImage + "\npetID: " + petID);
         petRepository.updateProfileImage(profileImage, petID);

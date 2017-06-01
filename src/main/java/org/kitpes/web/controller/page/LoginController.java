@@ -32,7 +32,7 @@ public class LoginController {
     @RequestMapping(method = GET)
     public String authForm(Model model) {
         model.addAttribute(new User());
-        return "user/auth";
+        return "login";
     }
 
     /**

@@ -69,7 +69,7 @@ public class OrganizationController {
      */
     @RequestMapping(value = "/{id}", method = GET)
     public String organization(@PathVariable long id,
-                      Model model) {
+                               Model model) {
         Organization organization = organizationRepository.readOne(id);
 
         /* Reading all pets from the db with an id of this organization */
@@ -151,7 +151,7 @@ public class OrganizationController {
         long key = organizationRepository.save(organization);
 
         /* Redirection to the user's page */
-        if(userID != null) {
+        if (userID != null) {
             return "redirect:/user/" + userID;
         }
 
@@ -162,16 +162,19 @@ public class OrganizationController {
      * Processing image files those user uploads on an organization's
      * profile page
      *
-     * @param file image that is an avatar of an organization
+     * @param file           image that is an avatar of an organization
      * @param organizationID id of an organization
      * @return redirection to an organization's profile page
      */
-    @RequestMapping(value= "/fileupload", method = RequestMethod.POST)
+    @RequestMapping(value = "/fileupload", method = RequestMethod.POST)
     public String processUpload(@RequestPart("profilePicture") MultipartFile file,
                                 Long organizationID) throws IOException {
+        Map uploadResult = ((Cloudinary) cloudService
+                .getConnection())
+                .uploader()
+                .upload(file.getBytes(), ObjectUtils.emptyMap());
 
-        Map uploadResult = ((Cloudinary) cloudService.getConnection()).uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
-        String profileImage = (String)uploadResult.get("url");
+        String profileImage = (String) uploadResult.get("url");
         System.out.println("profileImage: " + profileImage + "\norganizationID: " + organizationID);
         organizationRepository.updateProfileImage(profileImage, organizationID);
         return "redirect:/organization/" + organizationID;
