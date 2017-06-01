@@ -20,9 +20,8 @@
 </head>
 <body>
 
-<a href="<c:url value="/" />">На главную</a>
-
 <div class="listTitle">
+    <a href="<c:url value="/" />">На главную</a>
     <h1>Приютить</h1>
     <div class="filter">
         <label>Фильтровать результаты</label>
