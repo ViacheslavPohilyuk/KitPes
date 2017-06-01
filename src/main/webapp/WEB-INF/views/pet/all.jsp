@@ -20,7 +20,7 @@
 </head>
 <body>
 
-<div class="listTitle">
+<div>
     <a href="<c:url value="/" />">На главную</a>
     <h1>Приютить</h1>
     <div class="filter">
@@ -122,3 +122,4 @@
     </ul>
 </div>
 </body>
+</html>

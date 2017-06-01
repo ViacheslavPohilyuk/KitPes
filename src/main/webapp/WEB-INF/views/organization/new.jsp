@@ -13,16 +13,26 @@
 <form action="/organization/new" method="POST">
     <table>
         <tr>
-            <td>name:</td>
+            <td>Название:</td>
             <td><input type="text" name="name"/><br/></td>
         </tr>
 
         <tr>
-            <td>address:</td>
+            <td>Адрес:</td>
             <td><input type="text" name="address"/><br/></td>
         </tr>
         <tr>
-            <td>description:</td>
+            <td>Тип:</td>
+            <td>
+                <select name="type" id="type">
+                    <option value="type">Тип</option>
+                    <option value="0">Ветклиника</option>
+                    <option value="1">Приют</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Описание:</td>
             <td><input type="text" name="description"/><br/></td>
         </tr>
         <tr>

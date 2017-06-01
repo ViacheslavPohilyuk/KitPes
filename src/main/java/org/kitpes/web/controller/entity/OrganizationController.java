@@ -6,15 +6,18 @@ import org.kitpes.config.cloud.CloudService;
 import org.kitpes.data.organization.OrganizationRepository;
 import org.kitpes.data.pet.PetRepository;
 import org.kitpes.entity.Organization;
+import org.kitpes.entity.Pet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletRequest;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -54,8 +57,29 @@ public class OrganizationController {
      * @return list of Pet objects
      */
     @RequestMapping(method = GET)
-    public String organizations(Model model) {
+    public String organizations(ServletRequest request, Model model) {
+        class OrgFilter {
+            private List<Organization> orgFiltered;
+
+            private OrgFilter(List<Organization> orgs) {
+                this.orgFiltered = orgs;
+            }
+
+            private List<Organization> filtering() {
+                String type = request.getParameter("type");
+                if (!type.equals("type")) {
+                    int numType = Integer.parseInt(type);
+                    orgFiltered = orgFiltered.stream().filter(o -> o.getType() == numType)
+                            .collect(Collectors.toList());
+                }
+                return orgFiltered;
+            }
+        }
+
         List<Organization> organizations = organizationRepository.readAll();
+        if (request.getParameter("type") != null) {
+            organizations = (new OrgFilter(organizations).filtering());
+        }
         model.addAttribute("organizationList", organizations);
         return "organization/all";
     }
@@ -74,6 +98,10 @@ public class OrganizationController {
 
         /* Reading all pets from the db with an id of this organization */
         organization.setPets(petRepository.readByOrganizationID(id));
+
+        /* Resolving a name of an organization's type */
+        String[] orgTypes = {"Ветклиника", "Приют"};
+        model.addAttribute("type", orgTypes[organization.getType()]);
 
         model.addAttribute("organization", organization);
         return "organization/organization";
@@ -136,6 +164,7 @@ public class OrganizationController {
                                            @RequestParam(value = "userID", required = false) Long userID) {
         if (userID != null)
             model.addAttribute("userID", userID);
+
         return "organization/new";
     }
 
@@ -146,8 +175,15 @@ public class OrganizationController {
      * @return jsp with data of a new org
      */
     @RequestMapping(value = "/new", method = POST)
-    public String create(Organization organization) {
+    public String create(ServletRequest request, Organization organization) {
         Long userID = organization.getUserID();
+
+        /* Setting the type of an organization */
+        String type = request.getParameter("type");
+        System.out.println(type);
+        if(!type.equals("type"))
+            organization.setType(Integer.parseInt(type));
+
         long key = organizationRepository.save(organization);
 
         /* Redirection to the user's page */

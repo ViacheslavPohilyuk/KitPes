@@ -10,8 +10,23 @@
 </head>
 <body>
 
-<div class="listTitle">
+<div>
+    <a href="<c:url value="/" />">На главную</a>
     <h1>Организации</h1>
+    <div class="filter">
+        <label>Фильтровать результаты</label>
+        <form action="/organization">
+            <div class="selections">
+                <select name="type" id="type">
+                    <option value="type">Тип</option>
+                    <option value="0">Ветклиника</option>
+                    <option value="1">Приют</option>
+                </select>
+            </div>
+            <input type="submit" value="Фильтровать"/>
+        </form>
+    </div>
+
     <ul class="organizationList">
         <table border="1">
             <c:forEach var="organization" items="${organizationList}">
@@ -27,15 +42,23 @@
                                     <td>
                                         <table>
                                             <tr>
-                                                <td>name:</td>
-                                                <td><c:out value="${organization.name}"/></td>
+                                                <%-- Resolving a type's name of organization --%>
+                                                <c:if test="${organization.type == 0}">
+                                                    <c:set var="typeName" value="Ветклиника"/>
+                                                </c:if>
+                                                <c:if test="${organization.type == 1}">
+                                                    <c:set var="typeName" value="Приют"/>
+                                                </c:if>
+
+                                                <td><c:out value="${typeName}"/> "<c:out value="${organization.name}"/>"
+                                                </td>
                                             </tr>
                                             <tr>
-                                                <td>address:</td>
+                                                <td>Адрес:</td>
                                                 <td><c:out value="${organization.address}"/></td>
                                             </tr>
                                             <tr>
-                                                <td>description:</td>
+                                                <td>Описание:</td>
                                                 <td><c:out value="${organization.description}"/></td>
                                             </tr>
                                             <tr>

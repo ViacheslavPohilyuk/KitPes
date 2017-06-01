@@ -12,7 +12,7 @@
 <body>
 <a href="<c:url value="/" />">На главную</a> |
 <a href="<c:url value="/user/${organization.userID}" />">В профиль</a>
-<h1>Organization профиль <c:out value="${organization.name}"/></h1>
+<h1><c:out value="${type}"/> "<c:out value="${organization.name}"/>"</h1>
 
 <table>
     <tr>
@@ -29,15 +29,11 @@
         </td>
     </tr>
     <tr>
-        <td>name:</td>
-        <td><c:out value="${organization.name}"/></td>
-    </tr>
-    <tr>
-        <td>address:</td>
+        <td>Адрес:</td>
         <td><c:out value="${organization.address}"/></td>
     </tr>
     <tr>
-        <td>description:</td>
+        <td>Описание:</td>
         <td><c:out value="${organization.description}"/></td>
     </tr>
     <tr>

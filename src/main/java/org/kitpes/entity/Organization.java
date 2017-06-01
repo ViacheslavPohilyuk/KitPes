@@ -19,20 +19,23 @@ public class Organization {
 
     private String profileImgURL = "/resources/images/default_org.png";
 
+    private int type = 0;
+
     public Organization() {
     }
 
-    public Organization(String name, String address, String description, Long userID, String profileImgURL) {
-        this(null, name, address, description, userID, profileImgURL);
+    public Organization(String name, String address, String description, Long userID, String profileImgURL, Integer type) {
+        this(null, name, address, description, userID, profileImgURL, type);
     }
 
-    public Organization(Long id, String name, String address, String description, Long userID, String profileImgURL) {
+    public Organization(Long id, String name, String address, String description, Long userID, String profileImgURL, Integer type) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.description = description;
         this.userID = userID;
         this.profileImgURL = profileImgURL;
+        this.type = type;
     }
 
     public Long getId() {
@@ -85,6 +88,14 @@ public class Organization {
 
     public void setProfileImgURL(String profileImgURL) {
         this.profileImgURL = profileImgURL;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     @Override
