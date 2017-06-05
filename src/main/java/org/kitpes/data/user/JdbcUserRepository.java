@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.*;
 import java.util.List;
 
+import lombok.NoArgsConstructor;
 import org.kitpes.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -142,10 +143,8 @@ public class JdbcUserRepository implements UserRepository {
     /**
      * This row mapper class needs to get all data of some user from the db
      */
+    @NoArgsConstructor
     private static class UserRowMapper implements RowMapper<User>, Serializable {
-        UserRowMapper() {
-        }
-
         public User mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new User(rs.getLong("id"),
                     rs.getString("username"),

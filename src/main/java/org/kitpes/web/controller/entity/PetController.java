@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -63,6 +64,9 @@ public class PetController {
     @RequestMapping(method = GET)
     public String pets(ServletRequest request, Model model) {
 
+        /* A purpose of the local {@code class PetFilter} is a filtering data by
+         * five fields of the {@code Pet class}: species, sex, status, organizationID and age
+         */
         class PetFilter {
             private List<Pet> petFiltered;
 
@@ -72,43 +76,47 @@ public class PetController {
 
             private List<Pet> filtering() {
                 String species = request.getParameter("species");
-                if (!species.equals("species"))
-                    petFiltered = petFiltered.stream().filter(p -> p.getAnimal().equals(species))
-                            .collect(Collectors.toList());
+                ParameterFiltering(species, "species", p -> p.getAnimal().equals(species));
 
                 String sex = request.getParameter("sex");
-                if (!sex.equals("sex"))
-                    petFiltered = petFiltered.stream().filter(p -> p.getSex().equals(sex))
-                            .collect(Collectors.toList());
+                ParameterFiltering(sex, "sex", p -> p.getSex().equals(sex));
 
                 String status = request.getParameter("status");
-                if (!status.equals("status"))
-                    petFiltered = petFiltered.stream().filter(p -> p.getStatus().equals(status))
-                            .collect(Collectors.toList());
+                ParameterFiltering(status, "status", p -> p.getStatus().equals(status));
 
                 String org = request.getParameter("org");
-                if (!org.equals("org"))
-                    petFiltered = petFiltered.stream().filter(p -> p.getOrganizationID().equals(Long.parseLong(org)))
-                            .collect(Collectors.toList());
+                ParameterFiltering(org, "org", p -> p.getOrganizationID().equals(Long.parseLong(org)));
 
                 String age = request.getParameter("age");
                 if (!age.equals("age")) {
                     int numAge = Integer.parseInt(age);
-                    petFiltered = petFiltered.stream()
-                            .filter(p -> (p.getAge() > 5) || (p.getAge() >= numAge && p.getAge() <= (numAge + 1)))
-                            .collect(Collectors.toList());
+                    ParameterFiltering(age, "age",
+                            p -> (p.getAge() > 5) || (p.getAge() >= numAge && p.getAge() <= (numAge + 1)));
                 }
                 return petFiltered;
+            }
+
+            private void ParameterFiltering(String parameter, String paramName, Predicate<Pet> criteria) {
+                if (!parameter.equals(paramName))
+                    this.petFiltered = petFiltered.stream()
+                            .filter(criteria)
+                            .collect(Collectors.toList());
             }
         }
 
         List<Pet> pets = petRepository.readAll();
+
+        /* Pets filtering */
         if (request.getParameter("species") != null) {
             pets = (new PetFilter(pets).filtering());
         }
 
+        /* Getting all the organizations, which ones will be putted
+         * to html-tag <select>
+         */
         List<Organization> orgs = organizationRepository.readAll();
         model.addAttribute("orgs", orgs);
+
         model.addAttribute("petList", pets);
         return "pet/all";
     }

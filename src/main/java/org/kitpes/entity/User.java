@@ -8,6 +8,7 @@ import java.util.List;
 /**
  * Created by mac on 11.04.17.
  */
+
 @Getter
 @Setter
 @ToString(exclude={"pets", "organizations"})

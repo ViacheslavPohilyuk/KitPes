@@ -8,7 +8,7 @@ import com.cloudinary.Cloudinary;
 public class CloudinaryCloud implements CloudService {
     private Cloudinary cloudinary;
 
-    CloudinaryCloud () {
+    CloudinaryCloud() {
         String url = "cloudinary://428594225923247:3Nc1lIwCQo9wU-EpePaPqrBHAT0@hyn3znmgk";
         cloudinary = new Cloudinary(url);
     }

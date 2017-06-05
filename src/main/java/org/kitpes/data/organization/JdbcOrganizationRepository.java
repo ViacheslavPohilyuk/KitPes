@@ -1,5 +1,6 @@
 package org.kitpes.data.organization;
 
+import lombok.NoArgsConstructor;
 import org.kitpes.data.pet.PetRepository;
 import org.kitpes.entity.Organization;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -168,9 +169,8 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
     /**
      * This row mapper class needs to get all data of some organization from the db
      */
+    @NoArgsConstructor
     private static class OrganizationRowMapper implements RowMapper<Organization>, Serializable {
-        OrganizationRowMapper() { }
-
         public Organization mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new Organization(
                     rs.getLong("id"),

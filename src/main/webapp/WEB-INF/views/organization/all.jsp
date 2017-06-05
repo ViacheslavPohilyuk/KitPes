@@ -15,7 +15,7 @@
     <h1>Организации</h1>
     <div class="filter">
         <label>Фильтровать результаты</label>
-        <form action="/organization">
+        <form action="/organization" method="get" >
             <div class="selections">
                 <select name="type" id="type">
                     <option value="type">Тип</option>
@@ -24,6 +24,14 @@
                 </select>
             </div>
             <input type="submit" value="Фильтровать"/>
+        </form>
+    </div>
+
+    <div class="search">
+        <label>Поиск организации</label>
+        <form action="/organization" method="post">
+            <input type="text" name="search"/>
+            <input type="submit" value="Поиск"/>
         </form>
     </div>
 

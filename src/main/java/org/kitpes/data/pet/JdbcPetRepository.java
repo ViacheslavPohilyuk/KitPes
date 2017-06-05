@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.*;
 import java.util.List;
 
+import lombok.NoArgsConstructor;
 import org.kitpes.entity.Pet;
 import org.kitpes.entity.Pet;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -171,10 +172,8 @@ public class JdbcPetRepository implements PetRepository {
     /**
      * This row mapper class needs to get all data of some pet from the db
      */
+    @NoArgsConstructor
     private static class PetRowMapper implements RowMapper<Pet>, Serializable {
-        PetRowMapper() {
-        }
-
         public Pet mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new Pet(rs.getLong("id"),
                     rs.getString("name"),

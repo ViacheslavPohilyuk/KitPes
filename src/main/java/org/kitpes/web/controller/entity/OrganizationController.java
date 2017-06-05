@@ -77,9 +77,29 @@ public class OrganizationController {
         }
 
         List<Organization> organizations = organizationRepository.readAll();
+
+        /* Organizations filtering by their types */
         if (request.getParameter("type") != null) {
             organizations = (new OrgFilter(organizations).filtering());
         }
+
+        model.addAttribute("organizationList", organizations);
+        return "organization/all";
+    }
+
+    /**
+     * Searching organizations by their names
+     *
+     * @param model adding a pet to the model
+     * @return list of Pet objects
+     */
+    @RequestMapping(method = POST)
+    public String organizationsSearch(ServletRequest request, Model model) {
+        String searchOrg = request.getParameter("search");
+        List<Organization> organizations = organizationRepository.readAll()
+                .stream()
+                .filter(o -> o.getName().equals(searchOrg))
+                .collect(Collectors.toList());
         model.addAttribute("organizationList", organizations);
         return "organization/all";
     }
@@ -181,7 +201,7 @@ public class OrganizationController {
         /* Setting the type of an organization */
         String type = request.getParameter("type");
         System.out.println(type);
-        if(!type.equals("type"))
+        if (!type.equals("type"))
             organization.setType(Integer.parseInt(type));
 
         long key = organizationRepository.save(organization);
