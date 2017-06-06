@@ -6,7 +6,6 @@ import org.kitpes.config.cloud.CloudService;
 import org.kitpes.data.organization.OrganizationRepository;
 import org.kitpes.data.pet.PetRepository;
 import org.kitpes.entity.Organization;
-import org.kitpes.entity.Pet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

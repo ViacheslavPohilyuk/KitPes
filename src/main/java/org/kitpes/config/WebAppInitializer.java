@@ -33,6 +33,8 @@ public class WebAppInitializer
 
     @Override
     protected void customizeRegistration(ServletRegistration.Dynamic registration) {
+        boolean done = registration.setInitParameter("throwExceptionIfNoHandlerFound", "true"); // -> true
+        if (!done) throw new RuntimeException();
         registration.setMultipartConfig(
                 new MultipartConfigElement("/tmp", 2097152, 4194304, 0));
     }

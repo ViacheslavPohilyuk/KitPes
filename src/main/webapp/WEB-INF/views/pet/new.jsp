@@ -34,28 +34,40 @@
 <form action="/pet/new" method="POST" accept-charset="UTF-8">
     <table>
         <tr>
-            <td>name:</td>
+            <td>Имя:</td>
             <td><input type="text" name="name"/><br/></td>
         </tr>
         <tr>
-            <td>animal:</td>
+            <td>Вид:</td>
             <td><input type="text" name="animal"/><br/></td>
         </tr>
         <tr>
-            <td>age:</td>
+            <td>Возраст:</td>
             <td><input type="text" name="age"/><br/></td>
         </tr>
         <tr>
-            <td>sex:</td>
-            <td><input type="text" name="sex"/><br/></td>
+            <td>Пол:</td>
+            <td>
+                <select name="sex" id="sex">
+                    <option value="sex">Пол</option>
+                    <option value="male">Мужской</option>
+                    <option value="female">Женский</option>
+                </select>
+            </td>
         </tr>
         <tr>
-            <td>description:</td>
+            <td>Состояние здоровья:</td>
+            <td>
+                <select name="status" id="status">
+                    <option value="status">Состояние</option>
+                    <option value="healthy">Здоров</option>
+                    <option value="ill">Болен</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Описание:</td>
             <td><input type="text" name="description"/><br/></td>
-        </tr>
-        <tr>
-            <td>status:</td>
-            <td><input type="text" name="status"/><br/></td>
         </tr>
         <tr>
             <td><input type="hidden" name="userID" value="<c:out value="${userID}"/>"/></td>

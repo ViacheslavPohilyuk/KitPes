@@ -23,28 +23,28 @@
             <td><input type="hidden" name="id" value="<c:out value="${pet.id}" />"/></td>
         </tr>
         <tr>
-            <td>name:</td>
+            <td>Имя:</td>
             <td><input type="text" name="name" value="<c:out value="${pet.name}" />"/></td>
         </tr>
         <tr>
-            <td>animal:</td>
+            <td>Вид:</td>
             <td><input type="text" name="animal" value="<c:out value="${pet.animal}" />"/></td>
         </tr>
         <tr>
-            <td>age:</td>
+            <td>Возраст:</td>
             <td><input type="text" name="age" value="<c:out value="${pet.age}" />"/></td>
         </tr>
         <tr>
-            <td>sex:</td>
+            <td>Пол:</td>
             <td><input type="text" name="sex" value="<c:out value="${pet.sex}" />"/></td>
         </tr>
         <tr>
-            <td>description:</td>
-            <td><input type="text" name="description" value="<c:out value="${pet.description}" />"/></td>
+            <td>Состояние здоровья:</td>
+            <td><input type="text" name="status" value="<c:out value="${pet.status}" />"/></td>
         </tr>
         <tr>
-            <td>status:</td>
-            <td><input type="text" name="status" value="<c:out value="${pet.status}" />"/></td>
+            <td>Описание:</td>
+            <td><input type="text" name="description" value="<c:out value="${pet.description}" />"/></td>
         </tr>
     </table>
     <input type="submit" value="Изменить"/>
