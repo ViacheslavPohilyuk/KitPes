@@ -64,8 +64,8 @@ public class PetController {
     @RequestMapping(method = GET)
     public String pets(ServletRequest request, Model model) {
 
-        /* A purpose of the local {@code class PetFilter} is a filtering data by
-         * five fields of the {@code Pet class}: species, sex, status, organizationID and age
+        /** A purpose of the local {@code class PetFilter} is a filtering data by
+         *  five fields of the {@code Pet class}: species, sex, status, organizationID and age
          */
         class PetFilter {
             private List<Pet> petFiltered;
@@ -74,6 +74,13 @@ public class PetController {
                 this.petFiltered = pets;
             }
 
+
+            /**
+             * Filtering a list of Pet objects by five characteristics:
+             * species, sex, status of health, id of pet's organization and age
+             *
+             * @return a filtered list
+             */
             private List<Pet> filtering() {
                 String species = request.getParameter("species");
                 ParameterFiltering(species, "species", p -> p.getAnimal().equals(species));
@@ -96,6 +103,14 @@ public class PetController {
                 return petFiltered;
             }
 
+            /**
+             * Retrieving a list elements of one are matched specific criteria
+             * from the list {@code petFiltered}
+             *
+             * @param parameter parameter from the html-tag <select>
+             * @param paramName a name of this parameter
+             * @param criteria a criteria for retrieving elements from the list
+             */
             private void ParameterFiltering(String parameter, String paramName, Predicate<Pet> criteria) {
                 if (!parameter.equals(paramName))
                     this.petFiltered = petFiltered.stream()

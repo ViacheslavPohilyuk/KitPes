@@ -17,7 +17,7 @@
 
     <h1>Welcome to KitPes</h1>
 
-    <a href="<c:url value="/user/auth" />">Вход</a> |
+    <a href="<c:url value="/login" />">Вход</a> |
     <a href="<c:url value="/user/register" />">Регистрация</a>
 </body>
 </html>

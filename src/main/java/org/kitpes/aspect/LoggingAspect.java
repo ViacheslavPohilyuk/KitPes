@@ -16,7 +16,7 @@ import org.springframework.util.StopWatch;
 public class LoggingAspect {
     private final Log log = LogFactory.getLog(this.getClass());
 
-    @Around("execution(* org.kitpes.web.controller.entity.UserController.*(..))")
+    @Around("execution(* org.kitpes.web.controller.entity..*(..))")
     public Object logTimePeriod(ProceedingJoinPoint joinPoint) throws Throwable {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();

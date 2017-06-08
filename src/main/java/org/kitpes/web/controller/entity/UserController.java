@@ -10,6 +10,9 @@ import org.kitpes.data.user.UserRepository;
 import org.kitpes.entity.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.RememberMeAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -18,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
@@ -163,15 +168,6 @@ public class UserController {
     }
 
     /**
-     * This method returns the authorization form
-     */
-    @RequestMapping(value = "/login", method = GET)
-    public String authForm(Model model) {
-        model.addAttribute(new User());
-        return "user/auth";
-    }
-
-    /**
      * Authorization process
      *
      * @param user object of a {@code User} class
@@ -181,7 +177,7 @@ public class UserController {
     public String enter(@Valid User user, Errors errors) {
         /* Validation */
         if (errors.hasErrors()) {
-            return "login";
+            return "page/login";
         }
 
         /* Getting an user with required email and password from the db*/
@@ -224,7 +220,7 @@ public class UserController {
         ModelAndView model = new ModelAndView();
         model.addObject("title", "Spring Security Hello World");
         model.addObject("message", "This is protected page - Admin Page!");
-        model.setViewName("admin");
+        model.setViewName("page/admin");
 
         return model;
     }

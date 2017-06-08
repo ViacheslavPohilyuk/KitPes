@@ -21,12 +21,15 @@
 <form name="f" action="/login" method="POST">
     <table>
         <tr>
+            <td><input id="remember_me" name="remember_me" type="checkbox"></td>
+        </tr>
+        <tr>
             <td>Логин:</td>
-            <td><input type="text" name="username"/> <br/></td>
+            <td><input type="text" name="username"/></td>
         </tr>
         <tr>
             <td>Пароль:</td>
-            <td><input type="password" name="password"/> <br/></td>
+            <td><input type="password" name="password"/></td>
         </tr>
         <tr>
             <td><input name="submit" type="submit" value="Подтвердить"/></td>

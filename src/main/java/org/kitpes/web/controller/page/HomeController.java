@@ -12,6 +12,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 public class HomeController {
     @RequestMapping(value = "/", method = GET)
     public String home() {
-        return "home";
+        return "page/home";
     }
 }
