@@ -68,7 +68,9 @@ public class OrganizationController {
                 String type = request.getParameter("type");
                 if (!type.equals("type")) {
                     int numType = Integer.parseInt(type);
-                    orgFiltered = orgFiltered.stream().filter(o -> o.getType() == numType)
+                    orgFiltered =
+                            orgFiltered.stream()
+                            .filter(o -> o.getType() == numType)
                             .collect(Collectors.toList());
                 }
                 return orgFiltered;

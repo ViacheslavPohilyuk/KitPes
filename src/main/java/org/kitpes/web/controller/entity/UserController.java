@@ -10,19 +10,13 @@ import org.kitpes.data.user.UserRepository;
 import org.kitpes.entity.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.RememberMeAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
@@ -209,19 +203,5 @@ public class UserController {
         String profileImage = (String) uploadResult.get("url");
         userRepository.updateProfileImage(profileImage, userID);
         return "redirect:/user/" + userID;
-    }
-
-    /**
-     * IT'S SPRING SECURITY SAMPLE
-     */
-    @RequestMapping(value = "/admin", method = RequestMethod.GET)
-    public ModelAndView adminPage() {
-
-        ModelAndView model = new ModelAndView();
-        model.addObject("title", "Spring Security Hello World");
-        model.addObject("message", "This is protected page - Admin Page!");
-        model.setViewName("page/admin");
-
-        return model;
     }
 }

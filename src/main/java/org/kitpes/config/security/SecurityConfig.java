@@ -8,8 +8,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
-import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 import javax.sql.DataSource;
 
@@ -29,36 +27,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         /* http-requests intercepting configuration */
         http
             .authorizeRequests()
-                .antMatchers("/user/**")
-                .access("hasRole('ROLE_USER')")
-                .anyRequest().permitAll()
+                .antMatchers("/user/**").access("hasRole('ROLE_USER')")
             .and()
                 .formLogin()
                     .successHandler(savedRequestAwareAuthenticationSuccessHandler())
                 .loginPage("/login")
-                    .usernameParameter("username")
+                .failureUrl("/login?error")
+                .loginProcessingUrl("/auth/login_check")
+                .usernameParameter("username")
                     .passwordParameter("password")
-            .and()
-                .rememberMe()
-                    .tokenRepository(persistentTokenRepository())
-                    .tokenValiditySeconds(2419200)
-                    .key("user")
             .and()
                 .csrf()
                 .disable();
     }
 
     @Bean
-    public PersistentTokenRepository persistentTokenRepository() {
-        JdbcTokenRepositoryImpl db = new JdbcTokenRepositoryImpl();
-        db.setDataSource(dataSource);
-        return db;
-    }
-
-    @Bean
     public SavedRequestAwareAuthenticationSuccessHandler
     savedRequestAwareAuthenticationSuccessHandler() {
-
         SavedRequestAwareAuthenticationSuccessHandler auth
                 = new SavedRequestAwareAuthenticationSuccessHandler();
         auth.setTargetUrlParameter("targetUrl");
@@ -70,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.jdbcAuthentication()
                 .dataSource(dataSource)
                     .usersByUsernameQuery("select username, pass, authorized from users where username=?")
-                    .authoritiesByUsernameQuery("select username, pass, authorized from users, user_roles " +
+                    .authoritiesByUsernameQuery("select username, role from users, user_roles " +
                                                 "where users.id = user_roles.user_id and username=?");
     }
 }

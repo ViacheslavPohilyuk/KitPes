@@ -18,11 +18,10 @@
 <a href="<c:url value="/" />">На главную</a><br/>
 <h1>Вход</h1>
 
-<form name="f" action="/login" method="POST">
+<form name="f"
+      action="<c:url value='/auth/login_check?targetUrl=${targetUrl}'/>"
+      method="POST">
     <table>
-        <tr>
-            <td><input id="remember_me" name="remember_me" type="checkbox"></td>
-        </tr>
         <tr>
             <td>Логин:</td>
             <td><input type="text" name="username"/></td>
