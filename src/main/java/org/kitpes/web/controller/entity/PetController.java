@@ -71,7 +71,6 @@ public class PetController {
                 this.petFiltered = pets;
             }
 
-
             /**
              * Filtering a list of Pet objects by five characteristics:
              * species, sex, status of health, id of pet's organization and age

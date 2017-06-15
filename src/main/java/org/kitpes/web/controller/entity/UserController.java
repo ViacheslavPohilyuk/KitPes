@@ -12,12 +12,10 @@ import org.kitpes.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.Errors;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +39,7 @@ public class UserController {
     private CloudService cloudService;
 
     @Autowired
-    public UserController(UserRepository userRepository) {
+    public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -131,57 +129,6 @@ public class UserController {
     public String deleteID(@PathVariable long id) {
         userRepository.deleteOne(id);
         return "redirect:/user";
-    }
-
-    /**
-     * Get web-form with fields for put data of a new user
-     *
-     * @return jsp for create a new user
-     */
-    @RequestMapping(value = "/register", method = GET)
-    public String registerForm(Model model) {
-        model.addAttribute(new User());
-        return "user/register";
-    }
-
-    /**
-     * Creating new user and adding one to the db
-     *
-     * @param user user instance that was created from the web-form fields data
-     * @return jsp with data of a new user
-     */
-    @RequestMapping(value = "/register", method = POST)
-    public String create(@Valid User user, Errors errors) {
-        /* Validation */
-        if (errors.hasErrors()) {
-            return "user/register";
-        }
-
-        long key = userRepository.save(user);
-        return "redirect:/user/" + key;
-    }
-
-    /**
-     * Authorization process
-     *
-     * @param user object of a {@code User} class
-     * @return jsp with html form of a user's profile with required id
-     */
-    @RequestMapping(value = "/login", method = POST)
-    public String enter(@Valid User user, Errors errors) {
-        /* Validation */
-        if (errors.hasErrors()) {
-            return "page/login";
-        }
-
-        /* Getting an user with required email and password from the db*/
-        user = userRepository.readByEmailAndPass(user.getEmail(), user.getPassword());
-
-        /* If user with such email and password exists in the db, program will redirect to the
-         * profile of this user.
-         * Otherwise, program will redirect to the authorization page
-         * */
-        return (user.getId() != null) ? "redirect:/user/" + user.getId() : "redirect:/auth/";
     }
 
     /**
