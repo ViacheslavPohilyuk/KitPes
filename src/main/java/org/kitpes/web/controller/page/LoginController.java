@@ -51,7 +51,7 @@ public class LoginController {
             }
         }
 
-        model.setViewName("page/login");
+        model.setViewName("login");
 
         return model;
     }

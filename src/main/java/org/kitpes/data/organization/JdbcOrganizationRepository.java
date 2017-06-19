@@ -155,7 +155,10 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
                     ps.setString(1, organization.getName());
                     ps.setString(2, organization.getAddress());
                     ps.setString(3, organization.getDescription());
-                    ps.setLong(4, organization.getUserID());
+
+                    if(organization.getUserID() != null)
+                        ps.setLong(4, organization.getUserID());
+
                     ps.setString(5, organization.getProfileImgURL());
                     ps.setInt(6, organization.getType());
                     return ps;
