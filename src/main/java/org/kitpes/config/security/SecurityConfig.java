@@ -1,5 +1,5 @@
 package org.kitpes.config.security;
-
+/*
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,7 +24,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        /* http-requests intercepting configuration */
         http
             .authorizeRequests()
                 .antMatchers("/user/**").access("hasRole('ROLE_USER')")
@@ -55,8 +54,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication()
                 .dataSource(dataSource)
-                    .usersByUsernameQuery("select username, pass, authorized from users where username=?")
+                    .usersByUsernameQuery("select email, pass, authorized from users where username=?")
                     .authoritiesByUsernameQuery("select username, role from users, user_roles " +
                                                 "where users.id = user_roles.user_id and username=?");
     }
-}
+}*/

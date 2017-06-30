@@ -1,6 +1,6 @@
 package org.kitpes.data.user;
 
-import org.kitpes.entity.User;
+import org.kitpes.model.User;
 
 import java.util.List;
 
@@ -14,11 +14,11 @@ public interface UserRepository {
 
     User readByEmailAndPass(String email, String password);
 
-    void deleteOne(long id);
+    int deleteOne(long id);
 
-    void updateOne(User user);
+    int updateOne(User user);
 
-    void updateProfileImage(String profileImage, long id);
+    int updateProfileImage(String profileImage, long id);
 
     long save(User user);
 }

@@ -1,6 +1,6 @@
 package org.kitpes.data.organization;
 
-import org.kitpes.entity.Organization;
+import org.kitpes.model.Organization;
 
 import java.util.List;
 
@@ -17,11 +17,11 @@ public interface OrganizationRepository {
 
     Organization readOne(long id);
 
-    void deleteOne(long id);
+    int deleteOne(long id);
 
-    void updateOne(Organization organization);
+    int updateOne(Organization organization);
 
-    void updateProfileImage(String profileImage, long id);
+    int updateProfileImage(String profileImage, long id);
 
     long save(Organization organization);
 }

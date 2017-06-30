@@ -5,9 +5,8 @@ import java.sql.*;
 import java.util.List;
 
 import lombok.NoArgsConstructor;
-import org.kitpes.entity.User;
+import org.kitpes.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -65,12 +64,12 @@ public class JdbcUserRepository implements UserRepository {
      *
      * @param id user's id
      */
-    public void deleteOne(long id) {
+    public int deleteOne(long id) {
         // define query arguments
         Object[] params = {id};
         // define SQL types of the arguments
         int[] types = {Types.BIGINT};
-        jdbc.update("DELETE FROM users" +
+        return jdbc.update("DELETE FROM users" +
                         " WHERE id = ?",
                 params, types);
     }
@@ -80,7 +79,7 @@ public class JdbcUserRepository implements UserRepository {
      *
      * @param user an instance of the user class
      */
-    public void updateOne(User user) {
+    public int updateOne(User user) {
         String updateStatement = " UPDATE users"
                 + " SET username=?, firstName=?, lastName=?, email=?, pass=?"
                 + " WHERE id=?";
@@ -94,7 +93,7 @@ public class JdbcUserRepository implements UserRepository {
                 user.getId()
         };
 
-        jdbc.update(updateStatement, updatedDataAndID);
+        return jdbc.update(updateStatement, updatedDataAndID);
     }
 
     /**
@@ -103,14 +102,14 @@ public class JdbcUserRepository implements UserRepository {
      * @param profileImage url string of profile image of an user
      * @param id           id of the required user
      */
-    public void updateProfileImage(String profileImage, long id) {
+    public int updateProfileImage(String profileImage, long id) {
         String updateStatement = " UPDATE users"
                 + " SET profile_image=?"
                 + " WHERE id=?";
 
         Object[] updatedDataAndID = {profileImage, id};
 
-        jdbc.update(updateStatement, updatedDataAndID);
+        return jdbc.update(updateStatement, updatedDataAndID);
     }
 
     /**

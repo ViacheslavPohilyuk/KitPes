@@ -4,18 +4,18 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 
 import org.kitpes.config.cloud.CloudService;
-import org.kitpes.data.organization.OrganizationRepository;
-import org.kitpes.data.pet.PetRepository;
 import org.kitpes.data.user.UserRepository;
-import org.kitpes.entity.User;
+import org.kitpes.model.Message;
+import org.kitpes.model.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -29,83 +29,49 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @Controller
 @RequestMapping("/user")
 public class UserController {
-
+    @Autowired
     private UserRepository userRepository;
 
-    private PetRepository petRepository;
-
-    private OrganizationRepository organizationRepository;
-
+    @Autowired
     private CloudService cloudService;
-
-    @Autowired
-    public void setUserRepository(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
-    @Autowired
-    public void setPetRepository(PetRepository petRepository) {
-        this.petRepository = petRepository;
-    }
-
-    @Autowired
-    public void setOrganizationRepository(OrganizationRepository organizationRepository) {
-        this.organizationRepository = organizationRepository;
-    }
-
-    @Autowired
-    public void setCloudService(CloudService cloudService) {
-        this.cloudService = cloudService;
-    }
 
     /**
      * Getting all users
      *
-     * @param model adding a user to the model
      * @return list of user objects
      */
     @RequestMapping(method = GET)
-    public String users(Model model) {
-        List<User> users = userRepository.readAll();
-
-        model.addAttribute("userList", users);
-        return "user/all";
+    @ResponseBody
+    public List<User> users() {
+        return userRepository.readAll();
     }
 
     /**
      * Getting a profile of a user by id
      *
-     * @param id    an id of a user
-     * @param model adding a user to the model
+     * @param id an id of a user
      * @return web-page with data of an one user
      */
     @RequestMapping(value = "/{id}", method = GET)
-    public String user(@PathVariable long id,
-                       Model model) {
-        User user = userRepository.readOne(id);
-        /* Reading all pets from the db with an id of this user */
-        user.setPets(petRepository.readByUserID(id));
-        /* Reading all organizations from the db with an id of this user */
-        user.setOrganizations(organizationRepository.readByUserID(id));
-
-        model.addAttribute(user);
-        return "user/userProfile";
+    @ResponseBody
+    public User user(@PathVariable long id) {
+        return userRepository.readOne(id);
     }
 
     /**
-     * Getting web-form with data of a user that will be updated
+     * Creating new user and adding one to the db
      *
-     * @param id    an id of a user
-     * @param model model that will contain a user instance
-     * @return web-form with fields which contain data of a user
-     * will be updated
+     * @param user user instance that was created from the web-form fields data
+     * @return jsp with data of a new user
      */
-    @RequestMapping(value = "/edit/{id}", method = GET)
-    public String updatedGet(@PathVariable long id,
-                             Model model) {
-        User user = userRepository.readOne(id);
-        model.addAttribute(user);
-        return "user/edit";
+    @RequestMapping(value = "/register", method = POST)
+    public String create(@Valid User user, Errors errors) {
+        /* Validation */
+        if (errors.hasErrors()) {
+            return "user/register";
+        }
+        long key = userRepository.save(user);
+        return "redirect:/user/" + key;
     }
 
     /**
@@ -115,9 +81,9 @@ public class UserController {
      * @return message about an operation
      */
     @RequestMapping(value = "/edit", method = POST)
-    public String updateID(User user) {
-        userRepository.updateOne(user);
-        return "redirect:/user/" + user.getId();
+    @ResponseBody
+    public Message updateID(User user) {
+        return new Message((userRepository.updateOne(user) != 0)? 1 : 0);
     }
 
     /**
@@ -126,9 +92,9 @@ public class UserController {
      * @param id an id of a user
      */
     @RequestMapping(value = "/delete/{id}", method = GET)
-    public String deleteID(@PathVariable long id) {
-        userRepository.deleteOne(id);
-        return "redirect:/user";
+    @ResponseBody
+    public Message deleteID(@PathVariable long id) {
+        return new Message((userRepository.deleteOne(id) != 0)? 1 : 0);
     }
 
     /**
@@ -140,15 +106,14 @@ public class UserController {
      * @return redirection to an user's profile page
      */
     @RequestMapping(value = "/fileupload", method = RequestMethod.POST)
-    public String processUpload(@RequestPart("profilePicture") MultipartFile file,
-                                Long userID) throws IOException {
+    public Message processUpload(@RequestPart("profilePicture") MultipartFile file,
+                              Long userID) throws IOException {
         Map uploadResult = ((Cloudinary) cloudService
                 .getConnection())
                 .uploader()
                 .upload(file.getBytes(), ObjectUtils.emptyMap());
 
         String profileImage = (String) uploadResult.get("url");
-        userRepository.updateProfileImage(profileImage, userID);
-        return "redirect:/user/" + userID;
+        return new Message((userRepository.updateProfileImage(profileImage, userID) != 0)? 1 : 0);
     }
 }

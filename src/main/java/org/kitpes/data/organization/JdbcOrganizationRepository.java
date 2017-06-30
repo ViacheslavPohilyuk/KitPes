@@ -1,7 +1,7 @@
 package org.kitpes.data.organization;
 
 import lombok.NoArgsConstructor;
-import org.kitpes.entity.Organization;
+import org.kitpes.model.Organization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
@@ -66,7 +66,7 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
         return jdbc.queryForObject(
                 "SELECT * FROM organizations" +
                         " WHERE name = ?",
-                new JdbcOrganizationRepository.OrganizationRowMapper(), name);
+                new OrganizationRowMapper(), name);
     }
 
     /**
@@ -79,7 +79,7 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
         return jdbc.query(
                 "SELECT * FROM organizations" +
                         " WHERE user_id = ?",
-                new JdbcOrganizationRepository.OrganizationRowMapper(), userID);
+                new OrganizationRowMapper(), userID);
     }
 
     /**
@@ -88,12 +88,12 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
      * @param id organization's id
      */
     @Override
-    public void deleteOne(long id) {
+    public int deleteOne(long id) {
         /* Deleting an organization with a suitable id */
         Object[] params = {id};
         int[] types = {Types.BIGINT};
 
-        jdbc.update("DELETE FROM organizations"
+        return jdbc.update("DELETE FROM organizations"
                         + " WHERE id = ?",
                 params, types
         );
@@ -105,7 +105,7 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
      * @param organization an instance of the Organization class
      */
     @Override
-    public void updateOne(Organization organization) {
+    public int updateOne(Organization organization) {
         String updateStatement = "UPDATE organizations"
                 + " SET name=?, address=?, description=?"
                 + " WHERE id=?";
@@ -117,7 +117,7 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
                 organization.getId()
         };
 
-        jdbc.update(updateStatement, updateDataAndID);
+        return jdbc.update(updateStatement, updateDataAndID);
     }
 
     /**
@@ -126,7 +126,7 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
      * @param profileImage url string of profile image of an organization
      * @param id           id of the required organization
      */
-    public void updateProfileImage(String profileImage, long id) {
+    public int updateProfileImage(String profileImage, long id) {
         String updateStatement = " UPDATE organizations"
                 + " SET profile_image=?"
                 + " WHERE id=?";
@@ -134,7 +134,7 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
         System.out.println("jdbc: " + profileImage);
         Object[] updatedDataAndID = {profileImage, id};
 
-        jdbc.update(updateStatement, updatedDataAndID);
+        return jdbc.update(updateStatement, updatedDataAndID);
     }
 
     /**

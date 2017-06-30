@@ -21,7 +21,7 @@ public class ControllersExceptionHandler {
         String message = "Неправильный идентификатор!";
 
         mav.addObject("message", message);
-        mav.setViewName("error");
+        mav.setViewName("jsp/error");
         return mav;
     }
 
@@ -33,7 +33,7 @@ public class ControllersExceptionHandler {
                          "Извините, но требуемый запрос " + request.getRequestURL() + " не найден.";
 
         mav.addObject("message", message);
-        mav.setViewName("error");
+        mav.setViewName("jsp/error");
         return mav;
     }
 }

@@ -5,16 +5,13 @@ import java.sql.*;
 import java.util.List;
 
 import lombok.NoArgsConstructor;
-import org.kitpes.entity.Pet;
-import org.kitpes.entity.Pet;
+import org.kitpes.model.Pet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-
-import javax.sql.DataSource;
 
 @Repository
 public class JdbcPetRepository implements PetRepository {
@@ -28,6 +25,7 @@ public class JdbcPetRepository implements PetRepository {
 
     /**
      * Getting all the pets from the db
+     *
      * @return a list of pets
      */
     public List<Pet> readAll() {
@@ -38,6 +36,7 @@ public class JdbcPetRepository implements PetRepository {
 
     /**
      * Getting a list of pets with required user's id
+     *
      * @param userID a host id of this pet
      * @return a list of pets
      */
@@ -74,23 +73,25 @@ public class JdbcPetRepository implements PetRepository {
 
     /**
      * Delete an pet with suitable id
+     *
      * @param id pet's id
      */
-    public void deleteOne(long id) {
+    public int deleteOne(long id) {
         // define query arguments
         Object[] params = {id};
         // define SQL types of the arguments
         int[] types = {Types.BIGINT};
-        jdbc.update("DELETE FROM pets" +
+        return jdbc.update("DELETE FROM pets" +
                         " WHERE id = ?",
                 params, types);
     }
 
     /**
      * Changing data of received pet in the db
+     *
      * @param pet an instance of the pet class
      */
-    public void updateOne(Pet pet) {
+    public int updateOne(Pet pet) {
         String updateStatement = " UPDATE pets"
                 + " SET name=?, animal=?, age=?, sex=?, description=?, status=?"
                 + " WHERE id=?";
@@ -104,24 +105,24 @@ public class JdbcPetRepository implements PetRepository {
                 pet.getStatus(),
                 pet.getId()};
 
-        jdbc.update(updateStatement, updatedDataAndID);
+        return jdbc.update(updateStatement, updatedDataAndID);
     }
 
     /**
      * This method needs for getting url of an pet's profile image
      *
      * @param profileImage url string of profile image of an pet
-     * @param id id of the required pet
+     * @param id           id of the required pet
      */
-    public void updateProfileImage(String profileImage, long id) {
+    public int updateProfileImage(String profileImage, long id) {
         String updateStatement = " UPDATE pets"
                 + " SET profile_image=?"
                 + " WHERE id=?";
 
         System.out.println("jdbc: " + profileImage);
-        Object[] updatedDataAndID = { profileImage, id };
+        Object[] updatedDataAndID = {profileImage, id};
 
-        jdbc.update(updateStatement, updatedDataAndID);
+        return jdbc.update(updateStatement, updatedDataAndID);
     }
 
     /**
@@ -146,17 +147,17 @@ public class JdbcPetRepository implements PetRepository {
                     ps.setString(6, pet.getStatus());
 
                     /* Setting userID and petID */
-                    Long userID  = pet.getUserID();
+                    Long userID = pet.getUserID();
                     Long petID = pet.getOrganizationID();
 
                     /* Set userID with some id or null */
-                    if(userID != null)
+                    if (userID != null)
                         ps.setLong(7, userID);
                     else
                         ps.setNull(7, Types.BIGINT);
 
                     /* Set petID with some id or null */
-                    if(petID != null)
+                    if (petID != null)
                         ps.setLong(8, petID);
                     else
                         ps.setNull(8, Types.BIGINT);
@@ -184,7 +185,9 @@ public class JdbcPetRepository implements PetRepository {
                     rs.getString("status"),
                     rs.getLong("user_id"),
                     rs.getLong("organization_id"),
-                    rs.getString("profile_image"));
+                    rs.getString("profile_image"),
+                    rs.getBoolean("vaccinated"),
+                    rs.getBoolean("sterilized"));
         }
     }
 }

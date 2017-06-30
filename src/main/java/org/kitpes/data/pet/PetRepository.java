@@ -1,7 +1,6 @@
 package org.kitpes.data.pet;
 
-import org.kitpes.entity.Pet;
-import org.kitpes.entity.Pet;
+import org.kitpes.model.Pet;
 
 import java.util.List;
 
@@ -17,11 +16,11 @@ public interface PetRepository {
 
     Pet readOne(long id);
 
-    void deleteOne(long id);
+    int deleteOne(long id);
 
-    void updateOne(Pet pet);
+    int updateOne(Pet pet);
 
-    void updateProfileImage(String profileImage, long id);
+    int updateProfileImage(String profileImage, long id);
 
     long save(Pet pet);
 }

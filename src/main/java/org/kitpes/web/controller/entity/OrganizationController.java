@@ -5,7 +5,8 @@ import com.cloudinary.utils.ObjectUtils;
 import org.kitpes.config.cloud.CloudService;
 import org.kitpes.data.organization.OrganizationRepository;
 import org.kitpes.data.pet.PetRepository;
-import org.kitpes.entity.Organization;
+import org.kitpes.model.Message;
+import org.kitpes.model.Organization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,38 +25,17 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 /**
  * Created by blizardinka on 14.05.17.
  */
-@Controller
+@RestController
 @RequestMapping("/organization")
 public class OrganizationController {
 
+    @Autowired
     private OrganizationRepository organizationRepository;
 
-    private PetRepository petRepository;
-
+    @Autowired
     private CloudService cloudService;
 
-    @Autowired
-    public OrganizationController(OrganizationRepository organizationRepository) {
-        this.organizationRepository = organizationRepository;
-    }
-
-    @Autowired
-    public void setPetRepository(PetRepository petRepository) {
-        this.petRepository = petRepository;
-    }
-
-    @Autowired
-    public void setCloudService(CloudService cloudService) {
-        this.cloudService = cloudService;
-    }
-
-    /**
-     * Getting all organizations
-     *
-     * @param model adding a pet to the model
-     * @return list of Pet objects
-     */
-    @RequestMapping(method = GET)
+    /* @RequestMapping(method = GET)
     public String organizations(ServletRequest request, Model model) {
         class OrgFilter {
             private List<Organization> orgFiltered;
@@ -77,16 +57,16 @@ public class OrganizationController {
             }
         }
 
-        List<Organization> organizations = organizationRepository.readAll();
+        List<Organization> organizations = organizationRepository.readAll(); */
 
         /* Organizations filtering by their types */
-        if (request.getParameter("type") != null) {
+        /*if (request.getParameter("type") != null) {
             organizations = (new OrgFilter(organizations).filtering());
         }
 
         model.addAttribute("organizationList", organizations);
         return "organization/all";
-    }
+    }*/
 
     /**
      * Searching organizations by their names
@@ -94,7 +74,7 @@ public class OrganizationController {
      * @param model adding a pet to the model
      * @return list of Pet objects
      */
-    @RequestMapping(method = POST)
+    /* @RequestMapping(method = POST)
     public String organizationsSearch(ServletRequest request, Model model) {
         String searchOrg = request.getParameter("search");
         List<Organization> organizations = organizationRepository.readAll()
@@ -103,45 +83,27 @@ public class OrganizationController {
                 .collect(Collectors.toList());
         model.addAttribute("organizationList", organizations);
         return "organization/all";
+    } */
+
+    /**
+     * Getting all organizations
+     *
+     * @return list of Pet objects
+     */
+    @RequestMapping(method = GET)
+    public List<Organization> organizations() {
+        return organizationRepository.readAll();
     }
 
     /**
      * Getting a profile of a org by id
      *
-     * @param id    an id of a org
-     * @param model adding a org to the model
+     * @param id an id of a org
      * @return web-page with data of an one org
      */
     @RequestMapping(value = "/{id}", method = GET)
-    public String organization(@PathVariable long id,
-                               Model model) {
-        Organization organization = organizationRepository.readOne(id);
-
-        /* Reading all pets from the db with an id of this organization */
-        organization.setPets(petRepository.readByOrganizationID(id));
-
-        /* Resolving a name of an organization's type */
-        String[] orgTypes = {"Ветклиника", "Приют"};
-        model.addAttribute("type", orgTypes[organization.getType()]);
-
-        model.addAttribute("organization", organization);
-        return "organization/organization";
-    }
-
-    /**
-     * Getting web-form with data of a org that will be updated
-     *
-     * @param id    an id of a org
-     * @param model model that will contain a Org instance
-     * @return web-form with fields which contain data of a org
-     * will be updated
-     */
-    @RequestMapping(value = "/edit/{id}", method = GET)
-    public String updatedGet(@PathVariable long id,
-                             Model model) {
-        Organization organization = organizationRepository.readOne(id);
-        model.addAttribute(organization);
-        return "organization/edit";
+    public Organization organization(@PathVariable long id) {
+        return organizationRepository.readOne(id);
     }
 
     /**
@@ -151,9 +113,8 @@ public class OrganizationController {
      * @return message about an operation
      */
     @RequestMapping(value = "/edit", method = POST)
-    public String updateID(Organization organization, Model model) {
-        organizationRepository.updateOne(organization);
-        return "redirect:/organization/" + organization.getId();
+    public int updateID(Organization organization) {
+        return organizationRepository.updateOne(organization);
     }
 
     /**
@@ -162,31 +123,8 @@ public class OrganizationController {
      * @param id an id of a org
      */
     @RequestMapping(value = "/delete/{id}", method = GET)
-    public String deleteID(@PathVariable long id,
-                           @RequestParam(value = "userID", required = false) Long userID) {
-        organizationRepository.deleteOne(id);
-
-        /* If organization have been deleted from a user's profile,
-         * it will redirect to a user's one
-         */
-        if (userID != null)
-            return "redirect:/user/" + userID;
-
-        return "redirect:/organization";
-    }
-
-    /**
-     * Get web-form with fields for put data of a new organization
-     *
-     * @return jsp for create a new organization
-     */
-    @RequestMapping(value = "/new", method = GET)
-    public String registerOrganizationForm(Model model,
-                                           @RequestParam(value = "userID", required = false) Long userID) {
-        if (userID != null)
-            model.addAttribute("userID", userID);
-
-        return "organization/new";
+    public Message deleteID(@PathVariable long id) {
+        return new Message(organizationRepository.deleteOne(id));
     }
 
     /**
@@ -196,23 +134,8 @@ public class OrganizationController {
      * @return jsp with data of a new org
      */
     @RequestMapping(value = "/new", method = POST)
-    public String create(ServletRequest request, Organization organization) {
-        Long userID = organization.getUserID();
-
-        /* Setting the type of an organization */
-        String type = request.getParameter("type");
-        System.out.println(type);
-        if (!type.equals("type"))
-            organization.setType(Integer.parseInt(type));
-
-        long key = organizationRepository.save(organization);
-
-        /* Redirection to the user's page */
-        if (userID != null) {
-            return "redirect:/user/" + userID;
-        }
-
-        return "redirect:/organization/" + key;
+    public Message create(Organization organization) {
+        return new Message((organizationRepository.save(organization) != 0) ? 1 : 0);
     }
 
     /**
@@ -224,8 +147,8 @@ public class OrganizationController {
      * @return redirection to an organization's profile page
      */
     @RequestMapping(value = "/fileupload", method = RequestMethod.POST)
-    public String processUpload(@RequestPart("profilePicture") MultipartFile file,
-                                Long organizationID) throws IOException {
+    public Message processUpload(@RequestPart("profilePicture") MultipartFile file,
+                                 Long organizationID) throws IOException {
         Map uploadResult = ((Cloudinary) cloudService
                 .getConnection())
                 .uploader()
@@ -233,7 +156,6 @@ public class OrganizationController {
 
         String profileImage = (String) uploadResult.get("url");
         System.out.println("profileImage: " + profileImage + "\norganizationID: " + organizationID);
-        organizationRepository.updateProfileImage(profileImage, organizationID);
-        return "redirect:/organization/" + organizationID;
+        return new Message((organizationRepository.updateProfileImage(profileImage, organizationID) != 0) ? 1 : 0);
     }
 }
