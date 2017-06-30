@@ -63,13 +63,8 @@ public class UserController {
      * @return jsp with data of a new user
      */
     @RequestMapping(value = "/register", method = POST)
-    public String create(@Valid User user, Errors errors) {
-        /* Validation */
-        if (errors.hasErrors()) {
-            return "user/register";
-        }
-        long key = userRepository.save(user);
-        return "redirect:/user/" + key;
+    public Message create(@Valid User user, Errors errors) {
+        return new Message((userRepository.save(user) != 0) ? 1 : 0);
     }
 
     /**
@@ -80,7 +75,7 @@ public class UserController {
      */
     @RequestMapping(value = "/edit", method = POST)
     public Message updateID(User user) {
-        return new Message((userRepository.updateOne(user) != 0)? 1 : 0);
+        return new Message((userRepository.updateOne(user) != 0) ? 1 : 0);
     }
 
     /**
@@ -90,7 +85,7 @@ public class UserController {
      */
     @RequestMapping(value = "/delete/{id}", method = GET)
     public Message deleteID(@PathVariable long id) {
-        return new Message((userRepository.deleteOne(id) != 0)? 1 : 0);
+        return new Message((userRepository.deleteOne(id) != 0) ? 1 : 0);
     }
 
     /**
@@ -103,13 +98,13 @@ public class UserController {
      */
     @RequestMapping(value = "/fileupload", method = RequestMethod.POST)
     public Message processUpload(@RequestPart("profilePicture") MultipartFile file,
-                              Long userID) throws IOException {
+                                 Long userID) throws IOException {
         Map uploadResult = ((Cloudinary) cloudService
                 .getConnection())
                 .uploader()
                 .upload(file.getBytes(), ObjectUtils.emptyMap());
 
         String profileImage = (String) uploadResult.get("url");
-        return new Message((userRepository.updateProfileImage(profileImage, userID) != 0)? 1 : 0);
+        return new Message((userRepository.updateProfileImage(profileImage, userID) != 0) ? 1 : 0);
     }
 }
