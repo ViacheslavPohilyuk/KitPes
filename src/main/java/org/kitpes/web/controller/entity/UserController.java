@@ -26,7 +26,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 /**
  * Created by mac on 13.05.17.
  */
-@Controller
+@RestController
 @RequestMapping("/user")
 public class UserController {
     @Autowired
@@ -41,7 +41,6 @@ public class UserController {
      * @return list of user objects
      */
     @RequestMapping(method = GET)
-    @ResponseBody
     public List<User> users() {
         return userRepository.readAll();
     }
@@ -53,7 +52,6 @@ public class UserController {
      * @return web-page with data of an one user
      */
     @RequestMapping(value = "/{id}", method = GET)
-    @ResponseBody
     public User user(@PathVariable long id) {
         return userRepository.readOne(id);
     }
@@ -81,7 +79,6 @@ public class UserController {
      * @return message about an operation
      */
     @RequestMapping(value = "/edit", method = POST)
-    @ResponseBody
     public Message updateID(User user) {
         return new Message((userRepository.updateOne(user) != 0)? 1 : 0);
     }
@@ -92,7 +89,6 @@ public class UserController {
      * @param id an id of a user
      */
     @RequestMapping(value = "/delete/{id}", method = GET)
-    @ResponseBody
     public Message deleteID(@PathVariable long id) {
         return new Message((userRepository.deleteOne(id) != 0)? 1 : 0);
     }

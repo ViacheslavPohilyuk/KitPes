@@ -21,7 +21,7 @@ public class FilterForm {
                 .filter((p) -> (species.equals("species") || p.getAnimal().equals(species)) &&
                         (sex.equals("sex") || p.getSex().equals(sex)) &&
                         (status.equals("status") || p.getStatus().equals(status)) &&
-                        (org.equals("org") || p.getOrganizationID().equals(org)) &&
+                        (org.equals("org") || p.getOrganizationID().equals(Long.parseLong(org))) &&
                         (age.equals("age") || (p.getAge() > 5) || (p.getAge() >= Integer.parseInt(age)
                                 && p.getAge() <= (Integer.parseInt(age) + 1))))
                 .collect(Collectors.toList());

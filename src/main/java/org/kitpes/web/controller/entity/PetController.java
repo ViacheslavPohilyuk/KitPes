@@ -50,7 +50,6 @@ public class PetController {
      * @return list of Pet objects
      */
     @RequestMapping(value = "/filter", method = GET)
-
     public List<Pet> filter(FilterForm filterForm) {
         return filterForm.filtering(petRepository.readAll());
     }
