@@ -2,22 +2,28 @@ package org.kitpes.config;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 @Configuration
+@PropertySource("classpath:heroku_jdbc.properties")
 public class DataConfig {
+    @Autowired
+    private Environment env;
 
     @Bean
     public DataSource dataSource() {
         /* Database connection data */
-        String url = "jdbc:mysql://hngomrlb3vfq3jcr.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306";
-        String db = "ydtnrkg2yazh7r4c";
-        String username = "gt61wylco9krv1qj";
-        String password = "vzca9pd5nlaalmhj";
+        String url = env.getProperty("jdbc.url");
+        String db = env.getProperty("jdbc.db");
+        String username = env.getProperty("jdbc.username");
+        String password = env.getProperty("jdbc.password");
 
         /* Connection parameters */
         String encoding = "useUnicode=true&characterEncoding=utf-8";

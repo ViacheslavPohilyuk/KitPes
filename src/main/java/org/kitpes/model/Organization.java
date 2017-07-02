@@ -19,20 +19,20 @@ public class Organization {
 
     private String description;
 
-    private List<Pet> pets = null;
-
     private Long userID = null;
 
     private String profileImgURL = "/resources/images/default_org.png";
 
     private int type = 0;
 
+    private List<Pet> pets = null;
+
     public Organization(String name, String address, String description, Long userID, String profileImgURL, Integer type) {
-        this(null, name, address, description, null, userID, profileImgURL, type);
+        this(null, name, address, description, userID, profileImgURL, type, null);
     }
 
     public Organization(Long id, String name, String address, String description, Long userID, String profileImgURL, Integer type) {
-        this(id, name, address, description, null, userID, profileImgURL, type);
+        this(id, name, address, description, userID, profileImgURL, type, null);
 
     }
 }
