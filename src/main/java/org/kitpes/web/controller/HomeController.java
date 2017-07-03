@@ -17,14 +17,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 public class HomeController {
     @RequestMapping(value = "/", method = GET)
     public String home() {
-        LocalDateTime localDateTime = new LocalDateTime();
-
-        String dateAdded;
-        String ldt = new LocalDateTime().toString();
-        int indexT = ldt.indexOf('T');
-        dateAdded = ldt.substring(0, indexT) + " " + ldt.substring(indexT + 1, ldt.lastIndexOf(':'));
-        System.out.println("dateAdded: " + dateAdded);
-        System.out.println("localDateTime: " + localDateTime.toString());
         return "home";
     }
 }

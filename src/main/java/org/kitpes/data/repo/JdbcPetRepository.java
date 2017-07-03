@@ -123,7 +123,6 @@ public class JdbcPetRepository implements PetRepository {
                 + " SET profile_image=?"
                 + " WHERE id=?";
 
-        System.out.println("jdbc: " + profileImage);
         Object[] updatedDataAndID = {profileImage, id};
 
         return jdbc.update(updateStatement, updatedDataAndID);

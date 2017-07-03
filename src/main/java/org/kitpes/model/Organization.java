@@ -33,6 +33,5 @@ public class Organization {
 
     public Organization(Long id, String name, String address, String description, Long userID, String profileImgURL, Integer type) {
         this(id, name, address, description, userID, profileImgURL, type, null);
-
     }
 }

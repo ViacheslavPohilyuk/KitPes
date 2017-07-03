@@ -25,7 +25,5 @@ public class News {
         this(null, name, description, null, null);
     }
 
-    public News(Long id, String name, String description) {
-        this(id, name, description, null, null);
-    }
+    public News(Long id, String name, String description) { this(id, name, description, null, null); }
 }
