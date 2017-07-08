@@ -4,6 +4,7 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 
 import org.kitpes.config.cloud.CloudService;
+import org.kitpes.config.security.UserPrincipal;
 import org.kitpes.data.contract.OrganizationRepository;
 import org.kitpes.data.contract.PetRepository;
 import org.kitpes.data.contract.UserRepository;
@@ -12,6 +13,8 @@ import org.kitpes.model.Pet;
 import org.kitpes.model.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -41,6 +44,8 @@ public class UserJsonController {
     @Autowired
     private CloudService cloudService;
 
+    // User userAuth = ((UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
+
     /**
      * Getting all users
      *
@@ -48,6 +53,7 @@ public class UserJsonController {
      */
     @RequestMapping(method = GET)
     public List<User> users() {
+        System.out.println("Auth NAME: " + SecurityContextHolder.getContext().getAuthentication().getName());
         List<User> users = userRepository.readAll();
         for (User user : users) {
             user.setPets(petRepository.readByUserID(user.getId()));
@@ -77,7 +83,7 @@ public class UserJsonController {
      * @return jsp with data of a new user
      */
     @RequestMapping(value = "/register", method = POST)
-    public Message create(@Valid User user) {
+    public Message register(@Valid User user) {
         return new Message((userRepository.save(user) != 0) ? 1 : 0);
     }
 
@@ -113,8 +119,8 @@ public class UserJsonController {
     @RequestMapping(value = "/fileupload", method = RequestMethod.POST)
     public Message processUpload(@RequestPart("profilePicture") MultipartFile file,
                                  Long userID) throws IOException {
-        Map uploadResult = ((Cloudinary) cloudService
-                .getConnection())
+        Cloudinary cloud = cloudService.getConnection();
+        Map uploadResult = cloud
                 .uploader()
                 .upload(file.getBytes(), ObjectUtils.emptyMap());
 

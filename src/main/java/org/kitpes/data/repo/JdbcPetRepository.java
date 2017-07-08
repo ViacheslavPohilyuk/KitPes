@@ -63,13 +63,10 @@ public class JdbcPetRepository implements PetRepository {
 
 
     public Pet readOne(long id) {
-        Pet pet;
-
-        pet = jdbc.queryForObject(
+        return jdbc.queryForObject(
                 "SELECT * FROM pets" +
                         " WHERE id = ?",
                 new PetRowMapper(), id);
-        return pet;
     }
 
     /**
@@ -94,12 +91,12 @@ public class JdbcPetRepository implements PetRepository {
      */
     public int updateOne(Pet pet) {
         String updateStatement = " UPDATE pets"
-                + " SET name=?, animal=?, age=?, sex=?, description=?, status=?, vaccinated=?, sterilized=?"
+                + " SET name=?, species=?, age=?, sex=?, description=?, status=?, vaccinated=?, sterilized=?"
                 + " WHERE id=?";
 
         Object[] updatedDataAndID = {
                 pet.getName(),
-                pet.getAnimal(),
+                pet.getSpecies(),
                 pet.getAge(),
                 pet.getSex(),
                 pet.getDescription(),
@@ -136,14 +133,14 @@ public class JdbcPetRepository implements PetRepository {
      * @return auto-generated key from the db
      */
     public long save(Pet pet) {
-        final String insertSQL = "INSERT INTO pets (name, animal, age, sex, description, status, user_id, organization_id, profile_image, sterilized, vaccinated)" +
+        final String insertSQL = "INSERT INTO pets (name, species, age, sex, description, status, user_id, organization_id, profile_image, sterilized, vaccinated)" +
                 " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbc.update((connection) -> {
                     PreparedStatement ps =
                             connection.prepareStatement(insertSQL, new String[]{"id"});
                     ps.setString(1, pet.getName());
-                    ps.setString(2, pet.getAnimal());
+                    ps.setString(2, pet.getSpecies());
                     ps.setInt(3, pet.getAge());
                     ps.setString(4, pet.getSex());
                     ps.setString(5, pet.getDescription());
@@ -177,7 +174,7 @@ public class JdbcPetRepository implements PetRepository {
         public Pet mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new Pet(rs.getLong("id"),
                     rs.getString("name"),
-                    rs.getString("animal"),
+                    rs.getString("species"),
                     rs.getInt("age"),
                     rs.getString("sex"),
                     rs.getString("description"),

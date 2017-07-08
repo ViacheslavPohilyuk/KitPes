@@ -78,8 +78,8 @@
                                                             <td><c:out value="${pet.name}"/></td>
                                                         </tr>
                                                         <tr>
-                                                            <td>animal:</td>
-                                                            <td><c:out value="${pet.animal}"/></td>
+                                                            <td>species:</td>
+                                                            <td><c:out value="${pet.species}"/></td>
                                                         </tr>
                                                         <tr>
                                                             <td>age:</td>

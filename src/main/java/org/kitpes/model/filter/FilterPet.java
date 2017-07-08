@@ -25,7 +25,7 @@ public class FilterPet {
         return pets.stream()
                 .filter(
                         (p) ->
-                        (species.equals("species") || p.getAnimal().equals(species)) &&
+                        (species.equals("species") || p.getSpecies().equals(species)) &&
                         (sex.equals("sex") || p.getSex().equals(sex)) &&
                         (status.equals("status") || p.getStatus().equals(status)) &&
                         (org.equals("org") || p.getOrganizationID().equals(Long.parseLong(org))) &&

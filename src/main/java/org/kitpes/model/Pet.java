@@ -16,7 +16,7 @@ public class Pet {
     private String name;
 
     /* cat, dog etc. */
-    private String animal;
+    private String species;
 
     private int age;
 
@@ -28,8 +28,7 @@ public class Pet {
     /* health of a pet
      * - здоровый
      * - в тяжелом состоянии
-     * - требует специального ухода
-     */
+     * - требует специального ухода */
     private String status;
 
     /* the reference to the user model */

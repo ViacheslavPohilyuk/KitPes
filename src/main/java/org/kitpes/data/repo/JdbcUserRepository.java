@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -19,9 +20,16 @@ public class JdbcUserRepository implements UserRepository {
 
     private JdbcOperations jdbc;
 
+    private PasswordEncoder passwordEncoder;
+
     @Autowired
     public JdbcUserRepository(JdbcOperations jdbc) {
         this.jdbc = jdbc;
+    }
+
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
     }
 
     /**
@@ -40,24 +48,14 @@ public class JdbcUserRepository implements UserRepository {
      * @return an instance of the user class
      */
     public User readOne(long id) {
-        return jdbc.queryForObject(
-                "SELECT * FROM users" +
-                        " WHERE id = ?",
-                new UserRowMapper(), id);
+        return jdbc.queryForObject("SELECT * FROM users WHERE id = ?", new UserRowMapper(), id);
     }
 
-    /**
-     * Getting an user with suitable email and password
-     *
-     * @param email an user's email
-     * @param password an user's password
-     * @return an instance of the User class
-     */
-    public User readByEmailAndPass(String email, String password) {
+
+    public User findByUsername(String username) {
         return jdbc.queryForObject(
-                "SELECT * FROM users" +
-                        " WHERE email = ? AND pass = ?",
-                new UserRowMapper(), email, password);
+                "SELECT * FROM users WHERE username = ?",
+                new UserRowMapper(), username);
     }
 
     /**
@@ -120,8 +118,12 @@ public class JdbcUserRepository implements UserRepository {
      * @return auto-generated key from the db
      */
     public long save(User user) {
-        final String insertSQL = "INSERT INTO users (username, firstName, lastName, email, pass, profile_image)" +
-                " VALUES (?, ?, ?, ?, ?, ?)";
+        final String insertSQL = "INSERT INTO users (username, firstName, lastName, pass, profile_image)" +
+                " VALUES (?, ?, ?, ?, ?)";
+
+        /* Encode password */
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbc.update((connection) -> {
                     PreparedStatement ps =
@@ -129,8 +131,8 @@ public class JdbcUserRepository implements UserRepository {
                     ps.setString(1, user.getUsername());
                     ps.setString(2, user.getFirstName());
                     ps.setString(3, user.getLastName());
-                    ps.setString(5, user.getPassword());
-                    ps.setString(6, user.getProfileImgURL());
+                    ps.setString(4, user.getPassword());
+                    ps.setString(5, user.getProfileImgURL());
                     return ps;
                 },
                 keyHolder);

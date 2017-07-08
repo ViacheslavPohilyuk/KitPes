@@ -10,6 +10,7 @@ import org.kitpes.data.contract.UserRepository;
 import org.kitpes.model.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
@@ -80,6 +81,7 @@ public class UserController {
      * @param model adding a user to the model
      * @return web-page with data of an one user
      */
+    // @PreAuthorize("#id == principal.id")
     @RequestMapping(value = "/{id}", method = GET)
     public String user(@PathVariable long id,
                        Model model) {

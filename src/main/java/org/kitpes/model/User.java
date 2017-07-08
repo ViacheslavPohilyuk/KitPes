@@ -37,6 +37,8 @@ public class User {
 
     private String profileImgURL = "/resources/images/profile.png";
 
+    private List<Role> authorities;
+
     private List<Pet> pets = null;
 
     private List<Organization> organizations = null;

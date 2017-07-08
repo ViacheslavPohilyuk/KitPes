@@ -1,6 +1,8 @@
 package org.kitpes.data.contract;
 
 import org.kitpes.model.User;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 
@@ -10,9 +12,10 @@ import java.util.List;
 public interface UserRepository {
     List<User> readAll();
 
+    @PostAuthorize("returnObject.getUsername() == authentication.name")
     User readOne(long id);
 
-    User readByEmailAndPass(String email, String password);
+    User findByUsername(String username);
 
     int deleteOne(long id);
 
