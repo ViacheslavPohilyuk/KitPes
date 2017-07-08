@@ -51,27 +51,27 @@
         <div class="c-slider__canvas">
             <div class="c-slider__slide">
                 <div class="c-slider__quote">мы в ответе за тех, <br/> кого приручили</div>
-                <div class="c-slider__quote-author">антуана де сент-экзюпери</div>
+                <div class="c-slider__quote-author">антуан де сент-экзюпери</div>
             </div>
             <div class="c-slider__slide">
                 <div class="c-slider__quote">мы в ответе за тех, <br/> кого приручили</div>
-                <div class="c-slider__quote-author">антуана де сент-экзюпери</div>
+                <div class="c-slider__quote-author">антуан де сент-экзюпери</div>
             </div>
             <div class="c-slider__slide">
                 <div class="c-slider__quote">мы в ответе за тех, <br/> кого приручили</div>
-                <div class="c-slider__quote-author">антуана де сент-экзюпери</div>
+                <div class="c-slider__quote-author">антуан де сент-экзюпери</div>
             </div>
             <div class="c-slider__slide">
                 <div class="c-slider__quote">мы в ответе за тех, <br/> кого приручили</div>
-                <div class="c-slider__quote-author">антуана де сент-экзюпери</div>
+                <div class="c-slider__quote-author">антуан де сент-экзюпери</div>
             </div>
             <div class="c-slider__slide">
                 <div class="c-slider__quote">мы в ответе за тех, <br/> кого приручили</div>
-                <div class="c-slider__quote-author">антуана де сент-экзюпери</div>
+                <div class="c-slider__quote-author">антуан де сент-экзюпери</div>
             </div>
             <div class="c-slider__slide">
                 <div class="c-slider__quote">мы в ответе за тех, <br/> кого приручили</div>
-                <div class="c-slider__quote-author">антуана де сент-экзюпери</div>
+                <div class="c-slider__quote-author">антуан де сент-экзюпери</div>
             </div>
         </div>
     </div>
