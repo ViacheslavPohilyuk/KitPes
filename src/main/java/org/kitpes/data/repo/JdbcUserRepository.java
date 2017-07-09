@@ -6,13 +6,14 @@ import java.util.List;
 
 import lombok.NoArgsConstructor;
 import org.kitpes.data.contract.UserRepository;
+import org.kitpes.model.Role;
 import org.kitpes.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -20,16 +21,9 @@ public class JdbcUserRepository implements UserRepository {
 
     private JdbcOperations jdbc;
 
-    private PasswordEncoder passwordEncoder;
-
     @Autowired
     public JdbcUserRepository(JdbcOperations jdbc) {
         this.jdbc = jdbc;
-    }
-
-    @Autowired
-    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
     }
 
     /**
@@ -51,11 +45,14 @@ public class JdbcUserRepository implements UserRepository {
         return jdbc.queryForObject("SELECT * FROM users WHERE id = ?", new UserRowMapper(), id);
     }
 
-
     public User findByUsername(String username) {
-        return jdbc.queryForObject(
+        User user = jdbc.queryForObject(
                 "SELECT * FROM users WHERE username = ?",
                 new UserRowMapper(), username);
+
+        /* Retrieve roles of this user from the db */
+        user.setAuthorities(jdbc.query("SELECT role FROM user_roles WHERE user_id = ?", new RoleRowMapper(), user.getId()));
+        return user;
     }
 
     /**
@@ -121,9 +118,7 @@ public class JdbcUserRepository implements UserRepository {
         final String insertSQL = "INSERT INTO users (username, firstName, lastName, pass, profile_image)" +
                 " VALUES (?, ?, ?, ?, ?)";
 
-        /* Encode password */
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-
+        /* Save main information about a new user to the db */
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbc.update((connection) -> {
                     PreparedStatement ps =
@@ -136,8 +131,27 @@ public class JdbcUserRepository implements UserRepository {
                     return ps;
                 },
                 keyHolder);
+        long userId = (long) keyHolder.getKey();
 
-        return (long) keyHolder.getKey();
+        /* Save all roles of a new user to the db */
+        String sql = "INSERT INTO user_roles (user_id, role) VALUES (?, ?)";
+        List<Role> userRoles = user.getAuthorities();
+
+        jdbc.batchUpdate(sql, new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                Role role = userRoles.get(i);
+                ps.setLong(1, userId);
+                ps.setString(2, role.getRoleName());
+            }
+
+            @Override
+            public int getBatchSize() {
+                return user.getAuthorities().size();
+            }
+        });
+
+        return userId;
     }
 
     /**
@@ -152,6 +166,13 @@ public class JdbcUserRepository implements UserRepository {
                     rs.getString("lastName"),
                     rs.getString("pass"),
                     rs.getString("profile_image"));
+        }
+    }
+
+    @NoArgsConstructor
+    private static class RoleRowMapper implements RowMapper<Role>, Serializable {
+        public Role mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return new Role(rs.getString("role"));
         }
     }
 }

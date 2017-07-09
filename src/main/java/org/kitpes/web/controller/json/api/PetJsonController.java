@@ -9,6 +9,8 @@ import org.kitpes.model.Pet;
 
 import org.kitpes.model.filter.FilterPet;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -81,8 +83,10 @@ public class PetJsonController {
      * @param id an id of a pet
      */
     @RequestMapping(value = "/delete/{id}", method = GET)
-    public Message deleteID(@PathVariable long id) {
-        return new Message((petRepository.deleteOne(id) != 0) ? 1 : 0);
+    public ResponseEntity deleteID(@PathVariable long id) {
+        petRepository.deleteOne(id);
+        return new ResponseEntity<>("Информация о питомце была успешно удалена", HttpStatus.OK);
+        //return new Message((petRepository.deleteOne(id) != 0) ? 1 : 0);
     }
 
     /**

@@ -2,12 +2,13 @@ package org.kitpes.web.controller;
 
 import org.kitpes.data.contract.UserRepository;
 import org.kitpes.model.Message;
+import org.kitpes.model.Role;
 import org.kitpes.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -15,8 +16,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-
-import java.security.Principal;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -29,10 +28,18 @@ public class LoginController {
 
     private UserRepository userRepository;
 
+    private PasswordEncoder passwordEncoder;
+
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
+
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
 
     /**
      * This method returns the authorization filter
@@ -74,12 +81,15 @@ public class LoginController {
 
     /**
      * Creating new user and adding one to the db
-     *
-     * @param user user instance that was created from the web-filter fields data
-     * @return jsp with data of a new user
      */
     @RequestMapping(value = "/register", method = POST)
     public @ResponseBody Message register(@Valid User user) {
+        /* Encode password */
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        /* Set role USER to new registered user */
+        user.getAuthorities().add(new Role(Role.ROLE_USER));
+
         return new Message((userRepository.save(user) != 0) ? 1 : 0);
     }
 }

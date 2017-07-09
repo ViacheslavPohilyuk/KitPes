@@ -67,12 +67,11 @@ public class UserController {
      */
     @RequestMapping(method = GET)
     public String users(Model model) {
-        List<User> users =  userRepository.readAll();
+        List<User> users = userRepository.readAll();
 
         model.addAttribute("userList", users);
         return "user/all";
     }
-
 
     /**
      * Getting a profile of a user by id
@@ -81,13 +80,14 @@ public class UserController {
      * @param model adding a user to the model
      * @return web-page with data of an one user
      */
-    // @PreAuthorize("#id == principal.id")
     @RequestMapping(value = "/{id}", method = GET)
     public String user(@PathVariable long id,
                        Model model) {
         User user = userRepository.readOne(id);
+
         /* Reading all pets from the db with an id of this user */
         user.setPets(petRepository.readByUserID(id));
+
         /* Reading all organizations from the db with an id of this user */
         user.setOrganizations(organizationRepository.readByUserID(id));
 
@@ -144,7 +144,7 @@ public class UserController {
      */
     @RequestMapping(value = "/fileupload", method = POST)
     public String processUpload(@RequestPart("profilePicture") MultipartFile file,
-                              Long userID) throws IOException {
+                                Long userID) throws IOException {
         Map uploadResult = ((Cloudinary) cloudService
                 .getConnection())
                 .uploader()

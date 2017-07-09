@@ -4,16 +4,14 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 
 import org.kitpes.config.cloud.CloudService;
-import org.kitpes.config.security.UserPrincipal;
 import org.kitpes.data.contract.OrganizationRepository;
 import org.kitpes.data.contract.PetRepository;
 import org.kitpes.data.contract.UserRepository;
 import org.kitpes.model.Message;
-import org.kitpes.model.Pet;
 import org.kitpes.model.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -44,8 +42,6 @@ public class UserJsonController {
     @Autowired
     private CloudService cloudService;
 
-    // User userAuth = ((UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
-
     /**
      * Getting all users
      *
@@ -53,7 +49,6 @@ public class UserJsonController {
      */
     @RequestMapping(method = GET)
     public List<User> users() {
-        System.out.println("Auth NAME: " + SecurityContextHolder.getContext().getAuthentication().getName());
         List<User> users = userRepository.readAll();
         for (User user : users) {
             user.setPets(petRepository.readByUserID(user.getId()));
@@ -70,6 +65,10 @@ public class UserJsonController {
      */
     @RequestMapping(value = "/{id}", method = GET)
     public User user(@PathVariable long id) {
+        for(GrantedAuthority role : SecurityContextHolder.getContext().getAuthentication().getAuthorities()) {
+            System.out.println(role.toString());
+        }
+
         User user =  userRepository.readOne(id);
         user.setPets(petRepository.readByUserID(user.getId()));
         user.setOrganizations(organizationRepository.readByUserID(user.getId()));

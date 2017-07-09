@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.Email;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,7 +21,7 @@ public class User {
 
     @NotNull
     @Email
-    @Size(min = 2, max = 16, message = "{username.size}")
+    @Size(min = 2, max = 35, message = "{username.size}")
     private String username;
 
     @NotNull
@@ -37,7 +38,7 @@ public class User {
 
     private String profileImgURL = "/resources/images/profile.png";
 
-    private List<Role> authorities;
+    private List<Role> authorities = new ArrayList<>();
 
     private List<Pet> pets = null;
 
