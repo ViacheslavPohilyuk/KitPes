@@ -21,17 +21,29 @@ public class FilterPet {
 
     private String age;
 
+    private String sterilized;
+
+    private String vaccinated;
+
     public List<Pet> filtering(List<Pet> pets) {
         return pets.stream()
                 .filter(
                         (p) ->
                         (species.equals("species") || p.getSpecies().equals(species)) &&
+
                         (sex.equals("sex") || p.getSex().equals(sex)) &&
+
                         (status.equals("status") || p.getStatus().equals(status)) &&
+
                         (org.equals("org") || p.getOrganizationID().equals(Long.parseLong(org))) &&
-                        (age.equals("age") || (p.getAge() > 5) || (p.getAge() >= Integer.parseInt(age) &&
-                                                                   p.getAge() <= (Integer.parseInt(age) + 1))
-                        )
+
+                        ((age.equals("age") || (p.getAge() > 5) || (p.getAge() >= Integer.parseInt(age) &&
+                                                                   p.getAge() <= Integer.parseInt(age) + 1))) &&
+
+                        (sterilized.equals("sterilized") || p.isSterilized() == Boolean.valueOf(sterilized)) &&
+
+                        (vaccinated.equals("sterilized") || p.isVaccinated() == Boolean.valueOf(vaccinated))
+                        
                 ).collect(Collectors.toList());
     }
 }

@@ -12,8 +12,6 @@ import org.kitpes.model.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -52,10 +50,6 @@ public class UserJsonController {
     @RequestMapping(value = "/{id}", method = GET)
     @PreAuthorize("hasRole('ROLE_USER')")
     public User user(@PathVariable long id) {
-        for (GrantedAuthority role : SecurityContextHolder.getContext().getAuthentication().getAuthorities()) {
-            System.out.println(role.toString());
-        }
-
         User user = userRepository.readOne(id);
         user.setPets(petRepository.readByUserID(user.getId()));
         user.setOrganizations(organizationRepository.readByUserID(user.getId()));
@@ -85,7 +79,7 @@ public class UserJsonController {
      * @return message about an operation
      */
     @RequestMapping(value = "/edit", method = POST)
-    @PreAuthorize("#user.username == authentication.name or hasRole('ROLE_ADMIN')")
+    //@PreAuthorize("#user.username == authentication.name or hasRole('ROLE_ADMIN')")
     public Message updateID(User user) {
         return new Message((userRepository.updateOne(user) != 0) ? 1 : 0);
     }

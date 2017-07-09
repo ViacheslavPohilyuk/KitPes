@@ -11,6 +11,7 @@ import org.kitpes.model.Message;
 import org.kitpes.model.Organization;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,7 +37,6 @@ public class OrganizationJsonController {
 
     @Autowired
     private CloudService cloudService;
-
 
     @RequestMapping(value = "filter", method = GET)
     public List<Organization> organizations(FilterOrg filter) {
@@ -76,7 +76,8 @@ public class OrganizationJsonController {
      * @return message about an operation
      */
     @RequestMapping(value = "/edit", method = POST)
-    public int updateID(Organization organization) {
+    @PreAuthorize("#username == authentication.name or hasRole('ROLE_ADMIN')")
+    public int updateID(Organization organization, String username) {
         return organizationRepository.updateOne(organization);
     }
 
@@ -86,7 +87,8 @@ public class OrganizationJsonController {
      * @param id an id of a org
      */
     @RequestMapping(value = "/delete/{id}", method = GET)
-    public Message deleteID(@PathVariable long id) {
+    @PreAuthorize("#username == authentication.name or hasRole('ROLE_ADMIN')")
+    public Message deleteID(@PathVariable long id, String username) {
         return new Message(organizationRepository.deleteOne(id));
     }
 
@@ -97,7 +99,8 @@ public class OrganizationJsonController {
      * @return jsp with data of a new org
      */
     @RequestMapping(value = "/new", method = POST)
-    public Message create(Organization organization) {
+    @PreAuthorize("#username == authentication.name or hasRole('ROLE_ADMIN')")
+    public Message create(Organization organization, String username) {
         return new Message((organizationRepository.save(organization) != 0) ? 1 : 0);
     }
 
@@ -110,8 +113,9 @@ public class OrganizationJsonController {
      * @return redirection to an organization's profile page
      */
     @RequestMapping(value = "/fileupload", method = RequestMethod.POST)
+    @PreAuthorize("#username == authentication.name or hasRole('ROLE_ADMIN')")
     public Message processUpload(@RequestPart("profilePicture") MultipartFile file,
-                                 Long organizationID) throws IOException {
+                                 String username, Long organizationID) throws IOException {
         Map uploadResult = ((Cloudinary) cloudService
                 .getConnection())
                 .uploader()

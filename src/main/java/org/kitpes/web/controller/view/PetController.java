@@ -3,6 +3,7 @@ package org.kitpes.web.controller.view;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import org.kitpes.config.cloud.CloudService;
+import org.kitpes.data.contract.OrganizationRepository;
 import org.kitpes.data.contract.PetRepository;
 import org.kitpes.model.Pet;
 
@@ -28,6 +29,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @Controller
 @RequestMapping("/pet")
 public class PetController {
+    private OrganizationRepository organizationRepository;
 
     private PetRepository petRepository;
 
@@ -36,6 +38,11 @@ public class PetController {
     @Autowired
     public PetController(PetRepository petRepository) {
         this.petRepository = petRepository;
+    }
+
+    @Autowired
+    public void setOrganizationRepository(OrganizationRepository organizationRepository) {
+        this.organizationRepository = organizationRepository;
     }
 
     @Autowired
@@ -65,6 +72,7 @@ public class PetController {
     public String pets(Model model) {
         List<Pet> pets = petRepository.readAll();
         model.addAttribute("petList", pets);
+        model.addAttribute("orgs", organizationRepository.readAll());
         return "pet/all";
     }
 

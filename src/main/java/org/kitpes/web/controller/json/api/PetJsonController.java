@@ -9,8 +9,7 @@ import org.kitpes.model.Pet;
 
 import org.kitpes.model.filter.FilterPet;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -34,6 +33,7 @@ public class PetJsonController {
 
     @Autowired
     private CloudService cloudService;
+
 
     /**
      * Getting all pets
@@ -73,7 +73,8 @@ public class PetJsonController {
      * @return message about an operation
      */
     @RequestMapping(value = "/edit", method = POST)
-    public Message updateID(Pet pet) {
+    @PreAuthorize("#username == authentication.name or hasRole('ROLE_ADMIN')")
+    public Message updateID(Pet pet, String username) {
         return new Message((petRepository.updateOne(pet) != 0) ? 1 : 0);
     }
 
@@ -83,7 +84,8 @@ public class PetJsonController {
      * @param id an id of a pet
      */
     @RequestMapping(value = "/delete/{id}", method = GET)
-    public Message deleteID(@PathVariable long id) {
+    @PreAuthorize("#username == authentication.name or hasRole('ROLE_ADMIN')")
+    public Message deleteID(@PathVariable long id, @RequestParam(required = false) String username) {
         petRepository.deleteOne(id);
         //return new ResponseEntity<>("Информация о питомце была успешно удалена", HttpStatus.OK);
         return new Message((petRepository.deleteOne(id) != 0) ? 1 : 0);
@@ -96,7 +98,8 @@ public class PetJsonController {
      * @return jsp with data of a new pet
      */
     @RequestMapping(value = "/new", method = POST)
-    public Message create(Pet pet) {
+    @PreAuthorize("#username == authentication.name or hasRole('ROLE_ADMIN')")
+    public Message create(Pet pet, String username) {
         return new Message((petRepository.save(pet) != 0) ? 1 : 0);
     }
 
@@ -109,8 +112,9 @@ public class PetJsonController {
      * @return redirection to an pet's profile page
      */
     @RequestMapping(value = "/fileupload", method = RequestMethod.POST)
+    @PreAuthorize("#username == authentication.name or hasRole('ROLE_ADMIN')")
     public Message processUpload(@RequestPart("profilePicture") MultipartFile file,
-                                 Long petID) throws IOException {
+                                 String username, Long petID) throws IOException {
         Map uploadResult = ((Cloudinary) cloudService
                 .getConnection())
                 .uploader()

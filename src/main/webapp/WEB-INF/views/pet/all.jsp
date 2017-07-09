@@ -56,6 +56,18 @@
                     <option value="ill">Болен</option>
                 </select>
 
+                <select name="sterilized" id="sterilized">
+                    <option value="sterilized">Стерилизованный</option>
+                    <option value="true">Да</option>
+                    <option value="false">Нет</option>
+                </select>
+
+                <select name="vaccinated" id="vaccinated">
+                    <option value="vaccinated">Привит</option>
+                    <option value="true">Да</option>
+                    <option value="false">Нет</option>
+                </select>
+
                 <select name="org" id="org">
                     <option value="org">Организация</option>
                     <c:forEach var="org" items="${orgs}">

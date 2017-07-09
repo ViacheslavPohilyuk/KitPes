@@ -26,16 +26,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 //.antMatchers("/api/user").access("hasRole('ROLE_USER')")
                 .and()
-                .formLogin()
-                .loginPage("/login").defaultSuccessUrl("/pet", true)
-                .permitAll()
-                .failureUrl("/login?error")
-                .loginProcessingUrl("/auth/login_check")
-                .usernameParameter("username")
-                .passwordParameter("password")
+                    .formLogin()
+                    .loginPage("/login").defaultSuccessUrl("/pet", true)
+                    .permitAll()
+                    .failureUrl("/login?error")
+                    .loginProcessingUrl("/auth/login_check")
+                    .usernameParameter("username")
+                    .passwordParameter("password")
                 .and()
-                .csrf()
-                .disable();
+                .logout().logoutSuccessUrl("/").logoutUrl("/logout")
+                .and()
+                .csrf().disable();
     }
 
     @Override
