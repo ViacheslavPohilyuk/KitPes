@@ -12,7 +12,6 @@ import java.util.List;
 public interface UserRepository {
     List<User> readAll();
 
-    @PostAuthorize("returnObject.getUsername() == authentication.name")
     User readOne(long id);
 
     User findByUsername(String username);
@@ -21,7 +20,7 @@ public interface UserRepository {
 
     int updateOne(User user);
 
-    int updateProfileImage(String profileImage, long id);
+    int updateProfileImage(String profileImage, String username);
 
     long save(User user);
 }

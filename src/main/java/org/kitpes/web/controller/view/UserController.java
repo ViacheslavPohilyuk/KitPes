@@ -10,10 +10,8 @@ import org.kitpes.data.contract.UserRepository;
 import org.kitpes.model.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -142,7 +140,7 @@ public class UserController {
      * @param userID id of an user
      * @return redirection to an user's profile page
      */
-    @RequestMapping(value = "/fileupload", method = POST)
+    /* @RequestMapping(value = "/fileupload", method = POST)
     public String processUpload(@RequestPart("profilePicture") MultipartFile file,
                                 Long userID) throws IOException {
         Map uploadResult = ((Cloudinary) cloudService
@@ -153,5 +151,5 @@ public class UserController {
         String profileImage = (String) uploadResult.get("url");
         userRepository.updateProfileImage(profileImage, userID);
         return "redirect:/user/" + userID;
-    }
+    } */
 }

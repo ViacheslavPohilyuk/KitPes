@@ -23,6 +23,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RestController
 @RequestMapping("api/news")
 public class NewsJsonController {
+
     @Autowired
     private NewsRepository newsRepository;
 

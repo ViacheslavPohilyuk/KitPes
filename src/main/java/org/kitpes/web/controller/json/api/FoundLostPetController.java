@@ -2,10 +2,12 @@ package org.kitpes.web.controller.json.api;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+
 import org.kitpes.config.cloud.CloudService;
 import org.kitpes.data.contract.FoundLostPetRepository;
 import org.kitpes.model.FoundLostPet;
 import org.kitpes.model.Message;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,6 +25,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RestController
 @RequestMapping("api/foundlostpets")
 public class FoundLostPetController {
+
     @Autowired
     private FoundLostPetRepository foundLostPetRepository;
 

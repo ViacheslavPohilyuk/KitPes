@@ -83,10 +83,10 @@ public class PetJsonController {
      * @param id an id of a pet
      */
     @RequestMapping(value = "/delete/{id}", method = GET)
-    public ResponseEntity deleteID(@PathVariable long id) {
+    public Message deleteID(@PathVariable long id) {
         petRepository.deleteOne(id);
-        return new ResponseEntity<>("Информация о питомце была успешно удалена", HttpStatus.OK);
-        //return new Message((petRepository.deleteOne(id) != 0) ? 1 : 0);
+        //return new ResponseEntity<>("Информация о питомце была успешно удалена", HttpStatus.OK);
+        return new Message((petRepository.deleteOne(id) != 0) ? 1 : 0);
     }
 
     /**

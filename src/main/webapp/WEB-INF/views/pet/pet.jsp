@@ -58,7 +58,7 @@
         <td>name: <c:out value="${pet.name}"/></td>
     </tr>
     <tr>
-        <td>animal: <c:out value="${pet.animal}"/></td>
+        <td>species: <c:out value="${pet.species}"/></td>
     </tr>
     <tr>
         <td>age: <c:out value="${pet.age}"/></td>
