@@ -43,7 +43,7 @@
         <div class="l-menu-container">
             <a href="#" class="c-navigation__link">ПРИЮТИТЬ/ПРИСТРОИТЬ</a>
             <a href="#" class="c-navigation__link">ПОТЕРЯННЫЕ/НАЙДЕННЫЕ</a>
-            <a href="#" class="c-navigation__link">ВХОД</a>
+            <a href="/login" class="c-navigation__link">ВХОД</a>
         </div>
     </nav>
     <div class="l__menu-background"></div>

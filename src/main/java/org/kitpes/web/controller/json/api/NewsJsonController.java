@@ -58,7 +58,7 @@ public class NewsJsonController {
      * @return message about an operation
      */
     @RequestMapping(value = "/edit", method = POST)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     public Message updateID(News news) {
         return new Message((newsRepository.updateOne(news) != 0) ? 1 : 0);
     }
@@ -69,7 +69,7 @@ public class NewsJsonController {
      * @param id an id of a News
      */
     @RequestMapping(value = "/delete/{id}", method = GET)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     public Message deleteID(@PathVariable long id) {
         return new Message((newsRepository.deleteOne(id) != 0) ? 1 : 0);
     }
@@ -81,7 +81,7 @@ public class NewsJsonController {
      * @return jsp with data of a new News
      */
     @RequestMapping(value = "/new", method = POST)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     public Message create(News news) {
         System.out.println(news.toString());
         return new Message((newsRepository.save(news) != 0) ? 1 : 0);
@@ -96,7 +96,7 @@ public class NewsJsonController {
      * @return redirection to an News's profile page
      */
     @RequestMapping(value = "/fileupload", method = RequestMethod.POST)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     public Message processUpload(@RequestPart("profilePicture") MultipartFile file,
                                  Long newsID) throws IOException {
         Map uploadResult = ((Cloudinary) cloudService

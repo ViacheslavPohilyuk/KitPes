@@ -48,7 +48,7 @@ public class UserJsonController {
      * @return web-page with data of an one user
      */
     @RequestMapping(value = "/{id}", method = GET)
-    @PreAuthorize("hasRole('ROLE_USER')")
+    //@PreAuthorize("hasRole('ROLE_USER')")
     public User user(@PathVariable long id) {
         User user = userRepository.readOne(id);
         user.setPets(petRepository.readByUserID(user.getId()));
@@ -62,7 +62,7 @@ public class UserJsonController {
      * @return list of user objects
      */
     @RequestMapping(method = GET)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<User> users() {
         List<User> users = userRepository.readAll();
         for (User user : users) {
@@ -90,7 +90,7 @@ public class UserJsonController {
      * @param id an id of a user
      */
     @RequestMapping(value = "/delete/{id}", method = GET)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     public Message deleteID(@PathVariable long id) {
         return new Message((userRepository.deleteOne(id) != 0) ? 1 : 0);
     }
@@ -104,7 +104,7 @@ public class UserJsonController {
      * @return redirection to an user's profile page
      */
     @RequestMapping(value = "/fileupload", method = RequestMethod.POST)
-    @PreAuthorize("#username == authentication.name or hasRole('ROLE_ADMIN')")
+    //@PreAuthorize("#username == authentication.name or hasRole('ROLE_ADMIN')")
     public Message processUpload(@RequestPart("profilePicture") MultipartFile file,
                                  String username) throws IOException {
         Cloudinary cloud = cloudService.getConnection();

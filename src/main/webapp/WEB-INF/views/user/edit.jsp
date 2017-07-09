@@ -16,7 +16,7 @@
 <body>
 <a href="<c:url value="/" />">На главную</a> |
 <a href="<c:url value="/user/${user.id}" />">В профиль</a>
-<form action="http://localhost:8080/api/user/edit" method="POST">
+<form action="/user/edit" method="POST">
     <h1>Редактировать данные</h1>
     <table>
         <tr>

@@ -25,7 +25,7 @@
         <td>
             <label>Аватар:</label><br/>
             <img alt="profile" width="200" height="200" id="profileImage" src="${user.profileImgURL}"/>
-            <form method="POST" action="http://localhost:8080/api/user/fileupload" enctype="multipart/form-data">
+            <form method="POST" action="/user/fileupload" enctype="multipart/form-data">
                 <input type="file"
                        name="profilePicture"
                        accept="image/jpeg,image/png,image/gif"/><br/>

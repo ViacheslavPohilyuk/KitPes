@@ -9,7 +9,6 @@ import org.kitpes.model.Pet;
 
 import org.kitpes.model.filter.FilterPet;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -73,7 +72,7 @@ public class PetJsonController {
      * @return message about an operation
      */
     @RequestMapping(value = "/edit", method = POST)
-    @PreAuthorize("#username == authentication.name or hasRole('ROLE_ADMIN')")
+    //@PreAuthorize("#username == authentication.name or hasRole('ROLE_ADMIN')")
     public Message updateID(Pet pet, String username) {
         return new Message((petRepository.updateOne(pet) != 0) ? 1 : 0);
     }
@@ -84,7 +83,7 @@ public class PetJsonController {
      * @param id an id of a pet
      */
     @RequestMapping(value = "/delete/{id}", method = GET)
-    @PreAuthorize("#username == authentication.name or hasRole('ROLE_ADMIN')")
+    //@PreAuthorize("#username == authentication.name or hasRole('ROLE_ADMIN')")
     public Message deleteID(@PathVariable long id, @RequestParam(required = false) String username) {
         petRepository.deleteOne(id);
         //return new ResponseEntity<>("Информация о питомце была успешно удалена", HttpStatus.OK);
@@ -98,7 +97,7 @@ public class PetJsonController {
      * @return jsp with data of a new pet
      */
     @RequestMapping(value = "/new", method = POST)
-    @PreAuthorize("#username == authentication.name or hasRole('ROLE_ADMIN')")
+    //@PreAuthorize("#username == authentication.name or hasRole('ROLE_ADMIN')")
     public Message create(Pet pet, String username) {
         return new Message((petRepository.save(pet) != 0) ? 1 : 0);
     }
@@ -112,7 +111,7 @@ public class PetJsonController {
      * @return redirection to an pet's profile page
      */
     @RequestMapping(value = "/fileupload", method = RequestMethod.POST)
-    @PreAuthorize("#username == authentication.name or hasRole('ROLE_ADMIN')")
+    //@PreAuthorize("#username == authentication.name or hasRole('ROLE_ADMIN')")
     public Message processUpload(@RequestPart("profilePicture") MultipartFile file,
                                  String username, Long petID) throws IOException {
         Map uploadResult = ((Cloudinary) cloudService
