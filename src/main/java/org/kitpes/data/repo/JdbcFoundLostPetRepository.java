@@ -8,7 +8,6 @@ import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;

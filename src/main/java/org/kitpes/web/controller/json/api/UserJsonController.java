@@ -3,6 +3,7 @@ package org.kitpes.web.controller.json.api;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 
+import io.swagger.annotations.Api;
 import org.kitpes.config.cloud.CloudService;
 import org.kitpes.data.contract.OrganizationRepository;
 import org.kitpes.data.contract.PetRepository;
@@ -26,6 +27,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
  * Created by mac on 13.05.17.
  */
 @RestController
+@Api(value = "user")
 @RequestMapping("api/user")
 public class UserJsonController {
 
@@ -50,9 +52,12 @@ public class UserJsonController {
     @RequestMapping(value = "/{id}", method = GET)
     //@PreAuthorize("hasRole('ROLE_USER')")
     public User user(@PathVariable long id) {
+        long start = System.currentTimeMillis();
         User user = userRepository.readOne(id);
         user.setPets(petRepository.readByUserID(user.getId()));
         user.setOrganizations(organizationRepository.readByUserID(user.getId()));
+
+        System.out.println("Read user runtime: " + (System.currentTimeMillis() - start) + " ms");
         return user;
     }
 

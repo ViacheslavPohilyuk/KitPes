@@ -3,6 +3,7 @@ package org.kitpes.web.controller.json.api;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 
+import io.swagger.annotations.Api;
 import org.kitpes.config.cloud.CloudService;
 import org.kitpes.data.contract.FoundLostPetRepository;
 import org.kitpes.model.FoundLostPet;

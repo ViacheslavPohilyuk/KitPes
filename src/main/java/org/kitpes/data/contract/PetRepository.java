@@ -8,6 +8,8 @@ import java.util.List;
  * Created by mac on 08.05.17.
  */
 public interface PetRepository {
+    public int totalPets();
+
     List<Pet> readByUserID(long userID);
 
     List<Pet> readByOrganizationID(long organizationID);

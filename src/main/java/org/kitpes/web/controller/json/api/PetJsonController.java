@@ -33,6 +33,10 @@ public class PetJsonController {
     @Autowired
     private CloudService cloudService;
 
+    @RequestMapping(value = "/count", method = GET)
+    public int count() {
+        return petRepository.totalPets();
+    }
 
     /**
      * Getting all pets

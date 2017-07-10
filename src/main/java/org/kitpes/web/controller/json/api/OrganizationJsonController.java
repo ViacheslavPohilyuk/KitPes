@@ -6,6 +6,7 @@ import com.cloudinary.utils.ObjectUtils;
 import org.kitpes.config.cloud.CloudService;
 import org.kitpes.data.contract.OrganizationRepository;
 import org.kitpes.data.contract.PetRepository;
+import org.kitpes.model.User;
 import org.kitpes.model.filter.FilterOrg;
 import org.kitpes.model.Message;
 import org.kitpes.model.Organization;
@@ -64,8 +65,10 @@ public class OrganizationJsonController {
      */
     @RequestMapping(value = "/{id}", method = GET)
     public Organization organization(@PathVariable long id) {
+        long start = System.currentTimeMillis();
         Organization org = organizationRepository.readOne(id);
         org.setPets(petRepository.readByOrganizationID(id));
+        System.out.println("Read org runtime: " + (System.currentTimeMillis() - start) + " ms");
         return org;
     }
 

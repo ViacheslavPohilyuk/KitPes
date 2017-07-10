@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -22,6 +23,17 @@ public class JdbcPetRepository implements PetRepository {
     @Autowired
     public JdbcPetRepository(JdbcOperations jdbc) {
         this.jdbc = jdbc;
+    }
+
+    /**
+     * Method that execute sql-query for retrieve the count of pets in the db
+     *
+     * @return count of pets
+     */
+    public int totalPets(){
+        SqlRowSet rowSet = jdbc.queryForRowSet("SELECT COUNT(*) FROM pets");
+        rowSet.next();
+        return rowSet.getInt(1);
     }
 
     /**
