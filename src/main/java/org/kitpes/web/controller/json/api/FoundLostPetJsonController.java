@@ -25,7 +25,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
  */
 @RestController
 @RequestMapping("api/foundlostpets")
-public class FoundLostPetController {
+public class FoundLostPetJsonController {
 
     @Autowired
     private FoundLostPetRepository foundLostPetRepository;

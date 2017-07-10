@@ -23,7 +23,7 @@ public class Organization {
 
     private String profileImgURL = "/resources/images/default_org.png";
 
-    private int type = 0;
+    private boolean type;
 
     private String phoneNumber;
 
@@ -31,11 +31,11 @@ public class Organization {
 
     private List<Pet> pets = null;
 
-    public Organization(String name, String address, String description, Long userID, String profileImgURL, int type, String phoneNumber, String webSite) {
+    public Organization(String name, String address, String description, Long userID, String profileImgURL, boolean type, String phoneNumber, String webSite) {
         this(null, name, address, description, userID, profileImgURL, type, phoneNumber, webSite, null);
     }
 
-    public Organization(Long id, String name, String address, String description, Long userID, String profileImgURL, int type, String phoneNumber, String webSite) {
+    public Organization(Long id, String name, String address, String description, Long userID, String profileImgURL, boolean type, String phoneNumber, String webSite) {
         this(id, name, address, description, userID, profileImgURL, type, phoneNumber, webSite, null);
     }
 }

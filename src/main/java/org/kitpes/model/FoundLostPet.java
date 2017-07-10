@@ -23,11 +23,11 @@ public class FoundLostPet {
 
     private String description;
 
-    private int type; // lost or found
+    private boolean type; // lost or found
 
     private String profileImgURL = "/resources/images/default_pet.jpg";
 
-    public FoundLostPet(String sex, String name, String species, int age, String description, int type, String profileImgURL) {
+    public FoundLostPet(String sex, String name, String species, int age, String description, boolean type, String profileImgURL) {
         this(null, name, sex, species, age, description, type, profileImgURL);
     }
 }
