@@ -93,12 +93,23 @@ public class PetJsonController {
     /**
      * Creating new pet and adding one to the db
      *
-     * @param pet pet instance that was created from the web-filter fields data
+     * @param pet pet instance
      * @return jsp with data of a new pet
      */
     @RequestMapping(value = "/new", method = POST)
     //@PreAuthorize("#username == authentication.name or hasRole('ROLE_ADMIN')")
-    public Message create(Pet pet, String username) {
+    public Message create(@RequestPart(required = false, value = "profilePicture") MultipartFile file,
+                          Pet pet, String username) throws IOException {
+
+        /* Set profile image of a new pet */
+        if(file != null) {
+            Map uploadResult = ((Cloudinary) cloudService
+                    .getConnection())
+                    .uploader()
+                    .upload(file.getBytes(), ObjectUtils.emptyMap());
+            pet.setProfileImgURL((String) uploadResult.get("url"));
+        }
+
         return new Message((petRepository.save(pet) != 0) ? 1 : 0);
     }
 

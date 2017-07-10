@@ -25,13 +25,17 @@ public class Organization {
 
     private int type = 0;
 
+    private String phoneNumber;
+
+    private String webSite;
+
     private List<Pet> pets = null;
 
-    public Organization(String name, String address, String description, Long userID, String profileImgURL, Integer type) {
-        this(null, name, address, description, userID, profileImgURL, type, null);
+    public Organization(String name, String address, String description, Long userID, String profileImgURL, int type, String phoneNumber, String webSite) {
+        this(null, name, address, description, userID, profileImgURL, type, phoneNumber, webSite, null);
     }
 
-    public Organization(Long id, String name, String address, String description, Long userID, String profileImgURL, Integer type) {
-        this(id, name, address, description, userID, profileImgURL, type, null);
+    public Organization(Long id, String name, String address, String description, Long userID, String profileImgURL, int type, String phoneNumber, String webSite) {
+        this(id, name, address, description, userID, profileImgURL, type, phoneNumber, webSite, null);
     }
 }

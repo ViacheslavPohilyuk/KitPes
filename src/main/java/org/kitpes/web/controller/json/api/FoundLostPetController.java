@@ -80,7 +80,18 @@ public class FoundLostPetController {
      * @return jsp with data of a new pet
      */
     @RequestMapping(value = "/new", method = POST)
-    public Message create(FoundLostPet foundLostPet) {
+    public Message create(@RequestPart(required = false, value = "profilePicture") MultipartFile file,
+                          FoundLostPet foundLostPet) throws IOException {
+
+        /* Set profile image of a new pet */
+        if(file != null) {
+            Map uploadResult = ((Cloudinary) cloudService
+                    .getConnection())
+                    .uploader()
+                    .upload(file.getBytes(), ObjectUtils.emptyMap());
+            foundLostPet.setProfileImgURL((String) uploadResult.get("url"));
+        }
+
         return new Message((foundLostPetRepository.save(foundLostPet) != 0) ? 1 : 0);
     }
 

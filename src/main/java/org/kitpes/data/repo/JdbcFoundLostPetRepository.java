@@ -77,10 +77,11 @@ public class JdbcFoundLostPetRepository implements FoundLostPetRepository {
      * @param foundLostPet an instance of the FoundLostPetclass
      */
     public int updateOne(FoundLostPet foundLostPet) {
-        String updateStatement = " UPDATE found_lost_pets SET sex=?, species=?, age=?, description=?, type=?"
+        String updateStatement = " UPDATE found_lost_pets SET name =?, sex=?, species=?, age=?, description=?, type=?"
                 + " WHERE id=?";
 
         Object[] updatedDataAndID = {
+                foundLostPet.getName(),
                 foundLostPet.getSex(),
                 foundLostPet.getSpecies(),
                 foundLostPet.getAge(),
@@ -100,18 +101,19 @@ public class JdbcFoundLostPetRepository implements FoundLostPetRepository {
      * @return auto-generated key from the db
      */
     public long save(FoundLostPet foundLostPet) {
-        final String insertSQL = "INSERT INTO found_lost_pets (sex, species, age, description, type, profile_image)" +
-                " VALUES (?, ?, ?, ?, ?, ?)";
+        final String insertSQL = "INSERT INTO found_lost_pets (name, sex, species, age, description, type, profile_image)" +
+                " VALUES (?, ?, ?, ?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbc.update((connection) -> {
                     PreparedStatement ps =
                             connection.prepareStatement(insertSQL, new String[]{"id"});
-                    ps.setString(1, foundLostPet.getSex());
-                    ps.setString(2, foundLostPet.getSpecies());
-                    ps.setInt(3, foundLostPet.getAge());
-                    ps.setString(4, foundLostPet.getDescription());
-                    ps.setInt(5, foundLostPet.getType());
-                    ps.setString(6, foundLostPet.getProfileImgURL());
+                    ps.setString(1, foundLostPet.getName());
+                    ps.setString(2, foundLostPet.getSex());
+                    ps.setString(3, foundLostPet.getSpecies());
+                    ps.setInt(4, foundLostPet.getAge());
+                    ps.setString(5, foundLostPet.getDescription());
+                    ps.setInt(6, foundLostPet.getType());
+                    ps.setString(7, foundLostPet.getProfileImgURL());
                     return ps;
                 },
                 keyHolder);
@@ -142,6 +144,7 @@ public class JdbcFoundLostPetRepository implements FoundLostPetRepository {
     private static class FoundLostPetRowMapper implements RowMapper<FoundLostPet>, Serializable {
         public FoundLostPet mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new FoundLostPet(rs.getLong("id"),
+                    rs.getString("name"),
                     rs.getString("sex"),
                     rs.getString("species"),
                     rs.getInt("age"),

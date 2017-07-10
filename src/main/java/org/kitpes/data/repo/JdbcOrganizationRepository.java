@@ -39,8 +39,7 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
     @Override
     public List<Organization> readAll() {
         return jdbc.query(
-                "SELECT * FROM organizations",
-                new OrganizationRowMapper());
+                "SELECT * FROM organizations", new OrganizationRowMapper());
     }
 
     /**
@@ -52,9 +51,7 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
     @Override
     public Organization readOne(long id) {
         return jdbc.queryForObject(
-                "SELECT * FROM organizations" +
-                        " WHERE id = ?",
-                new OrganizationRowMapper(), id);
+                "SELECT * FROM organizations WHERE id = ?", new OrganizationRowMapper(), id);
     }
 
     /**
@@ -65,9 +62,7 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
      */
     public Organization readOneByName(String name) {
         return jdbc.queryForObject(
-                "SELECT * FROM organizations" +
-                        " WHERE name = ?",
-                new OrganizationRowMapper(), name);
+                "SELECT * FROM organizations WHERE name = ?", new OrganizationRowMapper(), name);
     }
 
     /**
@@ -94,10 +89,7 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
         Object[] params = {id};
         int[] types = {Types.BIGINT};
 
-        return jdbc.update("DELETE FROM organizations"
-                        + " WHERE id = ?",
-                params, types
-        );
+        return jdbc.update("DELETE FROM organizations WHERE id = ?", params, types);
     }
 
     /**
@@ -107,14 +99,15 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
      */
     @Override
     public int updateOne(Organization organization) {
-        String updateStatement = "UPDATE organizations"
-                + " SET name=?, address=?, description=?"
+        String updateStatement = "UPDATE organizations SET name=?, address=?, description=?, phoneNumber=?, webSite=?"
                 + " WHERE id=?";
 
         Object[] updateDataAndID = {
                 organization.getName(),
                 organization.getAddress(),
                 organization.getDescription(),
+                organization.getPhoneNumber(),
+                organization.getWebSite(),
                 organization.getId()
         };
 
@@ -147,8 +140,8 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
      */
     @Override
     public long save(Organization organization) {
-        final String insertSQL = "INSERT INTO organizations (name, address, description, user_id, profile_image, type)" +
-                " VALUES (?, ?, ?, ?, ?, ?)";
+        final String insertSQL = "INSERT INTO organizations (name, address, description, user_id, profile_image, type, phoneNumber, webSite)" +
+                " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbc.update((connection) -> {
                     PreparedStatement ps =
@@ -157,11 +150,14 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
                     ps.setString(2, organization.getAddress());
                     ps.setString(3, organization.getDescription());
 
-                    if(organization.getUserID() != null)
+                    if (organization.getUserID() != null)
                         ps.setLong(4, organization.getUserID());
 
                     ps.setString(5, organization.getProfileImgURL());
                     ps.setInt(6, organization.getType());
+                    ps.setString(7, organization.getPhoneNumber());
+                    ps.setString(8, organization.getWebSite());
+
                     return ps;
                 },
                 keyHolder);
@@ -182,7 +178,9 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
                     rs.getString("description"),
                     rs.getLong("user_id"),
                     rs.getString("profile_image"),
-                    rs.getInt("type")
+                    rs.getInt("type"),
+                    rs.getString("phoneNumber"),
+                    rs.getString("webSite")
             );
         }
     }
