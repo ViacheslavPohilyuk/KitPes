@@ -90,8 +90,8 @@ public class OrganizationController {
         organization.setPets(petRepository.readByOrganizationID(id));
 
         /* Resolving a name of an organization's type */
-        String[] orgTypes = {"Ветклиника", "Приют"};
-        model.addAttribute("type", orgTypes[organization.getType()]);
+        //String[] orgTypes = {"Ветклиника", "Приют"};
+        //model.addAttribute("type", orgTypes[organization.isType()]);
 
         model.addAttribute("organization", organization);
         return "organization/organization";
@@ -171,8 +171,8 @@ public class OrganizationController {
         /* Setting the type of an organization */
         String type = request.getParameter("type");
         System.out.println(type);
-        if (!type.equals("type"))
-            organization.setType(Integer.parseInt(type));
+        //if (!type.equals("type"))
+          //  organization.setType(Integer.parseInt(type));
 
         long key = organizationRepository.save(organization);
 

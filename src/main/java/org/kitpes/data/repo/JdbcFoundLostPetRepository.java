@@ -85,7 +85,7 @@ public class JdbcFoundLostPetRepository implements FoundLostPetRepository {
                 foundLostPet.getSpecies(),
                 foundLostPet.getAge(),
                 foundLostPet.getDescription(),
-                foundLostPet.getType(),
+                foundLostPet.isType(),
                 foundLostPet.getId(),
         };
 
@@ -111,7 +111,7 @@ public class JdbcFoundLostPetRepository implements FoundLostPetRepository {
                     ps.setString(3, foundLostPet.getSpecies());
                     ps.setInt(4, foundLostPet.getAge());
                     ps.setString(5, foundLostPet.getDescription());
-                    ps.setInt(6, foundLostPet.getType());
+                    ps.setBoolean(6, foundLostPet.isType());
                     ps.setString(7, foundLostPet.getProfileImgURL());
                     return ps;
                 },
@@ -148,7 +148,7 @@ public class JdbcFoundLostPetRepository implements FoundLostPetRepository {
                     rs.getString("species"),
                     rs.getInt("age"),
                     rs.getString("description"),
-                    rs.getInt("type"),
+                    rs.getBoolean("type"),
                     rs.getString("profile_image"));
         }
     }

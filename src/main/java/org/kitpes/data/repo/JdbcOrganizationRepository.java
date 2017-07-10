@@ -156,7 +156,7 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
                         ps.setLong(4, organization.getUserID());
 
                     ps.setString(5, organization.getProfileImgURL());
-                    ps.setInt(6, organization.getType());
+                    ps.setBoolean(6, organization.isType());
                     ps.setString(7, organization.getPhoneNumber());
                     ps.setString(8, organization.getWebSite());
 
@@ -180,7 +180,7 @@ public class JdbcOrganizationRepository implements OrganizationRepository {
                     rs.getString("description"),
                     rs.getLong("user_id"),
                     rs.getString("profile_image"),
-                    rs.getInt("type"),
+                    rs.getBoolean("type"),
                     rs.getString("phoneNumber"),
                     rs.getString("webSite")
             );

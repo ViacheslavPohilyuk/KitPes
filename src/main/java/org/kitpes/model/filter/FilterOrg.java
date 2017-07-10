@@ -15,7 +15,7 @@ public class FilterOrg {
 
     public List<Organization> filtering(List<Organization> orgList) {
         return orgList.stream()
-                .filter(o -> (type.equals("type") || o.getType() == Integer.parseInt(type)))
+                .filter(o -> (type.equals("type") || o.isType() == Boolean.valueOf(type)))
                 .collect(Collectors.toList());
     }
 }
