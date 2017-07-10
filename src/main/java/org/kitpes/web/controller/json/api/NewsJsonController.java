@@ -6,6 +6,7 @@ import org.kitpes.config.cloud.CloudService;
 import org.kitpes.data.contract.NewsRepository;
 import org.kitpes.model.Message;
 import org.kitpes.model.News;
+import org.kitpes.model.Pet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -82,8 +83,18 @@ public class NewsJsonController {
      */
     @RequestMapping(value = "/new", method = POST)
     //@PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Message create(News news) {
-        System.out.println(news.toString());
+    public Message create(@RequestPart(required = false, value = "profilePicture") MultipartFile file,
+                          News news) throws IOException {
+
+        /* Set profile image of a new pet */
+        if(file != null) {
+            Map uploadResult = ((Cloudinary) cloudService
+                    .getConnection())
+                    .uploader()
+                    .upload(file.getBytes(), ObjectUtils.emptyMap());
+            news.setImage((String) uploadResult.get("url"));
+        }
+
         return new Message((newsRepository.save(news) != 0) ? 1 : 0);
     }
 
