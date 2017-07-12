@@ -12,7 +12,11 @@ import org.kitpes.model.Message;
 import org.kitpes.model.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,7 +31,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
  * Created by mac on 13.05.17.
  */
 @RestController
-@Api(value = "user")
 @RequestMapping("api/user")
 public class UserJsonController {
 
@@ -52,12 +55,9 @@ public class UserJsonController {
     @RequestMapping(value = "/{id}", method = GET)
     //@PreAuthorize("hasRole('ROLE_USER')")
     public User user(@PathVariable long id) {
-        long start = System.currentTimeMillis();
         User user = userRepository.readOne(id);
         user.setPets(petRepository.readByUserID(user.getId()));
         user.setOrganizations(organizationRepository.readByUserID(user.getId()));
-
-        System.out.println("Read user runtime: " + (System.currentTimeMillis() - start) + " ms");
         return user;
     }
 
@@ -84,10 +84,13 @@ public class UserJsonController {
      * @return message about an operation
      */
     @RequestMapping(value = "/edit", method = POST)
-    //@PreAuthorize("#user.username == authentication.name or hasRole('ROLE_ADMIN')")
-    public Message updateID(User user) {
-        return new Message((userRepository.updateOne(user) != 0) ? 1 : 0);
+    @PreAuthorize("#user.username == authentication.name or hasRole('ROLE_ADMIN')")
+    public ResponseEntity updateID(User user) {
+        userRepository.updateOne(user);
+        return new ResponseEntity<>("User have been successfully changed", HttpStatus.OK);
+
     }
+
 
     /**
      * Delete a user by its id
@@ -96,28 +99,32 @@ public class UserJsonController {
      */
     @RequestMapping(value = "/delete/{id}", method = GET)
     //@PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Message deleteID(@PathVariable long id) {
-        return new Message((userRepository.deleteOne(id) != 0) ? 1 : 0);
+    public ResponseEntity deleteID(@PathVariable long id) {
+        userRepository.deleteOne(id);
+        return new ResponseEntity<>("User have been successfully deleted", HttpStatus.OK);
+
     }
 
     /**
      * Processing image files those user uploads on an user's
      * profile page
      *
-     * @param file     image that is an avatar of an user
-     * @param username id of an user
+     * @param file   image that is an avatar of an user
+     * @param userId of an user
      * @return redirection to an user's profile page
      */
     @RequestMapping(value = "/fileupload", method = RequestMethod.POST)
-    //@PreAuthorize("#username == authentication.name or hasRole('ROLE_ADMIN')")
-    public Message processUpload(@RequestPart("profilePicture") MultipartFile file,
-                                 String username) throws IOException {
+    @PreAuthorize("#userId == authentication.principal.user.id or hasRole('ROLE_ADMIN')")
+    public ResponseEntity processUpload(@RequestPart("profilePicture") MultipartFile file,
+                                        long userId) throws IOException {
         Cloudinary cloud = cloudService.getConnection();
         Map uploadResult = cloud
                 .uploader()
                 .upload(file.getBytes(), ObjectUtils.emptyMap());
 
         String profileImage = (String) uploadResult.get("url");
-        return new Message((userRepository.updateProfileImage(profileImage, username) != 0) ? 1 : 0);
+        System.out.println(profileImage);
+        userRepository.updateProfileImage(profileImage, userId);
+        return new ResponseEntity<>("Image have been successfully added", HttpStatus.OK);
     }
 }

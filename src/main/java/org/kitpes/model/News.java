@@ -2,6 +2,8 @@ package org.kitpes.model;
 
 import lombok.*;
 
+import java.util.Date;
+
 /**
  * Created by mac on 02.07.17.
  */
@@ -17,7 +19,7 @@ public class News {
 
     String description;
 
-    String dateAdded;
+    String dateAddedFormat;
 
     String image;
 

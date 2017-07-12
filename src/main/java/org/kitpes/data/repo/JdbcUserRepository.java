@@ -95,16 +95,14 @@ public class JdbcUserRepository implements UserRepository {
      * This method needs for getting url of an user's profile image
      *
      * @param profileImage url string of profile image of an user
-     * @param username     id of the required user
+     * @param userId       id of the required user
      */
-    public int updateProfileImage(String profileImage, String username) {
-        String updateStatement = " UPDATE users"
-                + " SET profile_image=?"
-                + " WHERE username=?";
+    public int updateProfileImage(String profileImage, long userId) {
+        String updateStatement = " UPDATE users SET profile_image=? WHERE id=?";
 
-        Object[] updatedDataAndUsername = {profileImage, username};
+        Object[] updatedDataAndId = {profileImage, userId};
 
-        return jdbc.update(updateStatement, updatedDataAndUsername);
+        return jdbc.update(updateStatement, updatedDataAndId);
     }
 
     /**

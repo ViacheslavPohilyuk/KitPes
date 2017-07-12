@@ -30,7 +30,7 @@ public class JdbcPetRepository implements PetRepository {
      *
      * @return count of pets
      */
-    public int totalPets(){
+    public int totalPets() {
         SqlRowSet rowSet = jdbc.queryForRowSet("SELECT COUNT(*) FROM pets");
         rowSet.next();
         return rowSet.getInt(1);

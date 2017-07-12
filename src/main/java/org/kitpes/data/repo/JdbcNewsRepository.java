@@ -1,6 +1,8 @@
 package org.kitpes.data.repo;
 
 import lombok.NoArgsConstructor;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDateTime;
 import org.kitpes.data.contract.NewsRepository;
 import org.kitpes.model.News;
@@ -12,10 +14,10 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
+import java.sql.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -63,12 +65,11 @@ public class JdbcNewsRepository implements NewsRepository {
      */
     public int updateOne(News News) {
         String updateStatement = " UPDATE news"
-                + " SET name=?, description=?, dateAdded=?, image=? WHERE id=?";
+                + " SET name=?, description=?, image=? WHERE id=?";
 
         Object[] updatedDataAndID = {
                 News.getName(),
                 News.getDescription(),
-                News.getDateAdded(),
                 News.getImage(),
                 News.getId()
         };
@@ -102,10 +103,10 @@ public class JdbcNewsRepository implements NewsRepository {
      */
     public long save(News news) {
         /* Set the date when news is added to the db */
-        String ldt = new LocalDateTime().toString();
-        int indexT = ldt.indexOf('T');
-        String dateAdded = ldt.substring(0, indexT) + " " + ldt.substring(indexT + 1, ldt.lastIndexOf(':'));
-        news.setDateAdded(dateAdded);
+        Timestamp dateTime = new Timestamp(new DateTime(DateTimeZone.UTC)
+                .toDateTime(DateTimeZone.forID("Africa/Cairo"))
+                .toDate()
+                .getTime());
 
         final String insertSQL = "INSERT INTO news (name, description, dateAdded, image) VALUES (?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -114,7 +115,7 @@ public class JdbcNewsRepository implements NewsRepository {
                             connection.prepareStatement(insertSQL, new String[]{"id"});
                     ps.setString(1, news.getName());
                     ps.setString(2, news.getDescription());
-                    ps.setString(3, news.getDateAdded());
+                    ps.setTimestamp(3, dateTime);
                     ps.setString(4, news.getImage());
                     return ps;
                 },
@@ -129,11 +130,17 @@ public class JdbcNewsRepository implements NewsRepository {
     @NoArgsConstructor
     private static class NewsRowMapper implements RowMapper<News>, Serializable {
         public News mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return new News(rs.getLong("id"),
-                    rs.getString("name"),
-                    rs.getString("description"),
-                    rs.getString("dateAdded"),
-                    rs.getString("image"));
+            long id = rs.getLong("id");
+            String name = rs.getString("name");
+            String description = rs.getString("description");
+            Timestamp dateTime = rs.getTimestamp("dateAdded");
+            String image = rs.getString("image");
+
+            /* Format date of news was added */
+            DateFormat df = new SimpleDateFormat("MM.dd.yyyy HH:mm:ss");
+            String formatDate = df.format(dateTime.getTime());
+
+            return new News(id, name, description, formatDate, image);
         }
     }
 }

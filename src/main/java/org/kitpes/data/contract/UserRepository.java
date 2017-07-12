@@ -20,7 +20,7 @@ public interface UserRepository {
 
     int updateOne(User user);
 
-    int updateProfileImage(String profileImage, String username);
+    int updateProfileImage(String profileImage, long userId);
 
     long save(User user);
 }

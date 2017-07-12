@@ -3,13 +3,13 @@ package org.kitpes.web.controller.json.api;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 
-import io.swagger.annotations.Api;
 import org.kitpes.config.cloud.CloudService;
 import org.kitpes.data.contract.FoundLostPetRepository;
 import org.kitpes.model.FoundLostPet;
-import org.kitpes.model.Message;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -57,11 +57,12 @@ public class FoundLostPetJsonController {
      * Update data of a required pet
      *
      * @param foundLostPet pet that will be updated
-     * @return message about an operation
+     * @return ResponseEntity about an operation
      */
     @RequestMapping(value = "/edit", method = POST)
-    public Message updateID(FoundLostPet foundLostPet) {
-        return new Message((foundLostPetRepository.updateOne(foundLostPet) != 0) ? 1 : 0);
+    public ResponseEntity updateID(FoundLostPet foundLostPet) {
+        foundLostPetRepository.updateOne(foundLostPet);
+        return new ResponseEntity<>("Pet have been successfully changed", HttpStatus.OK);
     }
 
     /**
@@ -70,8 +71,9 @@ public class FoundLostPetJsonController {
      * @param id an id of a pet
      */
     @RequestMapping(value = "/delete/{id}", method = GET)
-    public Message deleteID(@PathVariable long id) {
-        return new Message((foundLostPetRepository.deleteOne(id) != 0) ? 1 : 0);
+    public ResponseEntity deleteID(@PathVariable long id) {
+        foundLostPetRepository.deleteOne(id);
+        return new ResponseEntity<>("Pet have been successfully deleted", HttpStatus.OK);
     }
 
     /**
@@ -81,11 +83,11 @@ public class FoundLostPetJsonController {
      * @return jsp with data of a new pet
      */
     @RequestMapping(value = "/new", method = POST)
-    public Message create(@RequestPart(required = false, value = "profilePicture") MultipartFile file,
-                          FoundLostPet foundLostPet) throws IOException {
+    public ResponseEntity create(@RequestPart(required = false, value = "profilePicture") MultipartFile file,
+                                 FoundLostPet foundLostPet) throws IOException {
 
         /* Set profile image of a new pet */
-        if(file != null) {
+        if (file != null) {
             Map uploadResult = ((Cloudinary) cloudService
                     .getConnection())
                     .uploader()
@@ -93,7 +95,8 @@ public class FoundLostPetJsonController {
             foundLostPet.setProfileImgURL((String) uploadResult.get("url"));
         }
 
-        return new Message((foundLostPetRepository.save(foundLostPet) != 0) ? 1 : 0);
+        foundLostPetRepository.save(foundLostPet);
+        return new ResponseEntity<>("Pet have been successfully added", HttpStatus.OK);
     }
 
     /**
@@ -105,14 +108,15 @@ public class FoundLostPetJsonController {
      * @return redirection to an pet's profile page
      */
     @RequestMapping(value = "/fileupload", method = RequestMethod.POST)
-    public Message processUpload(@RequestPart("profilePicture") MultipartFile file,
-                                 Long foundLostPetID) throws IOException {
+    public ResponseEntity processUpload(@RequestPart("profilePicture") MultipartFile file,
+                                        Long foundLostPetID) throws IOException {
         Map uploadResult = ((Cloudinary) cloudService
                 .getConnection())
                 .uploader()
                 .upload(file.getBytes(), ObjectUtils.emptyMap());
 
         String profileImage = (String) uploadResult.get("url");
-        return new Message((foundLostPetRepository.updateProfileImage(profileImage, foundLostPetID) != 0) ? 1 : 0);
+        foundLostPetRepository.updateProfileImage(profileImage, foundLostPetID);
+        return new ResponseEntity<>("Image have been successfully added", HttpStatus.OK);
     }
 }

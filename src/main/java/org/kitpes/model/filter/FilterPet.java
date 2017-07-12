@@ -29,21 +29,20 @@ public class FilterPet {
         return pets.stream()
                 .filter(
                         (p) ->
-                        (species.equals("species") || p.getSpecies().equals(species)) &&
+                                (species.equals("species") || p.getSpecies().equals(species)) &&
 
-                        (sex.equals("sex") || p.getSex().equals(sex)) &&
+                                (sex.equals("sex") || p.getSex().equals(sex)) &&
 
-                        (status.equals("status") || p.getStatus().equals(status)) &&
+                                (status.equals("status") || p.getStatus().equals(status)) &&
 
-                        (org.equals("org") || p.getOrganizationID().equals(Long.parseLong(org))) &&
+                                (org.equals("org") || p.getOrganizationID().equals(Long.parseLong(org))) &&
 
-                        ((age.equals("age") || (p.getAge() > 5) || (p.getAge() >= Integer.parseInt(age) &&
-                                                                   p.getAge() <= Integer.parseInt(age) + 1))) &&
+                                ((age.equals("age") || (p.getAge() > 5) || (p.getAge() >= Integer.parseInt(age) && p.getAge() <= Integer.parseInt(age) + 1))) &&
 
-                        (sterilized.equals("sterilized") || p.isSterilized() == Boolean.valueOf(sterilized)) &&
+                                (sterilized.equals("sterilized") || p.isSterilized() == Boolean.valueOf(sterilized)) &&
 
-                        (vaccinated.equals("sterilized") || p.isVaccinated() == Boolean.valueOf(vaccinated))
-                        
+                                (vaccinated.equals("sterilized") || p.isVaccinated() == Boolean.valueOf(vaccinated))
+
                 ).collect(Collectors.toList());
     }
 }

@@ -12,6 +12,8 @@ import org.kitpes.model.Message;
 import org.kitpes.model.Organization;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -65,10 +67,8 @@ public class OrganizationJsonController {
      */
     @RequestMapping(value = "/{id}", method = GET)
     public Organization organization(@PathVariable long id) {
-        long start = System.currentTimeMillis();
         Organization org = organizationRepository.readOne(id);
         org.setPets(petRepository.readByOrganizationID(id));
-        System.out.println("Read org runtime: " + (System.currentTimeMillis() - start) + " ms");
         return org;
     }
 
@@ -80,8 +80,9 @@ public class OrganizationJsonController {
      */
     @RequestMapping(value = "/edit", method = POST)
     //@PreAuthorize("#username == authentication.name or hasRole('ROLE_ADMIN')")
-    public int updateID(Organization organization, String username) {
-        return organizationRepository.updateOne(organization);
+    public ResponseEntity updateID(Organization organization, String username) {
+        organizationRepository.updateOne(organization);
+        return new ResponseEntity<>("Organization have been successfully changed", HttpStatus.OK);
     }
 
     /**
@@ -91,8 +92,9 @@ public class OrganizationJsonController {
      */
     @RequestMapping(value = "/delete/{id}", method = GET)
     //@PreAuthorize("#username == authentication.name or hasRole('ROLE_ADMIN')")
-    public Message deleteID(@PathVariable long id, String username) {
-        return new Message(organizationRepository.deleteOne(id));
+    public ResponseEntity deleteID(@PathVariable long id, String username) {
+        organizationRepository.deleteOne(id);
+        return new ResponseEntity<>("Organization have been successfully changed", HttpStatus.OK);
     }
 
     /**
@@ -103,8 +105,9 @@ public class OrganizationJsonController {
      */
     @RequestMapping(value = "/new", method = POST)
     //@PreAuthorize("#username == authentication.name or hasRole('ROLE_ADMIN')")
-    public Message create(Organization organization, String username) {
-        return new Message((organizationRepository.save(organization) != 0) ? 1 : 0);
+    public ResponseEntity create(Organization organization, String username) {
+        organizationRepository.save(organization);
+        return new ResponseEntity<>("Organization have been successfully changed", HttpStatus.OK);
     }
 
     /**
@@ -117,15 +120,15 @@ public class OrganizationJsonController {
      */
     @RequestMapping(value = "/fileupload", method = RequestMethod.POST)
     //@PreAuthorize("#username == authentication.name or hasRole('ROLE_ADMIN')")
-    public Message processUpload(@RequestPart("profilePicture") MultipartFile file,
+    public ResponseEntity processUpload(@RequestPart("profilePicture") MultipartFile file,
                                  String username, Long organizationID) throws IOException {
         Map uploadResult = ((Cloudinary) cloudService
                 .getConnection())
                 .uploader()
                 .upload(file.getBytes(), ObjectUtils.emptyMap());
-
         String profileImage = (String) uploadResult.get("url");
-        System.out.println("profileImage: " + profileImage + "\norganizationID: " + organizationID);
-        return new Message((organizationRepository.updateProfileImage(profileImage, organizationID) != 0) ? 1 : 0);
+        organizationRepository.updateProfileImage(profileImage, organizationID);
+
+        return new ResponseEntity<>("Image have been successfully added", HttpStatus.OK);
     }
 }
