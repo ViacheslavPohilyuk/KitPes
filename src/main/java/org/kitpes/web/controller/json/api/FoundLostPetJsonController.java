@@ -33,6 +33,13 @@ public class FoundLostPetJsonController {
     @Autowired
     private CloudService cloudService;
 
+    @RequestMapping(value = "limited", method = GET)
+    public List<FoundLostPet> petsLimited(@RequestParam(value = "type") int type,
+                                          @RequestParam(value = "bunch") int bunch) {
+        int bunchSize = 8;
+        return foundLostPetRepository.readLimited(type, (bunch * bunchSize), bunchSize);
+    }
+
     /**
      * Getting all pets
      *

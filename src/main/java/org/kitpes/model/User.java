@@ -42,6 +42,8 @@ public class User {
 
     private List<Pet> pets = null;
 
+    private List<Pet> foundLostPets = null;
+
     private List<Organization> organizations = null;
 
     public User(Long id, String username, String firstName, String lastName, String password, String profileImgURL) {

@@ -29,6 +29,11 @@ public class JdbcFoundLostPetRepository implements FoundLostPetRepository {
         this.jdbc = jdbc;
     }
 
+    public List<FoundLostPet> readLimited(int type, int lowerBound, int count) {
+        return jdbc.query("SELECT * FROM found_lost_pets WHERE type = ? LIMIT ?, ?",
+                new FoundLostPetRowMapper(), type, lowerBound, lowerBound + count);
+    }
+
     /**
      * Getting all the found_lost_pets from the db
      *
@@ -38,10 +43,10 @@ public class JdbcFoundLostPetRepository implements FoundLostPetRepository {
         List<FoundLostPet> foundLostPets;
         if (type != null)
             foundLostPets = jdbc.query("SELECT * FROM found_lost_pets WHERE type = ?",
-                    new JdbcFoundLostPetRepository.FoundLostPetRowMapper(), type);
+                    new FoundLostPetRowMapper(), type);
         else
             foundLostPets = jdbc.query("SELECT * FROM found_lost_pets",
-                    new JdbcFoundLostPetRepository.FoundLostPetRowMapper());
+                    new FoundLostPetRowMapper());
         return foundLostPets;
     }
 
