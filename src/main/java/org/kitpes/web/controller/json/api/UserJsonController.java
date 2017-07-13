@@ -84,7 +84,7 @@ public class UserJsonController {
      * @return message about an operation
      */
     @RequestMapping(value = "/edit", method = POST)
-    @PreAuthorize("#user.username == authentication.name or hasRole('ROLE_ADMIN')")
+    //@PreAuthorize("#user.username == authentication.name or hasRole('ROLE_ADMIN')")
     public ResponseEntity updateID(User user) {
         userRepository.updateOne(user);
         return new ResponseEntity<>("User have been successfully changed", HttpStatus.OK);
@@ -114,7 +114,7 @@ public class UserJsonController {
      * @return redirection to an user's profile page
      */
     @RequestMapping(value = "/fileupload", method = RequestMethod.POST)
-    @PreAuthorize("#userId == authentication.principal.user.id or hasRole('ROLE_ADMIN')")
+    //@PreAuthorize("#userId == authentication.principal.user.id or hasRole('ROLE_ADMIN')")
     public ResponseEntity processUpload(@RequestPart("profilePicture") MultipartFile file,
                                         long userId) throws IOException {
         Cloudinary cloud = cloudService.getConnection();

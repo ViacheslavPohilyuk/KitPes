@@ -24,10 +24,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/api/user").access("hasRole('ROLE_USER')")
+                //.antMatchers("/api/user").access("hasRole('ROLE_USER')")
                 .and()
                     .formLogin()
-                    .loginPage("/login").defaultSuccessUrl("/pet", true)
+                    .loginPage("/login").defaultSuccessUrl("/foundLostPet/found", true)
                     .permitAll()
                     .failureUrl("/login?error")
                     .loginProcessingUrl("/auth/login_check")

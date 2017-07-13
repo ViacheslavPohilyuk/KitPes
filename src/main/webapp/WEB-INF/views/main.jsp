@@ -1,18 +1,18 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: mac
-  Date: 11.04.17
-  Time: 14:44
+  Date: 13.07.17
+  Time: 13:16
   To change this template use File | Settings | File Templates.
 --%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page session="false" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8"/>
-    <link rel="stylesheet" type="text/css" href="<c:url value="/resources/main/assets/style.css" />">
-    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="<c:url value="/resources/assets/style.css" />">
+    <title>Главная</title>
     <script src="<c:url value="https://use.fontawesome.com/a81cbcd056.js" />"></script>
 </head>
 
@@ -21,22 +21,27 @@
     <nav class="c-navigation">
         <div class="l-menu">
             <div class="c-navigation__menu-button"></div>
-            <div class="c-navigation__logo"></div>
+            <a href="/">
+                <div class="c-navigation__logo"></div>
+            </a>
             <div class="c-navigation__menu">
                 <div class="l-menu-items">
                     <div class="c-navigation__menu-item c-navigation__menu-item--caption">Нашли питомца?</div>
-                    <a href="#" class="c-navigation__menu-item">зарегистрировать найденного питомца</a>
-                    <a href="#" class="c-navigation__menu-item">база потерянных питомцев</a>
+                    <a href="/foundLostPet/found/create" class="c-navigation__menu-item">зарегистрировать
+                        найденного питомца</a>
+                    <a href="/foundLostPet/lost" class="c-navigation__menu-item">база потерянных питомцев</a>
                     <div class="c-navigation__menu-item c-navigation__menu-item--caption">Потеряли питомца?</div>
-                    <a href="#" class="c-navigation__menu-item">зарегистрировать потерянного питомца</a>
-                    <a href="#" class="c-navigation__menu-item">база найденных питомцев</a>
+                    <a href="/foundLostPet/lost/create" class="c-navigation__menu-item">зарегистрировать потерянного
+                        питомца</a>
+                    <a href="/foundLostPet/found" class="c-navigation__menu-item">база найденных питомцев</a>
                     <a href="#" class="c-navigation__menu-item">ветклиники</a>
                     <a href="#" class="c-navigation__menu-item">приюты</a>
                     <a href="#" class="c-navigation__menu-item">новости</a>
                     <a href="#" class="c-navigation__menu-item">ивенты</a>
                     <a href="#" class="c-navigation__menu-item">вопрос/ответ</a>
                     <a href="#" class="c-navigation__menu-item">контакты</a>
-                    <a href="#" class="c-navigation__menu-item c-navigation__menu-item--login">вход</a>
+                    <a href="/login"
+                       class="c-navigation__menu-item c-navigation__menu-item--login">вход</a>
                 </div>
             </div>
         </div>
@@ -51,32 +56,31 @@
         <div class="c-slider__canvas">
             <div class="c-slider__slide">
                 <div class="c-slider__quote">мы в ответе за тех, <br/> кого приручили</div>
-                <div class="c-slider__quote-author">антуан де сент-экзюпери</div>
+                <div class="c-slider__quote-author">антуана де сент-экзюпери</div>
             </div>
             <div class="c-slider__slide">
                 <div class="c-slider__quote">мы в ответе за тех, <br/> кого приручили</div>
-                <div class="c-slider__quote-author">антуан де сент-экзюпери</div>
+                <div class="c-slider__quote-author">антуана де сент-экзюпери</div>
             </div>
             <div class="c-slider__slide">
                 <div class="c-slider__quote">мы в ответе за тех, <br/> кого приручили</div>
-                <div class="c-slider__quote-author">антуан де сент-экзюпери</div>
+                <div class="c-slider__quote-author">антуана де сент-экзюпери</div>
             </div>
             <div class="c-slider__slide">
                 <div class="c-slider__quote">мы в ответе за тех, <br/> кого приручили</div>
-                <div class="c-slider__quote-author">антуан де сент-экзюпери</div>
+                <div class="c-slider__quote-author">антуана де сент-экзюпери</div>
             </div>
             <div class="c-slider__slide">
                 <div class="c-slider__quote">мы в ответе за тех, <br/> кого приручили</div>
-                <div class="c-slider__quote-author">антуан де сент-экзюпери</div>
+                <div class="c-slider__quote-author">антуана де сент-экзюпери</div>
             </div>
             <div class="c-slider__slide">
                 <div class="c-slider__quote">мы в ответе за тех, <br/> кого приручили</div>
-                <div class="c-slider__quote-author">антуан де сент-экзюпери</div>
+                <div class="c-slider__quote-author">антуана де сент-экзюпери</div>
             </div>
         </div>
     </div>
 </header>
-
 <main class="l-main">
     <section class="c-intro">
         <h1 class="c-main-title">больше о проекте</h1>
@@ -202,7 +206,6 @@
         </div>
     </section>
 </main>
-
 <footer class="c-footer">
     <div class="c-footer__info"><span>меню</span><span class="c-footer__author">design by </span><span>benmax</span>
     </div>
@@ -211,8 +214,8 @@
     </div>
 </footer>
 <script type="text/javascript">
-    <%@include file="/resources/main/assets/script.js"%>
+    <%@include file="/resources/assets/script.js"%>
+    <%@include file="/resources/assets/slider.js"%>
 </script>
-
 </body>
 </html>
