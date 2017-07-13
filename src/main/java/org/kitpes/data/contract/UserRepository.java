@@ -10,6 +10,8 @@ import java.util.List;
  * Created by mac on 13.05.17.
  */
 public interface UserRepository {
+    List<String> readUsernames();
+
     List<User> readAll();
 
     User readOne(long id);

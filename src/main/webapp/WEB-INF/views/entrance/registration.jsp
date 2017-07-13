@@ -56,12 +56,13 @@
 
 <main class="l-main">
     <div class="l-form-container">
-        <form action="" class="c-registration-form">
-            <input type="text" placeholder="Телефон либо @mail" class="c-registration-form__input">
-            <input type="text" placeholder="Имя" class="c-registration-form__input">
-            <input type="text" placeholder="Фамилия" class="c-registration-form__input">
-            <input type="password" placeholder="Пароль" class="c-registration-form__input">
-            <input type="password" placeholder="Еще раз" class="c-registration-form__input">
+        <form action="/register" method="POST" class="c-registration-form">
+            <input name="username" type="text" placeholder="@email" class="c-registration-form__input">
+            <input name="firstName" type="text" placeholder="Имя" class="c-registration-form__input">
+            <input name="lastName" type="text" placeholder="Фамилия" class="c-registration-form__input">
+            <input name="password" type="password" placeholder="Пароль" class="c-registration-form__input">
+            <input name="second_password" type="password" placeholder="Еще раз" class="c-registration-form__input">
+
             <div class="c-registration-form__enter-field">
                 <button class="c-registration-form__register">РЕГИСТРАЦИЯ</button>
             </div>

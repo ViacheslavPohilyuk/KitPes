@@ -1,5 +1,6 @@
 package org.kitpes.web.exception;
 
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -36,4 +37,6 @@ public class ControllersExceptionHandler {
         mav.setViewName("error");
         return mav;
     }
+
+
 }
