@@ -28,16 +28,15 @@ public class FoundLostPet {
 
     private String profileImgURL = "/resources/images/default_pet.jpg";
 
-    public FoundLostPet(Long id, String name, String sex, String species, int age, String description, String dateLost, boolean type, String profileImgURL) {
+    public FoundLostPet(Long id, String name, String sex, String species, int age, String description, String dateLostFound, boolean type, String profileImgURL) {
 
         this.name = (name != null) ? name : "Без имени";
-        this.dateLostFound = (dateLost != null) ? name : "Нет данных";
+        this.dateLostFound = (dateLostFound != null) ? dateLostFound : "Нет данных";
 
         this.id = id;
         this.sex = sex;
         this.species = species;
         this.age = age;
-        this.dateLostFound = dateLost;
         this.description = description;
         this.type = type;
         this.profileImgURL = profileImgURL;
