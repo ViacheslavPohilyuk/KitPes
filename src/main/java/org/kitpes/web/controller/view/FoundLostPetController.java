@@ -1,9 +1,23 @@
 package org.kitpes.web.controller.view;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
+import org.kitpes.config.cloud.CloudService;
+import org.kitpes.data.contract.FoundLostPetRepository;
+import org.kitpes.model.FoundLostPet;
+import org.kitpes.model.form.DatePetLostFound;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.Map;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
  * Created by mac on 12.07.17.
@@ -11,6 +25,12 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 @Controller
 @RequestMapping("/foundLostPet")
 public class FoundLostPetController {
+    @Autowired
+    private CloudService cloudService;
+
+    @Autowired
+    private FoundLostPetRepository foundLostPetRepository;
+
     @RequestMapping(value = "found", method = GET)
     public String foundPets() {
         return "pet/found_pet";
@@ -29,5 +49,30 @@ public class FoundLostPetController {
     @RequestMapping(value = "/found/create", method = GET)
     public String createFound() {
         return "pet/registration_found";
+    }
+
+    @RequestMapping(value = "/create", method = POST)
+    public String create(@RequestPart(required = false, value = "profilePicture") MultipartFile file,
+                                 @RequestParam Boolean type,
+                                 FoundLostPet foundLostPet,
+                                 DatePetLostFound date) throws IOException {
+        /* Set type (Found pet) */
+        foundLostPet.setType(type);
+
+        /* Get date of day, month and year when pet was found
+         * and unite them in one string */
+        foundLostPet.setDateLostFound(date.dateConstruct());
+
+        /* Set profile image of a new pet */
+        if (file != null) {
+            Map uploadResult = ((Cloudinary) cloudService
+                    .getConnection())
+                    .uploader()
+                    .upload(file.getBytes(), ObjectUtils.emptyMap());
+            foundLostPet.setProfileImgURL((String) uploadResult.get("url"));
+        }
+
+        foundLostPetRepository.save(foundLostPet);
+        return "redirect:/foundLostPet/found";
     }
 }

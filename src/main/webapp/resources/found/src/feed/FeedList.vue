@@ -1,19 +1,8 @@
 <template>
-
   <div class="c-find">
+   <feed-item v-for="elem in store" :elem="elem"> </feed-item>
 
-
-      <feed-item v-for="elem in store" :elem="elem"> </feed-item>
-
-      <div class="l-layot">
-          <div class="c-find__show-all" @click="retData">
-              <div class="l-grid">
-                  <h4 class="c-find__show-all-head" v-if="morePets">показать всех найденных питомцев</h4>
-                  <img class="c-find__down" src="../../images/down.svg" v-if="morePets">
-              </div>
-          </div>
-      </div>
-      </div>
+  </div>
 </template>
 
 <script>
@@ -34,7 +23,7 @@ export default {
     counter: 0,
     loading:false,
     hiddenLoad:false,
-      morePets: true
+   
 
 
   }
@@ -44,7 +33,7 @@ export default {
  },
   methods:{
    retData: function(){
-      const api = "https://infinite-shore-71587.herokuapp.com/api/foundlostpets/limited?type=1&bunch="  + this.counter;
+      const api = "https://crossorigin.me/https://infinite-shore-71587.herokuapp.com/api/foundlostpets/limited?type=1&bunch="  + this.counter;
       Vue.axios.get(api).then(response=> {
         if(response.data.length == 0){
           this.loading = false;
@@ -56,9 +45,6 @@ export default {
           this.counter++;
           for(var i =0; i<response.data.length;i++){
             this.store.push(response.data[i]);
-          }
-          if(response.data.length < 4) {
-              this.morePets = false;
           }
         }
       }
@@ -77,6 +63,6 @@ export default {
 }
 </script>
 
-<style  scoped>
+<style lang="scss" scoped>
 
 </style>

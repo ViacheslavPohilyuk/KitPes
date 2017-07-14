@@ -7,6 +7,7 @@ import org.kitpes.config.cloud.CloudService;
 import org.kitpes.data.contract.FoundLostPetRepository;
 import org.kitpes.model.FoundLostPet;
 
+import org.kitpes.model.form.DatePetLostFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -91,7 +92,9 @@ public class FoundLostPetJsonController {
      */
     @RequestMapping(value = "/new", method = POST)
     public ResponseEntity create(@RequestPart(required = false, value = "profilePicture") MultipartFile file,
-                                 FoundLostPet foundLostPet) throws IOException {
+                                 FoundLostPet foundLostPet,
+                                 DatePetLostFound dateLost) throws IOException {
+
 
         /* Set profile image of a new pet */
         if (file != null) {

@@ -4,13 +4,13 @@
 		<div class="c-find__info">
 			<h4 class="c-find__name">{{elem.name}}</h4>
 			<hr class="c-find__line">
-			<img class="c-find__date-image" src="../images/date.svg">
+			<img class="c-find__date-image" src="/resources/found/src/images/date.svg">
 			<span class="c-find__date">15.10.2017</span>
-			<img class="c-find__user-image" src="../images/user.svg">
+			<img class="c-find__user-image" src="/resources/found/src/images/user.svg">
 			<span class="c-find__user">Максимов Вениамин</span>
 		</div>
 		<div class="c-find__learn-more">
-			<img class="c-find__plus" src="../images/plus.png">
+			<img class="c-find__plus" src="/resources/found/src/images/plus.png">
 			<a class="c-find__link" href="#"><span class="c-find__link-text">Узнать больше</span></a>
 		</div>
 	</div>

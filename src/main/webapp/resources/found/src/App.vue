@@ -5,7 +5,7 @@
 </template>
 
 <script>
-    import appi from './feed/App.vue'
+    import appi from '/resources/found/src/App.vue'
 
     export default {
     components:{

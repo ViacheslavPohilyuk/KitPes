@@ -81,7 +81,7 @@ public class JdbcFoundLostPetRepository implements FoundLostPetRepository {
      * @param foundLostPet an instance of the FoundLostPetclass
      */
     public int updateOne(FoundLostPet foundLostPet) {
-        String updateStatement = " UPDATE found_lost_pets SET name =?, sex=?, species=?, age=?, description=?, type=?"
+        String updateStatement = " UPDATE found_lost_pets SET name =?, sex=?, species=?, age=?, description=?, dateLostFound=?, type=?"
                 + " WHERE id=?";
 
         Object[] updatedDataAndID = {
@@ -90,8 +90,9 @@ public class JdbcFoundLostPetRepository implements FoundLostPetRepository {
                 foundLostPet.getSpecies(),
                 foundLostPet.getAge(),
                 foundLostPet.getDescription(),
+                foundLostPet.getDateLostFound(),
                 foundLostPet.isType(),
-                foundLostPet.getId(),
+                foundLostPet.getId()
         };
 
         return jdbc.update(updateStatement, updatedDataAndID);
@@ -105,8 +106,8 @@ public class JdbcFoundLostPetRepository implements FoundLostPetRepository {
      * @return auto-generated key from the db
      */
     public long save(FoundLostPet foundLostPet) {
-        final String insertSQL = "INSERT INTO found_lost_pets (name, sex, species, age, description, type, profile_image)" +
-                " VALUES (?, ?, ?, ?, ?, ?, ?)";
+        final String insertSQL = "INSERT INTO found_lost_pets (name, sex, species, age, description, dateLostFound, type, profile_image)" +
+                " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbc.update((connection) -> {
                     PreparedStatement ps =
@@ -116,8 +117,9 @@ public class JdbcFoundLostPetRepository implements FoundLostPetRepository {
                     ps.setString(3, foundLostPet.getSpecies());
                     ps.setInt(4, foundLostPet.getAge());
                     ps.setString(5, foundLostPet.getDescription());
-                    ps.setBoolean(6, foundLostPet.isType());
-                    ps.setString(7, foundLostPet.getProfileImgURL());
+                    ps.setString(6, foundLostPet.getDateLostFound());
+                    ps.setBoolean(7, foundLostPet.isType());
+                    ps.setString(8, foundLostPet.getProfileImgURL());
                     return ps;
                 },
                 keyHolder);
@@ -153,6 +155,7 @@ public class JdbcFoundLostPetRepository implements FoundLostPetRepository {
                     rs.getString("species"),
                     rs.getInt("age"),
                     rs.getString("description"),
+                    rs.getString("dateLostFound"),
                     rs.getBoolean("type"),
                     rs.getString("profile_image"));
         }
