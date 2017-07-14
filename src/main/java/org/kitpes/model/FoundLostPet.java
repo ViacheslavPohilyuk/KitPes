@@ -9,7 +9,6 @@ import lombok.*;
 @Setter
 @ToString
 @NoArgsConstructor
-@AllArgsConstructor
 public class FoundLostPet {
     private Long id;
 
@@ -26,6 +25,19 @@ public class FoundLostPet {
     private boolean type; // lost or found
 
     private String profileImgURL = "/resources/images/default_pet.jpg";
+
+    public FoundLostPet(Long id, String name, String sex, String species, int age, String description, boolean type, String profileImgURL) {
+
+        this.name = (name != null)? name : "Без имени";
+
+        this.id = id;
+        this.sex = sex;
+        this.species = species;
+        this.age = age;
+        this.description = description;
+        this.type = type;
+        this.profileImgURL = profileImgURL;
+    }
 
     public FoundLostPet(String sex, String name, String species, int age, String description, boolean type, String profileImgURL) {
         this(null, name, sex, species, age, description, type, profileImgURL);

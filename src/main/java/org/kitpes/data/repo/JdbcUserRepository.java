@@ -56,7 +56,8 @@ public class JdbcUserRepository implements UserRepository {
                 new UserRowMapper(), username);
 
         /* Retrieve roles of this user from the db */
-        user.setAuthorities(jdbc.query("SELECT role FROM user_roles WHERE user_id = ?", new RoleRowMapper(), user.getId()));
+        user.setAuthorities(jdbc.query("SELECT role FROM user_roles WHERE user_id = ?",
+                (rs, num) -> new Role(rs.getString("role")), user.getId()));
         return user;
     }
 
@@ -169,13 +170,6 @@ public class JdbcUserRepository implements UserRepository {
                     rs.getString("lastName"),
                     rs.getString("pass"),
                     rs.getString("profile_image"));
-        }
-    }
-
-    @NoArgsConstructor
-    private static class RoleRowMapper implements RowMapper<Role>, Serializable {
-        public Role mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return new Role(rs.getString("role"));
         }
     }
 }

@@ -1,5 +1,9 @@
 package org.kitpes.model.filter;
 
+import com.healthmarketscience.sqlbuilder.BinaryCondition;
+import com.healthmarketscience.sqlbuilder.SelectQuery;
+import com.healthmarketscience.sqlbuilder.ValidationContext;
+import com.healthmarketscience.sqlbuilder.custom.CustomSyntax;
 import lombok.Data;
 import org.kitpes.model.Pet;
 
@@ -11,37 +15,43 @@ import java.util.stream.Collectors;
  */
 @Data
 public class FilterPet {
-    private String species;
+    private String species = null;
 
-    private String sex;
+    private String sex = null;
 
-    private String status;
+    private String status = null;
 
-    private String org;
+    private String org = null;
 
-    private String age;
+    private String age = null;
 
-    private String sterilized;
+    private String sterilized = null;
 
-    private String vaccinated;
+    private String vaccinated = null;
 
     public List<Pet> filtering(List<Pet> pets) {
+        //String query1 =
+        SelectQuery selectQ = new SelectQuery();
+        SelectQuery sel = new SelectQuery().addCondition(BinaryCondition.equalTo(species, "?"));
+        //selectQ.addCustomization();
+        //.validate().toString();
+
         return pets.stream()
                 .filter(
                         (p) ->
                                 (species.equals("species") || p.getSpecies().equals(species)) &&
 
-                                (sex.equals("sex") || p.getSex().equals(sex)) &&
+                                        (sex.equals("sex") || p.getSex().equals(sex)) &&
 
-                                (status.equals("status") || p.getStatus().equals(status)) &&
+                                        (status.equals("status") || p.getStatus().equals(status)) &&
 
-                                (org.equals("org") || p.getOrganizationID().equals(Long.parseLong(org))) &&
+                                        (org.equals("org") || p.getOrganizationID().equals(Long.parseLong(org))) &&
 
-                                ((age.equals("age") || (p.getAge() > 5) || (p.getAge() >= Integer.parseInt(age) && p.getAge() <= Integer.parseInt(age) + 1))) &&
+                                        ((age.equals("age") || (p.getAge() > 5) || (p.getAge() >= Integer.parseInt(age) && p.getAge() <= Integer.parseInt(age) + 1))) &&
 
-                                (sterilized.equals("sterilized") || p.isSterilized() == Boolean.valueOf(sterilized)) &&
+                                        (sterilized.equals("sterilized") || p.isSterilized() == Boolean.valueOf(sterilized)) &&
 
-                                (vaccinated.equals("sterilized") || p.isVaccinated() == Boolean.valueOf(vaccinated))
+                                        (vaccinated.equals("vaccinated") || p.isVaccinated() == Boolean.valueOf(vaccinated))
 
                 ).collect(Collectors.toList());
     }
