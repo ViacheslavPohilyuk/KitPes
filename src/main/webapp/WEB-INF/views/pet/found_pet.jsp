@@ -130,10 +130,29 @@
         <i class="fa fa-instagram" aria-hidden="true"></i> <i class="fa fa-facebook-official" aria-hidden="true"></i>
     </div>
 </footer>
-<!-- file="/resources/found/js/feed.js" -->
+<!-- file="/resources/found/js/feed.js" file="/resources/found/js/js.js"-->
 <script type="text/javascript">
     <%@include file="/resources/assets/script.js"%>
-    <%@include file="/resources/found/js/js.js"%>
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var click = document.getElementsByClassName("c-find__show-all")[0];
+        var elem = document.getElementsByClassName("is-hidden");
+        var i;
+
+        click.addEventListener('click', function(e) {
+            do {
+                for (i = 0; i < elem.length; i++) {
+                    elem[i].classList.remove('is-hidden');
+                }
+            } while (elem.length > 0);
+        });
+    });
+
+    function show(state){
+        document.getElementsByClassName('l-show-pets')[0].style.display = state;
+        document.getElementsByClassName('l-wrap')[0].style.display = state;
+    }
 </script>
 <script>
     /**
@@ -305,6 +324,7 @@
 
         })
     }
+
     setModals();
     function toClose() {
         closeModal = Array.from(document.querySelectorAll(".c-show-pets__close"));
@@ -323,88 +343,6 @@
 
     showMore.addEventListener("click", showMorePets);
 
-
-    function displayDetails() {
-        var modal = `<div class="c-modal">
-			<div class="l-show-pets">
-<div class="c-show-pets">
-
-			<div class="c-show-pets__main">
-			<div class="c-show-pets__name" name="name">{{store.name}}</div>
-			<div class="c-show-pets__close" @click.prevent="getDetails"></div>
-				<div class="c-show-pets__photo col-1-4">
-					<img class="c-show-pets__main-photo" :src="src"><br>
-					<span class="c-show-pets__search">
-                <img class="c-show-pets__view" src="/resources/found/images/view.png">
-                <!--<span class="c-show-pets__show-all-photo">просмотреть все фото</span>-->
-            <!--</span><br>-->
-					<!--<div class="l-flex">-->
-            <!--<img class="c-show-pets__small-photo" src="/resources/found/images/pets8.jpg">-->
-            <!--<img class="c-show-pets__small-photo" src="/resources/found/images/pets9.jpg">-->
-            <!--<img class="c-show-pets__small-photo" src="/resources/found/images/pets10.jpg">-->
-            <!--<img class="c-show-pets__small-photo" src="/resources/found/images/pets11.jpg">-->
-            <!--</div>-->
-            </span>
-            </div>
-            <div class="c-show-pets__info col-3-4">
-            <span class="c-show-pets__type" name="kind">кошка</span>/
-            <span class="c-show-pets__type" name="sex">девочка</span>/
-            <span class="c-show-pets__type" name="breed">тонкинская кошка</span><br>
-            <span class="c-show-pets__type" name="age">{{store.age}} года</span>/
-            <span class="c-show-pets__type" name="color">белая</span>/
-            <span class="c-show-pets__type" name="form">здорова</span><br>
-            <span class="c-show-pets__type" name="graft">привита</span>/
-            <span class="c-show-pets__type" name="sterilization">не стерилизована</span>
-            <div class="c-show-pets__date">
-            <span class="c-show-pets__find-date" name="find-date">13.13.2017</span>
-            (дата, когда был найден питомец)</div>
-            <div class="c-show-pets__description">{{store.description}}
-            </div>
-            </div>
-            <!--here-->
-            <div class="c-show-pets__contacts col-2-3">
-            <span class="c-show-pets__contacts-head">Контакты человека, нашедего питомца</span><br>
-            <img class="c-show-pets__user-image" src="/resources/found/images/user.svg">
-            <span class="c-show-pets__finder" name="finder">Максим Вениаминов</span>
-            <a class="c-show-pets__socials" href="#" name="instagram">
-            <img class="c-show-pets__socials-img" src="/resources/found/images/instagram.png">
-            </a>
-            <a class="c-show-pets__socials" href="#" name="facebook">
-            <img class="c-show-pets__socials-img" src="/resources/found/images/facebook.png">
-            </a>
-            <a class="c-show-pets__socials" href="#" name="twitter">
-            <img class="c-show-pets__socials-img" src="/resources/found/images/twitter.png">
-            </a>
-            <a class="c-show-pets__socials" href="#" name="google+">
-            <img class="c-show-pets__socials-img" src="/resources/found/images/google.png">
-            </a>
-            <button class="c-show-pets__massage" name="newmassage">
-            <img class="c-show-pets__massage-img" src="/resources/found/images/massage.png">отправить сообщение
-            </button>
-            <hr class="c-show-pets__line">
-            <div class="c-show-pets__contact-item">
-            <img class="c-show-pets__contact-img" src="/resources/found/images/phone.png">
-            <span class="c-show-pets__contact">телефон</span><br>
-            <span class="c-show-pets__telephon" name="telephone">+38 063 99 51 611</span>
-            </div>
-            <div class="c-show-pets__contact-item">
-            <img class="c-show-pets__contact-img" src="/resources/found/images/mail.png">
-            <span class="c-show-pets__contact">почта</span><br>
-            <span class="c-show-pets__email" name="email">benmax@gmai1.com</span>
-            </div>
-            <div class="c-show-pets__contact-item">
-            <img class="c-show-pets__contact-img" src="/resources/found/images/marker.png">
-            <span class="c-show-pets__contact">адрес:</span><br>
-            <span class="c-show-pets__address" name="address">ул. Парус 2</span>
-            </div>
-            </div>
-            <button class="c-show-pets__button">приютить!</button>
-            </div>
-
-            </div>
-            </div>
-            </div>`
-}
 </script>
 
 </body>

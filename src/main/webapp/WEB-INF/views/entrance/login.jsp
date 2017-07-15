@@ -5,7 +5,21 @@
   Date: 13.07.17
   Time: 14:12
   To change this template use File | Settings | File Templates.
+
+  <c:if test="${not empty SPRING_SECURITY_LAST_EXCEPTION}">
+            <font color="red">
+                Your login attempt was not successful due to <br/><br/>
+                <c:out value="${SPRING_SECURITY_LAST_EXCEPTION.message}"/>.
+            </font>
+        </c:if>
+        <form name="f"
+              action="<c:url value='/auth/login_check'/>"
+              method="POST" class="c-registration-form">
+
+              <input name="username" type="text" placeholder="Телефон либо @mail" class="c-registration-form__input">
+            <input name="password" type="password" placeholder="Пароль" class="c-registration-form__input">
 --%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -56,12 +70,6 @@
 
 <main class="l-main">
     <div class="l-form-container">
-        <c:if test="${not empty SPRING_SECURITY_LAST_EXCEPTION}">
-            <font color="red">
-                Your login attempt was not successful due to <br/><br/>
-                <c:out value="${SPRING_SECURITY_LAST_EXCEPTION.message}"/>.
-            </font>
-        </c:if>
         <form name="f"
               action="<c:url value='/auth/login_check'/>"
               method="POST" class="c-registration-form">
@@ -70,6 +78,13 @@
             <input name="password" type="password" placeholder="Пароль" class="c-registration-form__input">
 
             <div class="c-registration-form__restore">
+                <c:if test="${not empty SPRING_SECURITY_LAST_EXCEPTION}">
+                    <font color="red">
+                        Не правильный логин или пароль, попробуйте еще раз<br/><br/>
+                        <c:out value="${SPRING_SECURITY_LAST_EXCEPTION.message}"/>.
+                   <!-- <span class="c-registration-form__notfound" name="notefound">Не правильный логин или пароль, попробуйте еще раз</span> -->
+                    </font>
+                </c:if>
                 <span class="c-registration-form__restore-caption">Забыли пароль?</span>
                 <a href="#" class="c-registration-form__restore-link">Восстановить</a>
             </div>

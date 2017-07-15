@@ -62,7 +62,6 @@ public class RegisterController {
         else {
             return "redirect:/register?emailDuplicateError";
         }
-
         return "/entrance/login";
     }
 }

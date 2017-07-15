@@ -73,6 +73,8 @@
                 найденного питомца</a>
             <a href="/foundLostPet/lost/create" class="c-form__button" style="top:10%;width:45%;left:2%">Добавить
                 потерянного питомца</a>
+            <a href="/foundLostPet/lost/create" class="c-form__button" style="top:10%;width:45%;left:2%">Добавить
+                бездомного питомца</a>
         </div>
     </div>
 </div>

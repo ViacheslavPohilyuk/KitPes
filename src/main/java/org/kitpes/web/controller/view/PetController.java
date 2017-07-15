@@ -9,6 +9,7 @@ import org.kitpes.model.Pet;
 
 import org.kitpes.model.filter.FilterPet;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -133,7 +134,7 @@ public class PetController {
      *
      * @param id an id of a pet
      */
-    @RequestMapping(value = "/delete/{id}", method = GET)
+    /* @RequestMapping(value = "/delete/{id}", method = GET)
     public String deleteID(@PathVariable long id,
                            @RequestParam(value = "userID", required = false) Long userID,
                            @RequestParam(value = "organizationID", required = false) Long organizationID) {
@@ -142,13 +143,13 @@ public class PetController {
         /* If pet have been deleted from a user's/org's profile,
          * it will redirect to a user's/org's one
          */
-        if (userID != null)
+        /*if (userID != null)
             return "redirect:/user/" + userID;
         if (organizationID != null)
             return "redirect:/organization/" + organizationID;
 
         return "redirect:/pet";
-    }
+    } */
 
     /**
      * Form for pet registration
@@ -167,6 +168,7 @@ public class PetController {
      * @return jsp with data of a new pet
      */
     @RequestMapping(value = "/new", method = POST)
+    @PreAuthorize("#userId == authentication.principal.user.id or hasRole('ROLE_ADMIN')")
     public String create(Pet pet) {
         System.out.println(pet.toString());
         petRepository.save(pet);

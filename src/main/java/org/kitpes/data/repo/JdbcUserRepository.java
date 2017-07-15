@@ -30,7 +30,6 @@ public class JdbcUserRepository implements UserRepository {
         return jdbc.query("SELECT username FROM users", (rs, num) -> rs.getString("username"));
     }
 
-
     /**
      * Getting all the users from the db
      *

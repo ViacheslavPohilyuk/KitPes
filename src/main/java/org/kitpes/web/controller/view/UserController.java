@@ -1,14 +1,10 @@
 package org.kitpes.web.controller.view;
 
-import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
-
 import org.kitpes.config.cloud.CloudService;
 import org.kitpes.config.security.UserPrincipal;
 import org.kitpes.data.contract.OrganizationRepository;
 import org.kitpes.data.contract.PetRepository;
 import org.kitpes.data.contract.UserRepository;
-import org.kitpes.model.Pet;
 import org.kitpes.model.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +13,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -59,7 +54,7 @@ public class UserController {
         this.cloudService = cloudService;
     }
 
-    long getIdAuthUser() {
+    private long getIdAuthUser() {
         return ((UserPrincipal) SecurityContextHolder
                 .getContext()
                 .getAuthentication()
@@ -78,12 +73,6 @@ public class UserController {
     public String user(@PathVariable long id,
                        Model model) {
         User user = userRepository.readOne(id);
-
-        /* Reading all pets from the db with an id of this user */
-        //user.setPets(petRepository.readByUserID(id));
-        /* Reading all organizations from the db with an id of this user */
-        //user.setOrganizations(organizationRepository.readByUserID(id));
-
         model.addAttribute(user);
         return "user_profile";
     }
@@ -125,9 +114,9 @@ public class UserController {
      * @return list of user objects
      */
     @RequestMapping(method = GET)
+    @PreAuthorize("#hasRole('ROLE_ADMIN')")
     public String users(Model model) {
         List<User> users = userRepository.readAll();
-
         model.addAttribute("userList", users);
         return "user/all";
     }
@@ -141,6 +130,7 @@ public class UserController {
      * will be updated
      */
     @RequestMapping(value = "/edit/{id}", method = GET)
+    @PreAuthorize("#id == authentication.principal.user.id or hasRole('ROLE_ADMIN')")
     public String updatedGet(@PathVariable long id,
                              Model model) {
         User user = userRepository.readOne(id);
@@ -155,21 +145,12 @@ public class UserController {
      * @return message about an operation
      */
     @RequestMapping(value = "/edit", method = POST)
+    @PreAuthorize("#user.id == authentication.principal.user.id or hasRole('ROLE_ADMIN')")
     public String updateID(User user) {
         userRepository.updateOne(user);
         return "redirect:/user/" + user.getId();
     }
 
-    /**
-     * Delete a user by its id
-     *
-     * @param id an id of a user
-     */
-    @RequestMapping(value = "/delete/{id}", method = GET)
-    public String deleteID(@PathVariable long id) {
-        userRepository.deleteOne(id);
-        return "redirect:/user";
-    }
 
     /**
      * Processing image files those user uploads on an user's

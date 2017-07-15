@@ -40,6 +40,11 @@ html,body{
     padding:7px;
     font-size:18px;
     margin:3px;
+    color: white;
+  }
+  &__notfound {
+    color: #FFFF00;
+    display: none;
   }
   &__restore{
     width:100%;
