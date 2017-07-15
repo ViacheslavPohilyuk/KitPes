@@ -31,7 +31,7 @@ public class JdbcFoundLostPetRepository implements FoundLostPetRepository {
 
     public List<FoundLostPet> readLimited(int type, int lowerBound, int count) {
         return jdbc.query("SELECT * FROM found_lost_pets WHERE type = ? LIMIT ?, ?",
-                new FoundLostPetRowMapper(), type, lowerBound, lowerBound + count);
+                new FoundLostPetRowMapper(), type, lowerBound, count);
     }
 
     /**

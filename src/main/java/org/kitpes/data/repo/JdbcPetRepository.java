@@ -37,7 +37,7 @@ public class JdbcPetRepository implements PetRepository {
     }
 
     public List<Pet> readLimited(int lowerBound, int count) {
-        return jdbc.query("SELECT * FROM pets LIMIT ?, ?", new PetRowMapper(), lowerBound, lowerBound + count);
+        return jdbc.query("SELECT * FROM pets LIMIT ?, ?", new PetRowMapper(), lowerBound, count);
     }
 
     /**

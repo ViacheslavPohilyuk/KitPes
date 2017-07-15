@@ -93,7 +93,7 @@ public class UserController {
                 .getContext()
                 .getAuthentication()
                 .getPrincipal()).getUser().getId();
-        return "redirect:/user/" + id;
+        return "forward:/user/" + id;
     }
 
     /**
