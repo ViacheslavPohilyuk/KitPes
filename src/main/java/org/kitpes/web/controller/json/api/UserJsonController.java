@@ -53,7 +53,7 @@ public class UserJsonController {
      * @return web-page with data of an one user
      */
     @RequestMapping(value = "/{id}", method = GET)
-    //@PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public User user(@PathVariable long id) {
         User user = userRepository.readOne(id);
         user.setPets(petRepository.readByUserID(user.getId()));
@@ -67,7 +67,7 @@ public class UserJsonController {
      * @return list of user objects
      */
     @RequestMapping(method = GET)
-    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<User> users() {
         List<User> users = userRepository.readAll();
         for (User user : users) {
@@ -84,7 +84,7 @@ public class UserJsonController {
      * @return message about an operation
      */
     @RequestMapping(value = "/edit", method = POST)
-    //@PreAuthorize("#user.username == authentication.name or hasRole('ROLE_ADMIN')")
+    @PreAuthorize("#user.id == authentication.principal.user.id or hasRole('ROLE_ADMIN')")
     public ResponseEntity updateID(User user) {
         userRepository.updateOne(user);
         return new ResponseEntity<>("User have been successfully changed", HttpStatus.OK);
@@ -98,7 +98,7 @@ public class UserJsonController {
      * @param id an id of a user
      */
     @RequestMapping(value = "/delete/{id}", method = GET)
-    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity deleteID(@PathVariable long id) {
         userRepository.deleteOne(id);
         return new ResponseEntity<>("User have been successfully deleted", HttpStatus.OK);
@@ -114,7 +114,7 @@ public class UserJsonController {
      * @return redirection to an user's profile page
      */
     @RequestMapping(value = "/fileupload", method = RequestMethod.POST)
-    //@PreAuthorize("#userId == authentication.principal.user.id or hasRole('ROLE_ADMIN')")
+    @PreAuthorize("#userId == authentication.principal.user.id or hasRole('ROLE_ADMIN')")
     public ResponseEntity processUpload(@RequestPart("profilePicture") MultipartFile file,
                                         long userId) throws IOException {
         Cloudinary cloud = cloudService.getConnection();

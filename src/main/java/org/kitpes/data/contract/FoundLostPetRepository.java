@@ -10,7 +10,7 @@ import java.util.List;
 public interface FoundLostPetRepository {
     List<FoundLostPet> readLimited(int type, int lowerBound, int count);
 
-    List<FoundLostPet> readAll(Integer type);
+    List<FoundLostPet> readAll(Boolean type, Long userId);
 
     FoundLostPet readOne(long id);
 

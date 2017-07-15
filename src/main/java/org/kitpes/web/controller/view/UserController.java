@@ -4,12 +4,15 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 
 import org.kitpes.config.cloud.CloudService;
+import org.kitpes.config.security.UserPrincipal;
 import org.kitpes.data.contract.OrganizationRepository;
 import org.kitpes.data.contract.PetRepository;
 import org.kitpes.data.contract.UserRepository;
 import org.kitpes.model.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -56,6 +59,44 @@ public class UserController {
     }
 
     /**
+     * Getting a profile of a user by id
+     *
+     * @param id    an id of a user
+     * @param model adding a user to the model
+     * @return web-page with data of an one user
+     */
+    @RequestMapping(value = "/{id}", method = GET)
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public String user(@PathVariable long id,
+                       Model model) {
+        User user = userRepository.readOne(id);
+
+        /* Reading all pets from the db with an id of this user */
+        //user.setPets(petRepository.readByUserID(id));
+        /* Reading all organizations from the db with an id of this user */
+        //user.setOrganizations(organizationRepository.readByUserID(id));
+
+        model.addAttribute(user);
+        return "user_profile";
+    }
+
+    /**
+     * Method that redirects to the user's profile when
+     * one successfully signed in
+     *
+     * @return view with user's profile
+     */
+    @RequestMapping(value = "/afterLogin", method = GET)
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public String redirectUserProfile() {
+        long id = ((UserPrincipal) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal()).getUser().getId();
+        return "redirect:/user/" + id;
+    }
+
+    /**
      * Getting all users
      *
      * @param model adding a user to the model
@@ -67,28 +108,6 @@ public class UserController {
 
         model.addAttribute("userList", users);
         return "user/all";
-    }
-
-    /**
-     * Getting a profile of a user by id
-     *
-     * @param id    an id of a user
-     * @param model adding a user to the model
-     * @return web-page with data of an one user
-     */
-    @RequestMapping(value = "/{id}", method = GET)
-    public String user(@PathVariable long id,
-                       Model model) {
-        User user = userRepository.readOne(id);
-
-        /* Reading all pets from the db with an id of this user */
-        user.setPets(petRepository.readByUserID(id));
-
-        /* Reading all organizations from the db with an id of this user */
-        user.setOrganizations(organizationRepository.readByUserID(id));
-
-        model.addAttribute(user);
-        return "user/userProfile";
     }
 
     /**

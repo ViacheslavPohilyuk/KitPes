@@ -39,14 +39,24 @@ public class JdbcFoundLostPetRepository implements FoundLostPetRepository {
      *
      * @return a list of found_lost_pets
      */
-    public List<FoundLostPet> readAll(Integer type) {
+    public List<FoundLostPet> readAll(Boolean type, Long userId) {
         List<FoundLostPet> foundLostPets;
-        if (type != null)
-            foundLostPets = jdbc.query("SELECT * FROM found_lost_pets WHERE type = ?",
-                    new FoundLostPetRowMapper(), type);
-        else
-            foundLostPets = jdbc.query("SELECT * FROM found_lost_pets",
-                    new FoundLostPetRowMapper());
+        if (type != null) {
+            if (userId != null) {
+                foundLostPets = jdbc.query("SELECT * FROM found_lost_pets WHERE type = ?  AND userId = ?",
+                        new FoundLostPetRowMapper(), type, userId);
+            } else {
+                foundLostPets = jdbc.query("SELECT * FROM found_lost_pets WHERE type = ?",
+                        new FoundLostPetRowMapper(), type);
+            }
+        } else {
+            if (userId != null) {
+                foundLostPets = jdbc.query("SELECT * FROM found_lost_pets WHERE userId = ?",
+                        new FoundLostPetRowMapper(), userId);
+            } else {
+                foundLostPets = jdbc.query("SELECT * FROM found_lost_pets", new FoundLostPetRowMapper());
+            }
+        }
         return foundLostPets;
     }
 
@@ -106,8 +116,8 @@ public class JdbcFoundLostPetRepository implements FoundLostPetRepository {
      * @return auto-generated key from the db
      */
     public long save(FoundLostPet foundLostPet) {
-        final String insertSQL = "INSERT INTO found_lost_pets (name, sex, species, age, description, dateLostFound, type, profile_image)" +
-                " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        final String insertSQL = "INSERT INTO found_lost_pets (name, sex, species, age, description, dateLostFound, type, profile_image, userId)" +
+                " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbc.update((connection) -> {
                     PreparedStatement ps =
@@ -120,6 +130,7 @@ public class JdbcFoundLostPetRepository implements FoundLostPetRepository {
                     ps.setString(6, foundLostPet.getDateLostFound());
                     ps.setBoolean(7, foundLostPet.isType());
                     ps.setString(8, foundLostPet.getProfileImgURL());
+                    ps.setLong(9, foundLostPet.getUserId());
                     return ps;
                 },
                 keyHolder);
@@ -157,7 +168,8 @@ public class JdbcFoundLostPetRepository implements FoundLostPetRepository {
                     rs.getString("description"),
                     rs.getString("dateLostFound"),
                     rs.getBoolean("type"),
-                    rs.getString("profile_image"));
+                    rs.getString("profile_image"),
+                    rs.getLong("userId"));
         }
     }
 }

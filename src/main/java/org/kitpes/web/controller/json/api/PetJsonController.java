@@ -11,6 +11,7 @@ import org.kitpes.model.filter.FilterPet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -78,8 +79,8 @@ public class PetJsonController {
      * @return message about an operation
      */
     @RequestMapping(value = "/edit", method = POST)
-    //@PreAuthorize("#username == authentication.name or hasRole('ROLE_ADMIN')")
-    public ResponseEntity updateID(Pet pet, String username) {
+    @PreAuthorize("#userId == authentication.principal.user.id or hasRole('ROLE_ADMIN')")
+    public ResponseEntity updateID(Pet pet, long userId) {
         petRepository.updateOne(pet);
         return new ResponseEntity<>("Pet have been successfully changed", HttpStatus.OK);
 
@@ -91,8 +92,8 @@ public class PetJsonController {
      * @param id an id of a pet
      */
     @RequestMapping(value = "/delete/{id}", method = GET)
-    //@PreAuthorize("#username == authentication.name or hasRole('ROLE_ADMIN')")
-    public ResponseEntity deleteID(@PathVariable long id, @RequestParam(required = false) String username) {
+    @PreAuthorize("#userId == authentication.principal.user.id or hasRole('ROLE_ADMIN')")
+    public ResponseEntity deleteID(@PathVariable long id, @RequestParam(required = false) long userId) {
         petRepository.deleteOne(id);
         return new ResponseEntity<>("Pet have been successfully changed", HttpStatus.OK);
 
@@ -105,9 +106,9 @@ public class PetJsonController {
      * @return jsp with data of a new pet
      */
     @RequestMapping(value = "/new", method = POST)
-    //@PreAuthorize("#username == authentication.name or hasRole('ROLE_ADMIN')")
+    @PreAuthorize("#userId == authentication.principal.user.id or hasRole('ROLE_ADMIN')")
     public ResponseEntity create(@RequestPart(required = false, value = "profilePicture") MultipartFile file,
-                          Pet pet, String username) throws IOException {
+                          Pet pet, long userId) throws IOException {
 
         /* Set profile image of a new pet */
         if(file != null) {
@@ -132,9 +133,9 @@ public class PetJsonController {
      * @return redirection to an pet's profile page
      */
     @RequestMapping(value = "/fileupload", method = RequestMethod.POST)
-    //@PreAuthorize("#username == authentication.name or hasRole('ROLE_ADMIN')")
+    @PreAuthorize("#userId == authentication.principal.user.id  or hasRole('ROLE_ADMIN')")
     public ResponseEntity processUpload(@RequestPart("profilePicture") MultipartFile file,
-                                 String username, Long petID) throws IOException {
+                                 long userId, Long petID) throws IOException {
         Map uploadResult = ((Cloudinary) cloudService
                 .getConnection())
                 .uploader()
@@ -143,6 +144,5 @@ public class PetJsonController {
         String profileImage = (String) uploadResult.get("url");
         petRepository.updateProfileImage(profileImage, petID);
         return new ResponseEntity<>("Image have been successfully added", HttpStatus.OK);
-
     }
 }

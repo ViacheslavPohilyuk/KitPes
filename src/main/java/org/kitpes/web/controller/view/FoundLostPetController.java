@@ -3,10 +3,13 @@ package org.kitpes.web.controller.view;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import org.kitpes.config.cloud.CloudService;
+import org.kitpes.config.security.UserPrincipal;
 import org.kitpes.data.contract.FoundLostPetRepository;
 import org.kitpes.model.FoundLostPet;
 import org.kitpes.model.form.DatePetLostFound;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,26 +45,36 @@ public class FoundLostPetController {
     }
 
     @RequestMapping(value = "/lost/create", method = GET)
+    @PreAuthorize("hasRole('ROLE_USER')")
     public String createLost() {
         return "pet/registration_lost";
     }
 
     @RequestMapping(value = "/found/create", method = GET)
+    @PreAuthorize("hasRole('ROLE_USER')")
     public String createFound() {
         return "pet/registration_found";
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @RequestMapping(value = "/create", method = POST)
     public String create(@RequestPart(required = false, value = "profilePicture") MultipartFile file,
-                                 @RequestParam Boolean type,
-                                 FoundLostPet foundLostPet,
-                                 DatePetLostFound date) throws IOException {
+                         @RequestParam Boolean type,
+                         FoundLostPet foundLostPet,
+                         DatePetLostFound date) throws IOException {
         /* Set type (Found pet) */
         foundLostPet.setType(type);
 
         /* Get date of day, month and year when pet was found
          * and unite them in one string */
         foundLostPet.setDateLostFound(date.dateConstruct());
+
+        /* Bind new pet to the current authentificated user */
+        long userId = ((UserPrincipal) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal()).getUser().getId();
+        foundLostPet.setUserId(userId);
 
         /* Set profile image of a new pet */
         if (file != null) {
@@ -73,6 +86,6 @@ public class FoundLostPetController {
         }
 
         foundLostPetRepository.save(foundLostPet);
-        return "redirect:/foundLostPet/found";
+        return "redirect:/user/" + userId;
     }
 }

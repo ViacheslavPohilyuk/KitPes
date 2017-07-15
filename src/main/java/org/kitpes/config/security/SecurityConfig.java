@@ -1,5 +1,6 @@
 package org.kitpes.config.security;
 
+import org.kitpes.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -22,12 +24,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         http
                 .authorizeRequests()
                 //.antMatchers("/api/user").access("hasRole('ROLE_USER')")
                 .and()
                     .formLogin()
-                    .loginPage("/login").defaultSuccessUrl("/foundLostPet/found", true)
+                    .loginPage("/login")
+                    .defaultSuccessUrl("/user/afterLogin")
                     .permitAll()
                     .failureUrl("/login?error")
                     .loginProcessingUrl("/auth/login_check")

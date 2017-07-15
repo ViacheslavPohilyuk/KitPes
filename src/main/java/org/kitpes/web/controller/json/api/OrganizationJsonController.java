@@ -79,7 +79,7 @@ public class OrganizationJsonController {
      * @return message about an operation
      */
     @RequestMapping(value = "/edit", method = POST)
-    //@PreAuthorize("#username == authentication.name or hasRole('ROLE_ADMIN')")
+    @PreAuthorize("#username == authentication.name or hasRole('ROLE_ADMIN')")
     public ResponseEntity updateID(Organization organization, String username) {
         organizationRepository.updateOne(organization);
         return new ResponseEntity<>("Organization have been successfully changed", HttpStatus.OK);
@@ -91,7 +91,7 @@ public class OrganizationJsonController {
      * @param id an id of a org
      */
     @RequestMapping(value = "/delete/{id}", method = GET)
-    //@PreAuthorize("#username == authentication.name or hasRole('ROLE_ADMIN')")
+    @PreAuthorize("#username == authentication.name or hasRole('ROLE_ADMIN')")
     public ResponseEntity deleteID(@PathVariable long id, String username) {
         organizationRepository.deleteOne(id);
         return new ResponseEntity<>("Organization have been successfully changed", HttpStatus.OK);
@@ -104,7 +104,7 @@ public class OrganizationJsonController {
      * @return jsp with data of a new org
      */
     @RequestMapping(value = "/new", method = POST)
-    //@PreAuthorize("#username == authentication.name or hasRole('ROLE_ADMIN')")
+    @PreAuthorize("#username == authentication.name or hasRole('ROLE_ADMIN')")
     public ResponseEntity create(Organization organization, String username) {
         organizationRepository.save(organization);
         return new ResponseEntity<>("Organization have been successfully changed", HttpStatus.OK);
@@ -119,7 +119,7 @@ public class OrganizationJsonController {
      * @return redirection to an organization's profile page
      */
     @RequestMapping(value = "/fileupload", method = RequestMethod.POST)
-    //@PreAuthorize("#username == authentication.name or hasRole('ROLE_ADMIN')")
+    @PreAuthorize("#username == authentication.name or hasRole('ROLE_ADMIN')")
     public ResponseEntity processUpload(@RequestPart("profilePicture") MultipartFile file,
                                  String username, Long organizationID) throws IOException {
         Map uploadResult = ((Cloudinary) cloudService

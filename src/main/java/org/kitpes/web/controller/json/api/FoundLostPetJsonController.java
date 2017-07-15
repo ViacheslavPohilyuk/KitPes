@@ -4,6 +4,7 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 
 import org.kitpes.config.cloud.CloudService;
+import org.kitpes.config.security.UserPrincipal;
 import org.kitpes.data.contract.FoundLostPetRepository;
 import org.kitpes.model.FoundLostPet;
 
@@ -11,6 +12,8 @@ import org.kitpes.model.form.DatePetLostFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -47,8 +50,9 @@ public class FoundLostPetJsonController {
      * @return list of Pet objects
      */
     @RequestMapping(method = GET)
-    public List<FoundLostPet> pets(@RequestParam(required = false) Integer type) {
-        return foundLostPetRepository.readAll(type);
+    public List<FoundLostPet> pets(@RequestParam(required = false) Boolean type,
+                                   @RequestParam(required = false) Long userId) {
+        return foundLostPetRepository.readAll(type, userId);
     }
 
     /**
@@ -68,6 +72,7 @@ public class FoundLostPetJsonController {
      * @return ResponseEntity about an operation
      */
     @RequestMapping(value = "/edit", method = POST)
+    @PreAuthorize("foundLostPet.userId == authentication.principal.user.id or hasRole('ROLE_ADMIN')")
     public ResponseEntity updateID(FoundLostPet foundLostPet) {
         foundLostPetRepository.updateOne(foundLostPet);
         return new ResponseEntity<>("Pet have been successfully changed", HttpStatus.OK);
@@ -79,7 +84,8 @@ public class FoundLostPetJsonController {
      * @param id an id of a pet
      */
     @RequestMapping(value = "/delete/{id}", method = GET)
-    public ResponseEntity deleteID(@PathVariable long id) {
+    @PreAuthorize("#userId == authentication.principal.user.id or hasRole('ROLE_ADMIN')")
+    public ResponseEntity deleteID(@PathVariable long id, long userId) {
         foundLostPetRepository.deleteOne(id);
         return new ResponseEntity<>("Pet have been successfully deleted", HttpStatus.OK);
     }
@@ -91,10 +97,25 @@ public class FoundLostPetJsonController {
      * @return jsp with data of a new pet
      */
     @RequestMapping(value = "/new", method = POST)
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity create(@RequestPart(required = false, value = "profilePicture") MultipartFile file,
+                                 @RequestParam Boolean type,
                                  FoundLostPet foundLostPet,
-                                 DatePetLostFound dateLost) throws IOException {
+                                 DatePetLostFound date) throws IOException {
+        /* Set type (Found pet) */
+        foundLostPet.setType(type);
 
+        /* Get date of day, month and year when pet was found
+         * and unite them in one string */
+        foundLostPet.setDateLostFound(date.dateConstruct());
+
+        /* Bind new pet to the current authentificated user */
+        long userId = ((UserPrincipal) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal()).getUser().getId();
+
+        foundLostPet.setUserId(userId);
 
         /* Set profile image of a new pet */
         if (file != null) {
@@ -118,8 +139,9 @@ public class FoundLostPetJsonController {
      * @return redirection to an pet's profile page
      */
     @RequestMapping(value = "/fileupload", method = RequestMethod.POST)
+    @PreAuthorize("#userId == authentication.principal.user.id or hasRole('ROLE_ADMIN')")
     public ResponseEntity processUpload(@RequestPart("profilePicture") MultipartFile file,
-                                        Long foundLostPetID) throws IOException {
+                                        long userId, Long foundLostPetID) throws IOException {
         Map uploadResult = ((Cloudinary) cloudService
                 .getConnection())
                 .uploader()

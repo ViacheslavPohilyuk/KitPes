@@ -14,7 +14,7 @@
         <nav class="c-navigation">
             <div class="l-menu">
                 <div class="c-navigation__menu-button"></div>
-                <a href="../index.html">
+                <a href="../user_profile.html">
                     <div class="c-navigation__logo"></div>
                 </a>
                 <div class="c-navigation__menu">
