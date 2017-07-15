@@ -361,7 +361,7 @@
             <div class="c-find__show-all">
                 <div class="l-grid">
                     <h4 class="c-find__show-all-head">показать всех найденных питомцев</h4>
-                    <img class="c-find__down" src="./images/down.svg">
+                    <img class="c-find__down" src="/resources/found/images/down.svg">
                 </div>
             </div>
         </div>

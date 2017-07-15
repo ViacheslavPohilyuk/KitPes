@@ -12,7 +12,7 @@ function requestItems() {
     var xhr = new XMLHttpRequest();
 
     // 2. Конфигурируем его: GET-запрос на URL 'phones.json'
-    xhr.open('GET', 'https://crossorigin.me/https://infinite-shore-71587.herokuapp.com/api/foundlostpets/limited?type=1&bunch=' + counter, false);
+    xhr.open('GET', 'https://infinite-shore-71587.herokuapp.com/api/foundlostpets/limited?type=1&bunch=' + counter, false);
 
     // 3. Отсылаем запрос
     xhr.send();
@@ -113,7 +113,7 @@ function setModals() {
 
 				<div class="c-show-pets__contacts col-2-3">
 				<span class="c-show-pets__contacts-head">Контакты человека, нашедего питомца</span><br>
-				<img class="c-show-pets__user-image" src="images/user.svg">
+				<img class="c-show-pets__user-image" src="/resources/found/images/user.svg">
 				<span class="c-show-pets__finder" name="finder">Максим Вениаминов</span>
 				<a class="c-show-pets__socials" href="#" name="instagram">
 					<img class="c-show-pets__socials-img" src="/resources/found/images/instagram.png">
