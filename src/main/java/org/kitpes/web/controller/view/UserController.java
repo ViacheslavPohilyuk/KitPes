@@ -8,6 +8,7 @@ import org.kitpes.config.security.UserPrincipal;
 import org.kitpes.data.contract.OrganizationRepository;
 import org.kitpes.data.contract.PetRepository;
 import org.kitpes.data.contract.UserRepository;
+import org.kitpes.model.Pet;
 import org.kitpes.model.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +59,13 @@ public class UserController {
         this.cloudService = cloudService;
     }
 
+    long getIdAuthUser() {
+        return ((UserPrincipal) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal()).getUser().getId();
+    }
+
     /**
      * Getting a profile of a user by id
      *
@@ -66,7 +74,7 @@ public class UserController {
      * @return web-page with data of an one user
      */
     @RequestMapping(value = "/{id}", method = GET)
-    @PreAuthorize("#id == authentication.principal.user.id or hasRole('ROLE_USER')")
+    @PreAuthorize("#id == authentication.principal.user.id or hasRole('ROLE_ADMIN')")
     public String user(@PathVariable long id,
                        Model model) {
         User user = userRepository.readOne(id);
@@ -89,11 +97,25 @@ public class UserController {
     @RequestMapping(value = "/afterLogin", method = GET)
     @PreAuthorize("hasRole('ROLE_USER')")
     public String redirectUserProfile() {
-        long id = ((UserPrincipal) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal()).getUser().getId();
-        return "forward:/user/" + id;
+        return "forward:/user/" + getIdAuthUser();
+    }
+
+    @RequestMapping(value = "/listLostPets", method = GET)
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public String redirectUserLostPetsList() {
+        return "forward:/api/foundlostpets?type=0&userId=" + getIdAuthUser();
+    }
+
+    @RequestMapping(value = "/listFoundPets", method = GET)
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public String redirectUserFoundPetsList() {
+        return "forward:/api/foundlostpets?type=1&userId=" + getIdAuthUser();
+    }
+
+    @RequestMapping(value = "/listAdoptedPets", method = GET)
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public String redirectUserAdoptedPetsList() {
+        return "forward:/api/pet/byUserId/" + getIdAuthUser();
     }
 
     /**

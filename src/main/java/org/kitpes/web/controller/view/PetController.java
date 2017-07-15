@@ -87,7 +87,6 @@ public class PetController {
                       @RequestParam(value = "userID", required = false) Long userID,
                       @RequestParam(value = "organizationID", required = false) Long organizationID,
                       @RequestParam(value = "userOrgID", required = false) Long userOrgID) {
-        model = addIDsToModel(model, userID, organizationID, userOrgID);
 
         Pet pet = petRepository.readOne(id);
         model.addAttribute(pet);
@@ -172,16 +171,6 @@ public class PetController {
         System.out.println(pet.toString());
         petRepository.save(pet);
         return "redirect:/" ;
-    }
-
-    private Model addIDsToModel(Model model, Long userID, Long organizationID, Long userOrgID) {
-        if (userID != null)
-            model.addAttribute("userID", userID);
-        else if (organizationID != null) {
-            model.addAttribute("organizationID", organizationID);
-            model.addAttribute("userOrgID", userOrgID);
-        }
-        return model;
     }
 
     /**

@@ -42,6 +42,11 @@ public class PetJsonController {
         return petRepository.totalPets();
     }
 
+    @RequestMapping(value = "/byUserId/{userId}", method = GET)
+    public List<Pet> usersPets(@PathVariable long userId) {
+        return petRepository.readByUserID(userId);
+    }
+
     @RequestMapping(value = "limited", method = GET)
     public List<Pet> petsLimited(@RequestParam(value = "bunch") int bunch) {
         int bunchSize = 8;
