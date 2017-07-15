@@ -4,6 +4,7 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import org.kitpes.config.cloud.CloudService;
 import org.kitpes.data.contract.PetRepository;
+import org.kitpes.model.FoundLostPet;
 import org.kitpes.model.Message;
 import org.kitpes.model.Pet;
 
@@ -41,6 +42,11 @@ public class PetJsonController {
         return petRepository.totalPets();
     }
 
+    @RequestMapping(value = "limited", method = GET)
+    public List<Pet> petsLimited(@RequestParam(value = "bunch") int bunch) {
+        int bunchSize = 8;
+        return petRepository.readLimited((bunch * bunchSize), bunchSize);
+    }
     /**
      * Getting all pets
      *

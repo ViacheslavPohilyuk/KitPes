@@ -152,18 +152,13 @@ public class PetController {
     }
 
     /**
-     * Get web-filter with fields for put data of a new pet
+     * Form for pet registration
      *
      * @return jsp for create a new pet
      */
     @RequestMapping(value = "/new", method = GET)
-    public String petForm(Model model,
-                          @RequestParam(value = "userID", required = false) Long userID,
-                          @RequestParam(value = "organizationID", required = false) Long organizationID,
-                          @RequestParam(value = "userOrgID", required = false) Long userOrgID) {
-
-        model = addIDsToModel(model, userID, organizationID, userOrgID);
-        return "pet/new";
+    public String createForm() {
+        return "pet/registration_adopt_pet";
     }
 
     /**
@@ -173,31 +168,10 @@ public class PetController {
      * @return jsp with data of a new pet
      */
     @RequestMapping(value = "/new", method = POST)
-    public String create(ServletRequest request, Pet pet) {
-        Long userID = pet.getUserID();
-        Long organizationID = pet.getOrganizationID();
-
+    public String create(Pet pet) {
         System.out.println(pet.toString());
-        long key = petRepository.save(pet);
-
-        /* Getting data about pet's health status and
-         * its sex from <select> html-tag */
-        String status = request.getParameter("status");
-        if (!status.equals("status"))
-            pet.setStatus(status);
-        String sex = request.getParameter("sex");
-        if (!status.equals("sex"))
-            pet.setSex(sex);
-        System.out.println(pet.toString());
-
-        /* Redirection to an user's or organization's page */
-        if (userID != null) {
-            return "redirect:/user/" + userID;
-        } else if (organizationID != null) {
-            return "redirect:/organization/" + organizationID;
-        }
-
-        return "redirect:/pet/" + key;
+        petRepository.save(pet);
+        return "redirect:/" ;
     }
 
     private Model addIDsToModel(Model model, Long userID, Long organizationID, Long userOrgID) {

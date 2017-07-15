@@ -1,5 +1,6 @@
 package org.kitpes.data.contract;
 
+import org.kitpes.model.FoundLostPet;
 import org.kitpes.model.Pet;
 
 import java.util.List;
@@ -9,6 +10,8 @@ import java.util.List;
  */
 public interface PetRepository {
     public int totalPets();
+
+    List<Pet> readLimited(int lowerBound, int count);
 
     List<Pet> readByUserID(long userID);
 

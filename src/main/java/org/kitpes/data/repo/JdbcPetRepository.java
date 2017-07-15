@@ -36,6 +36,10 @@ public class JdbcPetRepository implements PetRepository {
         return rowSet.getInt(1);
     }
 
+    public List<Pet> readLimited(int lowerBound, int count) {
+        return jdbc.query("SELECT * FROM pets LIMIT ?, ?", new PetRowMapper(), lowerBound, lowerBound + count);
+    }
+
     /**
      * Getting all the pets from the db
      *
@@ -114,8 +118,8 @@ public class JdbcPetRepository implements PetRepository {
                 pet.getDescription(),
                 pet.getStatus(),
                 pet.getId(),
-                pet.isSterilized(),
-                pet.isVaccinated()
+                pet.getSterilized(),
+                pet.getVaccinated()
         };
 
         return jdbc.update(updateStatement, updatedDataAndID);
@@ -151,26 +155,26 @@ public class JdbcPetRepository implements PetRepository {
         jdbc.update((connection) -> {
                     PreparedStatement ps =
                             connection.prepareStatement(insertSQL, new String[]{"id"});
-                    ps.setString(1, pet.getName());
-                    ps.setString(2, pet.getSpecies());
-                    ps.setInt(3, pet.getAge());
-                    ps.setString(4, pet.getSex());
-                    ps.setString(5, pet.getDescription());
-                    ps.setString(6, pet.getStatus());
-
                     /* Setting userID and petID */
                     Long userID = pet.getUserID();
                     Long petID = pet.getOrganizationID();
+
+                    ps.setString(1, pet.getName());
+                    ps.setString(2, pet.getSpecies());
+                    if (pet.getAge() != null) ps.setLong(3, pet.getAge());
+                    else ps.setNull(3, Types.BIGINT);
+                    ps.setString(4, pet.getSex());
+                    ps.setString(5, pet.getDescription());
+                    ps.setString(6, pet.getStatus());
 
                     /* Set userID and petID with some id or null */
                     if (userID != null) ps.setLong(7, userID);
                     else ps.setNull(7, Types.BIGINT);
                     if (petID != null) ps.setLong(8, petID);
                     else ps.setNull(8, Types.BIGINT);
-
                     ps.setString(9, pet.getProfileImgURL());
-                    ps.setBoolean(10, pet.isSterilized());
-                    ps.setBoolean(11, pet.isVaccinated());
+                    ps.setBoolean(10, pet.getSterilized());
+                    ps.setBoolean(11, pet.getVaccinated());
                     return ps;
                 },
                 keyHolder);

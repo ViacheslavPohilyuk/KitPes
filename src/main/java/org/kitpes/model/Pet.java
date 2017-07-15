@@ -18,7 +18,7 @@ public class Pet {
     /* cat, dog etc. */
     private String species;
 
-    private int age;
+    private Integer age;
 
     private String sex;
 
@@ -40,11 +40,11 @@ public class Pet {
     /* URL of a profile picture of a pet */
     private String profileImgURL = "/resources/images/default_pet.jpg";
 
-    boolean sterilized;
+    Boolean sterilized;
 
-    boolean vaccinated;
+    Boolean vaccinated;
 
-    public Pet(String name, String animal, int age, String sex, String description, String status, Long userID, Long organizationID, String profileImgURL, boolean vaccinated, boolean sterilized) {
+    public Pet(String name, String animal, Integer age, String sex, String description, String status, Long userID, Long organizationID, String profileImgURL, Boolean vaccinated, Boolean sterilized) {
         this(null, name, animal, age, sex, description, status, userID, organizationID, profileImgURL, vaccinated, sterilized);
     }
 

@@ -261,19 +261,11 @@
 
 .c-show-pets {
   width: 100%;
-  display: inline-block;
-  &__close {
-    width: 15px;
-    height: 15px;
-    background-image: url(../images/close.png);
-    background-size: cover;
-    z-index: 200;
-    background-color: transparent;
-    border: none;
-    position: relative;
-    top: 50px;
-    left: 390px;
-  }
+  display: flex;
+  justify-content:center;
+  align-items:center;
+  position:relative;
+
   &__name {
     padding-top: 5px;
     padding-right: 15px;
@@ -286,23 +278,35 @@
     font-family: bebas-bold;
     letter-spacing: 3px;
     font-size: 24pt;
-    position: relative;
-    top: 70px;
-    left: 380px;
+    position: absolute;
+    top: -30px;
+    right: 40px;
     z-index: 100;
     display: inline-block;
   }
   &__main {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-left: -485px;
-    margin-top: -225px;
+    position: relative;
+    //top: 50%;
+    //left: 50%;
+    //margin-left: -485px;
+    //margin-top: -225px;
     width: 970px;
     heigth: 450px;
     background-color: @color-ligthgrey;
     padding: 15px;
     display: block;
+  }
+  &__close {
+    width: 15px;
+    height: 15px;
+    background-image: url(../images/close.png);
+    background-size: cover;
+    z-index: 200;
+    background-color: transparent;
+    border: none;
+    position: absolute;
+    top: -30px;
+    right: 0px;
   }
   &__main-photo {
     max-width: 270px;
@@ -315,7 +319,7 @@
   &__search {
     display: inline-block;
     padding-bottom: 10px;
-    position: relative;
+    position: absolute;
     left: 40px;
     cursor: pointer;
   }
@@ -360,13 +364,13 @@
     width: 640px;
   }
   &__contacts {
-    position: relative;
+    position: absolute;
     background-color: @color-grey;
     padding: 10px;
     width: 640px;
-    margin-top: 440px;
-    left: 510px;
     display: block;
+    right:0;
+    bottom:-85px;
   }
   &__contacts-head {
     font-family: intro-light;
@@ -419,9 +423,9 @@
     letter-spacing: 2px;
     font-size: 18pt;
     cursor: pointer;
-    position: relative;
-    top: 495px;
-    left: -460px;
+    position: absolute;
+    bottom: -55px;
+    left: 40px;
     display: block;
   }
 }
@@ -458,11 +462,26 @@
 }
 .l-show-pets {
   width: 100%;
-  display: none;
+  height:100%;
+  display: flex;
+  justify-content:center;
+  align-items: center;
   z-index: 200;
-  position: absolute;
+  position: relative;
   left: 0;
   right: 0;
   top: 0;
   bottom: 0;
 }
+
+.c-modal{
+  width:100vw;
+  height:100vh;
+  background-color: rgba(20,20,20,0.4);
+  position:fixed;
+  top:0;
+  left:0;
+  overflow:hidden;
+  z-index:9999999999;
+}
+

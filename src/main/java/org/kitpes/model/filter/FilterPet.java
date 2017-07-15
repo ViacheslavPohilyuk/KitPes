@@ -31,8 +31,8 @@ public class FilterPet {
 
     public List<Pet> filtering(List<Pet> pets) {
         //String query1 =
-        SelectQuery selectQ = new SelectQuery();
-        SelectQuery sel = new SelectQuery().addCondition(BinaryCondition.equalTo(species, "?"));
+        //SelectQuery selectQ = new SelectQuery();
+        //SelectQuery sel = new SelectQuery().addCondition(BinaryCondition.equalTo(species, "?"));
         //selectQ.addCustomization();
         //.validate().toString();
 
@@ -49,9 +49,9 @@ public class FilterPet {
 
                                         ((age.equals("age") || (p.getAge() > 5) || (p.getAge() >= Integer.parseInt(age) && p.getAge() <= Integer.parseInt(age) + 1))) &&
 
-                                        (sterilized.equals("sterilized") || p.isSterilized() == Boolean.valueOf(sterilized)) &&
+                                        (sterilized.equals("sterilized") || p.getSterilized() == Boolean.valueOf(sterilized)) &&
 
-                                        (vaccinated.equals("vaccinated") || p.isVaccinated() == Boolean.valueOf(vaccinated))
+                                        (vaccinated.equals("vaccinated") || p.getVaccinated() == Boolean.valueOf(vaccinated))
 
                 ).collect(Collectors.toList());
     }

@@ -66,7 +66,7 @@ public class UserController {
      * @return web-page with data of an one user
      */
     @RequestMapping(value = "/{id}", method = GET)
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("#id == authentication.principal.user.id or hasRole('ROLE_USER')")
     public String user(@PathVariable long id,
                        Model model) {
         User user = userRepository.readOne(id);
