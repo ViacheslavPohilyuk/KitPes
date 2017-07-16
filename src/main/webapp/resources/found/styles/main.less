@@ -1,24 +1,24 @@
-@import 'variables';
-@import 'grid';
+@import '/resources/found/styles/variables';
+@import '/resources/found/styles/grid';
 
 @font-face {
   font-family: BebasNeue;
-  src: url(../fonts/BebasNeueBook.ttf);
+  src: url(/resources/found/fonts/BebasNeueBook.ttf);
 }
 
 @font-face {
   font-family: bebas-bold;
-  src: url(../fonts/bebasNeuebold.ttf);
+  src: url(/resources/found/fonts/bebasNeuebold.ttf);
 }
 
 @font-face {
   font-family: intro-regular;
-  src: url(../fonts/Intro-Regular.otf);
+  src: url(/resources/found/fonts/Intro-Regular.otf);
 }
 
 @font-face {
   font-family: intro-light;
-  src: url(../fonts/Intro-Light.otf);
+  src: url(/resources/found/fonts/Intro-Light.otf);
 }
 
 .c-navigation__logo{
@@ -81,7 +81,7 @@
     font-family: intro-light;
     color: @color-greyfrayme;
     border: 1px solid @color-greyfrayme;
-    background: url(../images/angle.png) repeat-y right;
+    background: url(/resources/found/images/angle.png) repeat-y right;
     padding: 1px;
     &.is-expanded {
       padding: 4px;
@@ -159,11 +159,17 @@
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
   }
   &__image {
-    width: 100%;
-    height: auto;
-    display: block;
+    display:block;
+    width: 190px;
+    height:190px;
     margin: 0 auto;
     border: none;
+    overflow: hidden;
+//СТРОЧКУ НИЖЕ ДИНАМИЧЕСКИ ФОРМИРУЙ АНГУЛЯРОМ. ПРИ ИТЕРАЦИИ ПО КАЖДОЙ КАРТОЧКЕ ДОБАВЛЯЙ В СТИЛИ ЕЙ БЕКГРАУНД ИМЕЙДЖ С УРЛ-ОМ НУЖНЫМ
+  background-image: url("../../../../../../../../../Desktop/found/images/pets.jpg");
+    -webkit-background-size:cover;
+    background-size:cover;
+    background-position: center;
   }
   &__info {
     position: relative;
@@ -261,11 +267,19 @@
 
 .c-show-pets {
   width: 100%;
-  display: flex;
-  justify-content:center;
-  align-items:center;
-  position:relative;
-
+  display: inline-block;
+  &__close {
+    width: 15px;
+    height: 15px;
+    background-image: url(/resources/found/images/close.png);
+    background-size: cover;
+    z-index: 200;
+    background-color: transparent;
+    border: none;
+    position: relative;
+    top: 50px;
+    left: 390px;
+  }
   &__name {
     padding-top: 5px;
     padding-right: 15px;
@@ -278,35 +292,23 @@
     font-family: bebas-bold;
     letter-spacing: 3px;
     font-size: 24pt;
-    position: absolute;
-    top: -30px;
-    right: 40px;
+    position: relative;
+    top: 70px;
+    left: 380px;
     z-index: 100;
     display: inline-block;
   }
   &__main {
-    position: relative;
-    //top: 50%;
-    //left: 50%;
-    //margin-left: -485px;
-    //margin-top: -225px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -485px;
+    margin-top: -225px;
     width: 970px;
     heigth: 450px;
     background-color: @color-ligthgrey;
     padding: 15px;
     display: block;
-  }
-  &__close {
-    width: 15px;
-    height: 15px;
-    background-image: url(../images/close.png);
-    background-size: cover;
-    z-index: 200;
-    background-color: transparent;
-    border: none;
-    position: absolute;
-    top: -30px;
-    right: 0px;
   }
   &__main-photo {
     max-width: 270px;
@@ -319,7 +321,7 @@
   &__search {
     display: inline-block;
     padding-bottom: 10px;
-    position: absolute;
+    position: relative;
     left: 40px;
     cursor: pointer;
   }
@@ -364,13 +366,13 @@
     width: 640px;
   }
   &__contacts {
-    position: absolute;
+    position: relative;
     background-color: @color-grey;
     padding: 10px;
     width: 640px;
+    margin-top: 440px;
+    left: 510px;
     display: block;
-    right:0;
-    bottom:-85px;
   }
   &__contacts-head {
     font-family: intro-light;
@@ -423,9 +425,9 @@
     letter-spacing: 2px;
     font-size: 18pt;
     cursor: pointer;
-    position: absolute;
-    bottom: -55px;
-    left: 40px;
+    position: relative;
+    top: 495px;
+    left: -460px;
     display: block;
   }
 }
@@ -462,26 +464,11 @@
 }
 .l-show-pets {
   width: 100%;
-  height:100%;
-  display: flex;
-  justify-content:center;
-  align-items: center;
+  display: none;
   z-index: 200;
-  position: relative;
+  position: absolute;
   left: 0;
   right: 0;
   top: 0;
   bottom: 0;
 }
-
-.c-modal{
-  width:100vw;
-  height:100vh;
-  background-color: rgba(20,20,20,0.4);
-  position:fixed;
-  top:0;
-  left:0;
-  overflow:hidden;
-  z-index:9999999999;
-}
-
