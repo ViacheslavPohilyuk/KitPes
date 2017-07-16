@@ -8,6 +8,8 @@ import java.util.List;
  * Created by mac on 03.07.17.
  */
 public interface FoundLostPetRepository {
+    int totalPets(boolean type);
+
     List<FoundLostPet> readLimited(int type, int lowerBound, int count);
 
     List<FoundLostPet> readAll(Boolean type, Long userId);

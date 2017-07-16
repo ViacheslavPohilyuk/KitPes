@@ -179,7 +179,6 @@
 
 
         <!--<div class="c-find" id="app">
-
         </div>
         <div class="l-row">
 
@@ -191,17 +190,18 @@
                     <img class="c-find__down" src="/resources/found/images/down.svg">
                 </div>
             </div>
-        </div> -->
-        <div onclick="show(" none
-        ")" class="l-wrap">
-
-        <div>
-            <c:if test="${page != 0}">
-                <a href="/foundLostPet/found/${page - 1}" style="display: inline-block;">Предыдущая страница</a>
-            </c:if>
-            <a href="/foundLostPet/found/${page + 1}">Следующая страница</a>
         </div>
+        <div onclick="show(" none
+        ")" class="l-wrap"> -->
     </div>
+</div>
+<div>
+    <c:if test="${page != 0}">
+        <a class="prev_page_button" href="/foundLostPet/found/${page - 1}" style="display: inline-block;">Предыдущая страница</a>
+    </c:if>
+    <c:if test="${((page + 1) * bunch) < count}">
+        <a class="prev_page_button" href="/foundLostPet/found/${page + 1}">Следующая страница</a>
+    </c:if>
 </div>
 <footer class="c-footer">
     <div class="c-footer__info"><span>меню</span><span class="c-footer__author">design by </span><span>benmax</span>

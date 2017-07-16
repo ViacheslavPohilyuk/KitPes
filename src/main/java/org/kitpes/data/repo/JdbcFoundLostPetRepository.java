@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
@@ -27,6 +28,12 @@ public class JdbcFoundLostPetRepository implements FoundLostPetRepository {
     @Autowired
     public JdbcFoundLostPetRepository(JdbcOperations jdbc) {
         this.jdbc = jdbc;
+    }
+
+    public int totalPets(boolean type) {
+        SqlRowSet rowSet = jdbc.queryForRowSet("SELECT COUNT(*) FROM found_lost_pets WHERE type = ?", type);
+        rowSet.next();
+        return rowSet.getInt(1);
     }
 
     public List<FoundLostPet> readLimited(int type, int lowerBound, int count) {

@@ -36,8 +36,15 @@ public class FoundLostPetController {
     @Autowired
     private FoundLostPetRepository foundLostPetRepository;
 
+    @RequestMapping(value = "/found", method = GET)
+    public String foundRedirect() {
+        return "forward:/foundLostPet/found/0";
+    }
+
     @RequestMapping(value = "found/{page}", method = GET)
     public String foundPets(@PathVariable int page, Model model) {
+        model.addAttribute("bunch", 16);
+        model.addAttribute("count", foundLostPetRepository.totalPets(true));
         model.addAttribute("page", page);
         return "pet/found_pet";
     }

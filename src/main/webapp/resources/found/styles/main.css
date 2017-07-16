@@ -218,7 +218,7 @@
 
 .c-find__item {
     width: 23%;
-    margin: 5px;
+    margin: 40px 5px 5px 5px;
     display: block;
     position: relative
 }
@@ -239,7 +239,6 @@
     margin: 0 auto;
     border: none;
     overflow: hidden;
-    background-image: url(/resources/found/images/pets.jpg);
     -webkit-background-size: cover;
     background-size: cover;
     background-position: center

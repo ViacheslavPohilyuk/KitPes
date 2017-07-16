@@ -40,7 +40,7 @@ public class FoundLostPetJsonController {
     @RequestMapping(value = "limited", method = GET)
     public List<FoundLostPet> petsLimited(@RequestParam(value = "type") int type,
                                           @RequestParam(value = "bunch") int bunch) {
-        int bunchSize = 8;
+        int bunchSize = 16;
         return foundLostPetRepository.readLimited(type, (bunch * bunchSize), bunchSize);
     }
 
