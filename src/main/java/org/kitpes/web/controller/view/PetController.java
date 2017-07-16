@@ -84,15 +84,10 @@ public class PetController {
      * @return web-page with data of an one pet
      */
     @RequestMapping(value = "/{id}", method = GET)
-    public String pet(@PathVariable long id, Model model,
-                      @RequestParam(value = "userID", required = false) Long userID,
-                      @RequestParam(value = "organizationID", required = false) Long organizationID,
-                      @RequestParam(value = "userOrgID", required = false) Long userOrgID) {
-
+    public String pet(@PathVariable long id, Model model) {
         Pet pet = petRepository.readOne(id);
         model.addAttribute(pet);
-
-        return "pet/pet";
+        return "pet/pet_profile";
     }
 
     /**

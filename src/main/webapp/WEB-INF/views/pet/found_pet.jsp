@@ -16,7 +16,6 @@
     app.controller("PetList", function ($scope, $http) {
         $scope.feedContainer = document.querySelector(".c-find");
         $scope.store;
-        //$scope.pets = [[],[]];
         $scope.pets = [];
         $scope.counter = 0;
         $scope.morePets = true;
@@ -58,7 +57,6 @@
         }
 
         requestItems();
-
     });
 </script>
 <body class="c-body" ng-app="PetsFoundList" ng-controller="PetList">
