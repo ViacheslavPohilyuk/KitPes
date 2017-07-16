@@ -14,7 +14,7 @@
     <meta charset="UTF-8">
     <title>Kitpes - registration found</title>
     <link rel="stylesheet" type="text/css" href="<c:url value="/resources/assets/style.css"/>">
-    <link rel="stylesheet" type="text/css" href="<c:url value="/resources/registration_found/styles/main.css"/>">
+    <link rel="stylesheet" type="text/css" href="<c:url value="/resources/registration_adopt/styles/main.css"/>">
 </head>
 
 <body class="c-body">
@@ -28,6 +28,8 @@
                 </a>
                 <div class="c-navigation__menu">
                     <div class="l-menu-items">
+                        <div class="c-navigation__menu-item c-navigation__menu-item--caption">Хотите приютить?</div>
+
                         <div class="c-navigation__menu-item c-navigation__menu-item--caption">Нашли питомца?</div>
                         <a href="/foundLostPet/found/create" class="c-navigation__menu-item">зарегистрировать
                             найденного питомца</a>
@@ -72,9 +74,14 @@
                 <form action="/pet/new" method="POST" class="c-form__item-block" enctype="multipart/form-data">
                     <!-- Загрузка изображения -->
                     <input name="profilePicture" type="file" id="file1" style="display:none"
-                           accept="image/jpeg,image/png,image/gif"/>
+                           accept="image/jpeg,image/png,image/gif"
+                           enctype="multipart/form-data"/>
 
                     <div class="l-grid">
+                        <div class="c-form__item-style is-small">
+                            <div class="c-form__text">имя</div>
+                            <input name="name" type="text">
+                        </div>
                         <div class="c-form__item-style is-small">
                             <select class="c-form__item" name="species">
                                 <option value="${null}">вид</option>
@@ -124,76 +131,6 @@
                                 <option value="false">не стерилизован</option>
                             </select>
                         </div>
-                        <div class="l-date">
-                            <div class="c-form__item-style is-smaller">
-                                <select class="c-form__item" name="day">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
-                                    <option value="7">7</option>
-                                    <option value="8">8</option>
-                                    <option value="9">9</option>
-                                    <option value="10">10</option>
-                                    <option value="11">11</option>
-                                    <option value="12">12</option>
-                                    <option value="13">13</option>
-                                    <option value="14">14</option>
-                                    <option value="15">15</option>
-                                    <option value="16">16</option>
-                                    <option value="17">17</option>
-                                    <option value="18">18</option>
-                                    <option value="19">19</option>
-                                    <option value="20">20</option>
-                                    <option value="21">21</option>
-                                    <option value="22">22</option>
-                                    <option value="23">23</option>
-                                    <option value="24">24</option>
-                                    <option value="25">25</option>
-                                    <option value="26">26</option>
-                                    <option value="27">27</option>
-                                    <option value="28">28</option>
-                                    <option value="29">29</option>
-                                    <option value="30">30</option>
-                                    <option value="31">31</option>
-                                </select>
-                            </div>
-                            <div class="c-form__item-style is-smaller">
-                                <select class="c-form__item" name="month">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
-                                    <option value="7">7</option>
-                                    <option value="8">8</option>
-                                    <option value="9">9</option>
-                                    <option value="10">10</option>
-                                    <option value="11">11</option>
-                                    <option value="12">12</option>
-                                </select>
-                            </div>
-                            <div class="c-form__item-style is-smaller">
-                                <select class="c-form__item" name="year">
-                                    <option value="2017">2017</option>
-                                    <option value="2016">2016</option>
-                                    <option value="2015">2015</option>
-                                    <option value="2014">2014</option>
-                                    <option value="2013">2013</option>
-                                    <option value="2012">2012</option>
-                                    <option value="2011">2011</option>
-                                    <option value="2010">2010</option>
-                                    <option value="2009">2009</option>
-                                    <option value="2008">2008</option>
-                                    <option value="2007">2007</option>
-                                    <option value="2006">2006</option>
-                                </select>
-                            </div>
-                            <div class="c-form__text">дата находки питомца</div>
-                        </div>
                     </div>
                     <div class="l-grid">
                         <textarea class="c-form__description" type="text" placeholder="краткое описание"
@@ -215,7 +152,7 @@
 </footer>
 <script type="text/javascript">
     <%@include file="/resources/assets/script.js"%>
-    <%@include file="/resources/registration_found/js/js.js"%>
+    <%@include file="/resources/registration_adopt/js/js.js"%>
 </script>
 </body>
 

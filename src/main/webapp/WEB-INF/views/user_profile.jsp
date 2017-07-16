@@ -14,9 +14,10 @@
     <meta charset="UTF-8">
     <title>Kitpes - registration lose</title>
     <link rel="stylesheet" type="text/css" href="<c:url value="/resources/registration_found/styles/main.css"/>">
+    <link rel="stylesheet" type="text/css" href="<c:url value="/resources/found/styles/main.css"/>">
     <link rel="stylesheet" type="text/css" href="<c:url value="/resources/userprofile/style.css"/>">
+    <link rel="stylesheet" type="text/css" href="<c:url value="/resources/userprofile/main_profile.css"/>">
 </head>
-
 <body class="c-body">
 <header class="l-header">
     <nav class="c-navigation">
@@ -60,10 +61,6 @@
         <div class="c-profile__left-column">
             <div class="c-profile__user-photo"></div>
             <div class="c-profile__user-navigation">
-                <div class="c-profile__user-navigation-item">активность пользователя</div>
-                <div class="c-profile__user-navigation-item">сообщения</div>
-                <div class="c-profile__user-navigation-item">публикации</div>
-                <div class="c-profile__user-navigation-item">комментарии</div>
                 <div class="c-profile__user-navigation-item">потерянные питомцы</div>
                 <div class="c-profile__user-navigation-item">найденные питомцы</div>
             </div>
@@ -73,23 +70,21 @@
                 найденного питомца</a>
             <a href="/foundLostPet/lost/create" class="c-form__button" style="top:10%;width:45%;left:2%">Добавить
                 потерянного питомца</a>
-            <a href="/foundLostPet/lost/create" class="c-form__button" style="top:10%;width:45%;left:2%">Добавить
-                бездомного питомца</a>
         </div>
     </div>
-</div>
-<footer class="c-footer">
-    <div class="c-footer__info"><span>меню</span><span class="c-footer__author">design by </span><span>benmax</span>
-    </div>
-    <div class="c-footer__socials">
-        <i class="fa fa-instagram" aria-hidden="true"></i> <i class="fa fa-facebook-official" aria-hidden="true"></i>
-    </div>
-</footer>
+    <footer class="c-footer">
+        <div class="c-footer__info"><span>меню</span><span class="c-footer__author">design by </span><span>benmax</span>
+        </div>
+        <div class="c-footer__socials">
+            <i class="fa fa-instagram" aria-hidden="true"></i> <i class="fa fa-facebook-official"
+                                                                  aria-hidden="true"></i>
+        </div>
+    </footer>
 
-<script type="text/javascript">
-    <%@include file="/resources/assets/script.js"%>
-    <%@include file="/resources/found/js/js.js"%>
-</script>
+    <script type="text/javascript">
+        <%@include file="/resources/assets/script.js"%>
+        <%@include file="/resources/found/js/js.js"%>
+    </script>
 
 </body>
 

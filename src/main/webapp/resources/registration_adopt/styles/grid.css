@@ -1,0 +1,1 @@
+.l-grid{margin:0 0 1.8vw}.l-grid:after{content:"";display:table;clear:both}[class*=col-]{float:left;margin-right:1.8vw}.grid [class*=col-]:last-of-type{padding-right:0}.grid-pad{padding:0}.grid-pad [class*=col-]:last-of-type{padding-right:-1.8vw}

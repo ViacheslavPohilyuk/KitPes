@@ -89,6 +89,13 @@ public class UserController {
         return "forward:/user/" + getIdAuthUser();
     }
 
+    @RequestMapping(value = "/listPets", method = GET)
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public String redirectUserPetsList() {
+        return "forward:/api/foundlostpets?userId=" + getIdAuthUser();
+    }
+
+
     @RequestMapping(value = "/listLostPets", method = GET)
     @PreAuthorize("hasRole('ROLE_USER')")
     public String redirectUserLostPetsList() {

@@ -56,27 +56,27 @@
         <div class="c-slider__canvas">
             <div class="c-slider__slide">
                 <div class="c-slider__quote">мы в ответе за тех, <br/> кого приручили</div>
-                <div class="c-slider__quote-author">антуана де сент-экзюпери</div>
+                <div class="c-slider__quote-author">антуан де сент-экзюпери</div>
             </div>
             <div class="c-slider__slide">
                 <div class="c-slider__quote">мы в ответе за тех, <br/> кого приручили</div>
-                <div class="c-slider__quote-author">антуана де сент-экзюпери</div>
+                <div class="c-slider__quote-author">антуан де сент-экзюпери</div>
             </div>
             <div class="c-slider__slide">
                 <div class="c-slider__quote">мы в ответе за тех, <br/> кого приручили</div>
-                <div class="c-slider__quote-author">антуана де сент-экзюпери</div>
+                <div class="c-slider__quote-author">антуан де сент-экзюпери</div>
             </div>
             <div class="c-slider__slide">
                 <div class="c-slider__quote">мы в ответе за тех, <br/> кого приручили</div>
-                <div class="c-slider__quote-author">антуана де сент-экзюпери</div>
+                <div class="c-slider__quote-author">антуан де сент-экзюпери</div>
             </div>
             <div class="c-slider__slide">
                 <div class="c-slider__quote">мы в ответе за тех, <br/> кого приручили</div>
-                <div class="c-slider__quote-author">антуана де сент-экзюпери</div>
+                <div class="c-slider__quote-author">антуан де сент-экзюпери</div>
             </div>
             <div class="c-slider__slide">
                 <div class="c-slider__quote">мы в ответе за тех, <br/> кого приручили</div>
-                <div class="c-slider__quote-author">антуана де сент-экзюпери</div>
+                <div class="c-slider__quote-author">антуан де сент-экзюпери</div>
             </div>
         </div>
     </div>
@@ -86,7 +86,7 @@
         <h1 class="c-main-title">больше о проекте</h1>
         <p class="c-intro__p">Это онлайн-сервис для адопции (пристройства) и помощи бездомным животным. Это значит, что
             если хотите завести домашнего питомца — поищите его на сайте. Найдите на KitPes бесплатно, если не
-            получиться — купить можно успеть всегда.</p>
+            получится — купить можно успеть всегда.</p>
     </section>
     <section class="c-description">
         <h1 class="c-main-title c-main-title--description">как это работает?</h1>
@@ -102,7 +102,8 @@
             <div class="l-line__right-half"></div>
         </div>
     </section>
-    <section class="c-news">
+
+    <!-- <section class="c-news">
         <h1 class="c-main-title">наши новости</h1>
         <div class="l-news-container">
             <a href="#" class="c-news__item">
@@ -195,7 +196,8 @@
             </a>
             <button class="c-news__more-button">больше новостей</button>
         </div>
-    </section>
+    </section> -->
+
     <section class="c-instagram">
         <h1 class="c-main-title">наш instagram</h1>
         <div class="l-instagram-container">

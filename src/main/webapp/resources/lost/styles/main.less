@@ -1,32 +1,33 @@
-@import 'variables';
-@import 'grid';
+@import '/resources/found/styles/variables';
+@import '/resources/found/styles/grid';
 
 @font-face {
   font-family: BebasNeue;
-  src: url(../fonts/BebasNeueBook.ttf);
+  src: url(/resources/found/fonts/BebasNeueBook.ttf);
 }
 
 @font-face {
   font-family: bebas-bold;
-  src: url(../fonts/bebasNeuebold.ttf);
+  src: url(/resources/found/fonts/bebasNeuebold.ttf);
 }
 
 @font-face {
   font-family: intro-regular;
-  src: url(../fonts/Intro-Regular.otf);
+  src: url(/resources/found/fonts/Intro-Regular.otf);
 }
 
 @font-face {
   font-family: intro-light;
-  src: url(../fonts/Intro-Light.otf);
+  src: url(/resources/found/fonts/Intro-Light.otf);
 }
+
 .c-navigation__logo{
   filter: invert(65%);
 }
 
-.c-navigation__link {
-  color: black;
-  &:hover {
+.c-navigation__link{
+  color:black;
+  &:hover{
     background-color: lightgrey;
   }
 }
@@ -80,7 +81,7 @@
     font-family: intro-light;
     color: @color-greyfrayme;
     border: 1px solid @color-greyfrayme;
-    background: url(../images/angle.png) repeat-y right;
+    background: url(/resources/found/images/angle.png) repeat-y right;
     padding: 1px;
     &.is-expanded {
       padding: 4px;
@@ -146,7 +147,7 @@
   margin-top: 30px;
   &__item {
     width: 23%;
-    margin: 5px;
+    margin: 30px 5px 5px 5px;
     display: block;
     position: relative;
   }
@@ -158,11 +159,16 @@
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
   }
   &__image {
-    width: 100%;
-    height: auto;
-    display: block;
-    margin: 0 auto;
+    display:block;
+    width: 190px;
+    height:190px;
+    margin: auto;
     border: none;
+    overflow: hidden;
+//СТРОЧКУ НИЖЕ ДИНАМИЧЕСКИ ФОРМИРУЙ АНГУЛЯРОМ. ПРИ ИТЕРАЦИИ ПО КАЖДОЙ КАРТОЧКЕ ДОБАВЛЯЙ В СТИЛИ ЕЙ БЕКГРАУНД ИМЕЙДЖ С УРЛ-ОМ НУЖНЫМ
+    -webkit-background-size:cover;
+    background-size:cover;
+    background-position: center;
   }
   &__info {
     position: relative;
@@ -184,6 +190,7 @@
     text-transform: uppercase;
   }
   &__line {
+    border: 1pixel solid @color-greymedium;
     margin-top: -20px;
     margin-bottom: 4px;
     width: 92%;
@@ -263,7 +270,7 @@
   &__close {
     width: 15px;
     height: 15px;
-    background-image: url(../images/close.png);
+    background-image: url(/resources/found/images/close.png);
     background-size: cover;
     z-index: 200;
     background-color: transparent;
@@ -333,7 +340,7 @@
   }
   &__date {
     margin-top: 0.4em;
-    border: 3px solid @color-red;
+    border: 3px solid @color-green;
     font-size: 18pt;
     font-family: intro-light;
     padding: 5px;
@@ -411,7 +418,7 @@
   &__button {
     border: none;
     background-color: @color-green;
-    padding: 12px 20px 12px 20px;
+    padding: 12px 80px 12px 80px;
     color: @color-white;
     font-family: BebasNeue;
     letter-spacing: 2px;

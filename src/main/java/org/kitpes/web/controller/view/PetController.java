@@ -3,6 +3,7 @@ package org.kitpes.web.controller.view;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import org.kitpes.config.cloud.CloudService;
+import org.kitpes.config.security.UserPrincipal;
 import org.kitpes.data.contract.OrganizationRepository;
 import org.kitpes.data.contract.PetRepository;
 import org.kitpes.model.Pet;
@@ -10,6 +11,7 @@ import org.kitpes.model.Pet;
 import org.kitpes.model.filter.FilterPet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -152,6 +154,7 @@ public class PetController {
      * @return jsp for create a new pet
      */
     @RequestMapping(value = "/new", method = GET)
+    @PreAuthorize("hasRole('ROLE_USER')")
     public String createForm() {
         return "pet/registration_adopt_pet";
     }
@@ -163,11 +166,28 @@ public class PetController {
      * @return jsp with data of a new pet
      */
     @RequestMapping(value = "/new", method = POST)
-    @PreAuthorize("#userId == authentication.principal.user.id or hasRole('ROLE_ADMIN')")
-    public String create(Pet pet) {
-        System.out.println(pet.toString());
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public String create(@RequestPart(required = false, value = "profilePicture") MultipartFile file,
+                         Pet pet) throws IOException {
+
+        /* Bind new pet to the current authentificated user */
+        long userId = ((UserPrincipal) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal()).getUser().getId();
+        pet.setUserID(userId);
+
+        /* Set profile image of a new pet */
+        if (file != null) {
+            Map uploadResult = ((Cloudinary) cloudService
+                    .getConnection())
+                    .uploader()
+                    .upload(file.getBytes(), ObjectUtils.emptyMap());
+            pet.setProfileImgURL((String) uploadResult.get("url"));
+        }
+
         petRepository.save(pet);
-        return "redirect:/" ;
+        return "redirect:/user/" + userId;
     }
 
     /**

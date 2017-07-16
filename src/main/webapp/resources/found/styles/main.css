@@ -582,3 +582,17 @@
     top: 0;
     bottom: 0
 }
+
+.prev_page_button{
+    font-size:55px;
+    color:yellow;
+    display:block;
+    margin:40px;
+}
+
+.pagination{
+    width:100%;
+    padding:40px;
+    display:flex;
+    justify-content:center;
+}

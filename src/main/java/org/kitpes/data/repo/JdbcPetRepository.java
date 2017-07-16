@@ -173,8 +173,12 @@ public class JdbcPetRepository implements PetRepository {
                     if (petID != null) ps.setLong(8, petID);
                     else ps.setNull(8, Types.BIGINT);
                     ps.setString(9, pet.getProfileImgURL());
-                    ps.setBoolean(10, pet.getSterilized());
-                    ps.setBoolean(11, pet.getVaccinated());
+
+                    if (pet.getSterilized() != null) ps.setBoolean(10, pet.getSterilized());
+                    else ps.setNull(10, Types.BIGINT);
+                    if (pet.getVaccinated() != null) ps.setBoolean(11, pet.getVaccinated());
+                    else ps.setNull(11, Types.BIGINT);
+
                     return ps;
                 },
                 keyHolder);

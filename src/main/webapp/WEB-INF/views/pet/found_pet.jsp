@@ -7,6 +7,7 @@
     <title>Kitpes - base of pets found</title>
     <link rel="stylesheet" type="text/css" href="<c:url value="/resources/assets/style.css"/>">
     <link rel="stylesheet" type="text/css" href="<c:url value="/resources/found/styles/main.css"/>">
+    <script src="<c:url value="https://use.fontawesome.com/a81cbcd056.js" />"></script>
     <script src="<c:url value="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js" />"></script>
 </head>
 <script>
@@ -194,12 +195,18 @@
     </div>
 </div>
 <div>
-    <c:if test="${page != 0}">
-        <a class="prev_page_button" href="/foundLostPet/found/${page - 1}" style="display: inline-block;">Предыдущая страница</a>
-    </c:if>
-    <c:if test="${((page + 1) * bunch) < count}">
-        <a class="prev_page_button" href="/foundLostPet/found/${page + 1}">Следующая страница</a>
-    </c:if>
+    <div class="pagination">
+        <c:if test="${page != 0}">
+            <a class="prev_page_button" href="/foundLostPet/found/${page - 1}" style="display: inline-block;">
+                <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+            </a>
+        </c:if>
+        <c:if test="${((page + 1) * bunch) < count}">
+            <a class="prev_page_button" href="/foundLostPet/found/${page + 1}">
+                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+            </a>
+        </c:if>
+    </div>
 </div>
 <footer class="c-footer">
     <div class="c-footer__info"><span>меню</span><span class="c-footer__author">design by </span><span>benmax</span>

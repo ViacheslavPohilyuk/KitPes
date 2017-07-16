@@ -49,8 +49,16 @@ public class FoundLostPetController {
         return "pet/found_pet";
     }
 
-    @RequestMapping(value = "lost", method = GET)
-    public String lostPets() {
+    @RequestMapping(value = "/lost", method = GET)
+    public String lostRedirect() {
+        return "forward:/foundLostPet/lost/0";
+    }
+
+    @RequestMapping(value = "lost/{page}", method = GET)
+    public String lostPets(@PathVariable int page, Model model) {
+        model.addAttribute("bunch", 16);
+        model.addAttribute("count", foundLostPetRepository.totalPets(false));
+        model.addAttribute("page", page);
         return "pet/lost_pet";
     }
 

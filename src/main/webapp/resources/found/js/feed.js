@@ -8,6 +8,74 @@ var morePets = true;
 var showMore = document.querySelector("#more");
 var allItems;
 var closeModal;
+function requestItems() {
+    var xhr = new XMLHttpRequest();
+
+// 2. Конфигурируем его: GET-запрос на URL 'phones.json'
+    xhr.open('GET', 'https://crossorigin.me/https://infinite-shore-71587.herokuapp.com/api/foundlostpets/limited?type=1&bunch=' + counter, false);
+
+// 3. Отсылаем запрос
+    xhr.send();
+
+    if (xhr.status != 200) {
+        // обработать ошибку
+        console.log(xhr.status + ': ' + xhr.statusText); // пример вывода: 404: Not Found
+    } else {
+        var json = xhr.responseText;
+        var data = JSON.parse(json);
+
+        if (!store) {
+            store = data;
+            console.log(store);
+            counter++;
+                } else {
+                    counter++;
+                    for (var i = 0; i < data.length; i++) {
+                        store.push(data[i]);
+                    }
+            console.log(store);
+                    console.log("==================");
+                    console.log(data);
+
+                    if (data.length < 8) {
+                        morePets = false;
+                        showMore.style.display = "none";
+                    }
+                }
+            }
+
+}
+
+
+
+
+
+requestItems();
+
+function populateTemplates() {
+    feedContainer.innerHTML = '';
+    store.forEach( function(i){
+        var template = `<div class="c-find__item col-1-4" name="pets">
+        <img class="c-find__image" src="${i.profileImgURL}">
+        <div class="c-find__info">
+            <h4 class="c-find__name">${i.name}</h4>
+            <hr class="c-find__line">
+            <img class="c-find__date-image" src="images/date.svg">
+            <span class="c-find__date">${i.dateLostFound}</span>
+            <img class="c-find__user-image" src="images/user.svg">
+            <span class="c-find__user">Максимов Вениамин</span>
+        </div>
+        <div class="c-find__learn-more">
+            <img class="c-find__plus" src="images/plus.png">
+            <a class="c-find__link" href="#"><span class="c-find__link-text">Узнать больше</span></a>
+        </div>
+    </div>`
+        feedContainer.appendChild(template);
+
+    })
+}
+
+populateTemplates();
 function setModals() {
     allItems = Array.from(document.querySelectorAll(".c-find__item"));
     allItems.forEach(function (item, index, arr) {
@@ -90,7 +158,7 @@ function setModals() {
 				</div>
 			</div>
 		</div>`
-            feedContainer.insertAdjacentHTML('beforeend', modal);
+            feedContainer.appendChild('beforeend', modal);
             // document.querySelector(".c-modal").style.display = "none";
             toClose();
             // closeModal = document.querySelector(".c-show-pets__close");
@@ -103,7 +171,6 @@ function setModals() {
 
     })
 }
-
 setModals();
 function toClose() {
     closeModal = Array.from(document.querySelectorAll(".c-show-pets__close"));
@@ -115,8 +182,9 @@ function toClose() {
 }
 
 function showMorePets() {
+    requestItems();
+    populateTemplates();
     setModals();
 }
 
 showMore.addEventListener("click", showMorePets);
-
