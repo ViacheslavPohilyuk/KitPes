@@ -1,15 +1,11 @@
 package org.kitpes.web.controller.view;
 
-import org.kitpes.config.cloud.CloudService;
-import org.kitpes.config.security.UserPrincipal;
-import org.kitpes.data.contract.OrganizationRepository;
-import org.kitpes.data.contract.PetRepository;
+import org.kitpes.security.AuthenticatedUserIdRetriever;
 import org.kitpes.data.contract.UserRepository;
 import org.kitpes.model.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -26,40 +22,11 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RequestMapping("/user")
 public class UserController {
 
+    @Autowired
     private UserRepository userRepository;
 
-    private OrganizationRepository organizationRepository;
-
-    private PetRepository petRepository;
-
-    private CloudService cloudService;
-
     @Autowired
-    public void setUserRepository(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
-    @Autowired
-    public void setPetRepository(PetRepository petRepository) {
-        this.petRepository = petRepository;
-    }
-
-    @Autowired
-    public void setOrganizationRepository(OrganizationRepository organizationRepository) {
-        this.organizationRepository = organizationRepository;
-    }
-
-    @Autowired
-    public void setCloudService(CloudService cloudService) {
-        this.cloudService = cloudService;
-    }
-
-    private long getIdAuthUser() {
-        return ((UserPrincipal) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal()).getUser().getId();
-    }
+    private AuthenticatedUserIdRetriever retriever;
 
     /**
      * Getting a profile of a user by id
@@ -86,32 +53,31 @@ public class UserController {
     @RequestMapping(value = "/afterLogin", method = GET)
     @PreAuthorize("hasRole('ROLE_USER')")
     public String redirectUserProfile() {
-        return "forward:/user/" + getIdAuthUser();
+        return "forward:/user/" + retriever.getId();
     }
 
     @RequestMapping(value = "/listPets", method = GET)
     @PreAuthorize("hasRole('ROLE_USER')")
     public String redirectUserPetsList() {
-        return "forward:/api/foundlostpets?userId=" + getIdAuthUser();
+        return "forward:/api/foundlostpets?userId=" + retriever.getId();
     }
-
 
     @RequestMapping(value = "/listLostPets", method = GET)
     @PreAuthorize("hasRole('ROLE_USER')")
     public String redirectUserLostPetsList() {
-        return "forward:/api/foundlostpets?type=0&userId=" + getIdAuthUser();
+        return "forward:/api/foundlostpets?type=0&userId=" + retriever.getId();
     }
 
     @RequestMapping(value = "/listFoundPets", method = GET)
     @PreAuthorize("hasRole('ROLE_USER')")
     public String redirectUserFoundPetsList() {
-        return "forward:/api/foundlostpets?type=1&userId=" + getIdAuthUser();
+        return "forward:/api/foundlostpets?type=1&userId=" + retriever.getId();
     }
 
     @RequestMapping(value = "/listAdoptedPets", method = GET)
     @PreAuthorize("hasRole('ROLE_USER')")
     public String redirectUserAdoptedPetsList() {
-        return "forward:/api/pet/byUserId/" + getIdAuthUser();
+        return "forward:/api/pet/byUserId/" + retriever.getId();
     }
 
     /**

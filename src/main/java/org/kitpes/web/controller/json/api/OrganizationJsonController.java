@@ -3,12 +3,10 @@ package org.kitpes.web.controller.json.api;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 
-import org.kitpes.config.cloud.CloudService;
 import org.kitpes.data.contract.OrganizationRepository;
 import org.kitpes.data.contract.PetRepository;
-import org.kitpes.model.User;
+import org.kitpes.image.ImageHandler;
 import org.kitpes.model.filter.FilterOrg;
-import org.kitpes.model.Message;
 import org.kitpes.model.Organization;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +37,7 @@ public class OrganizationJsonController {
     private PetRepository petRepository;
 
     @Autowired
-    private CloudService cloudService;
+    private ImageHandler imageHandler;
 
     @RequestMapping(value = "filter", method = GET)
     public List<Organization> organizations(FilterOrg filter) {
@@ -121,14 +119,8 @@ public class OrganizationJsonController {
     @RequestMapping(value = "/fileupload", method = RequestMethod.POST)
     @PreAuthorize("#username == authentication.name or hasRole('ROLE_ADMIN')")
     public ResponseEntity processUpload(@RequestPart("profilePicture") MultipartFile file,
-                                 String username, Long organizationID) throws IOException {
-        Map uploadResult = ((Cloudinary) cloudService
-                .getConnection())
-                .uploader()
-                .upload(file.getBytes(), ObjectUtils.emptyMap());
-        String profileImage = (String) uploadResult.get("url");
-        organizationRepository.updateProfileImage(profileImage, organizationID);
-
+                                        String username, Long organizationID) throws IOException {
+        organizationRepository.updateProfileImage(imageHandler.process(file), organizationID);
         return new ResponseEntity<>("Image have been successfully added", HttpStatus.OK);
     }
 }

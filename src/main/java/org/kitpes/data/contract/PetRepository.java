@@ -9,15 +9,15 @@ import java.util.List;
  * Created by mac on 08.05.17.
  */
 public interface PetRepository {
-    public int totalPets();
+    public int totalPets(boolean type);
 
-    List<Pet> readLimited(int lowerBound, int count);
+    List<Pet> readLimited(int type, int lowerBound, int count);
 
     List<Pet> readByUserID(long userID);
 
     List<Pet> readByOrganizationID(long organizationID);
 
-    List<Pet> readAll();
+    List<Pet> readAll(Boolean type, Long userId);
 
     Pet readOne(long id);
 

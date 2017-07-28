@@ -1,5 +1,6 @@
 package org.kitpes.config;
 
+import org.kitpes.date.CurrentDateTimeZone;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -33,16 +34,17 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         return resolver;
     }
 
+    @Bean
+    CurrentDateTimeZone currentDateTimeZone() {
+        return new CurrentDateTimeZone();
+    }
+
     @Override
     public void configureDefaultServletHandling(
             DefaultServletHandlerConfigurer configurer) {
         configurer.enable();
     }
 
-    @Bean
-    public MultipartResolver multipartResolver() throws IOException {
-        return new StandardServletMultipartResolver();
-    }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

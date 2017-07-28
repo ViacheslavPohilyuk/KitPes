@@ -2,8 +2,8 @@ package org.kitpes.web.controller.json.api;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import org.kitpes.config.cloud.CloudService;
 import org.kitpes.data.contract.NewsRepository;
+import org.kitpes.image.ImageHandler;
 import org.kitpes.model.News;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,7 +30,7 @@ public class NewsJsonController {
     private NewsRepository newsRepository;
 
     @Autowired
-    private CloudService cloudService;
+    private ImageHandler imageHandler;
 
     /**
      * Getting all news
@@ -86,15 +86,9 @@ public class NewsJsonController {
     @RequestMapping(value = "/new", method = POST)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity create(@RequestPart(required = false, value = "profilePicture") MultipartFile file,
-                          News news) throws IOException {
+                                 News news) throws IOException {
         /* Set profile image of a new pet */
-        if(file != null) {
-            Map uploadResult = ((Cloudinary) cloudService
-                    .getConnection())
-                    .uploader()
-                    .upload(file.getBytes(), ObjectUtils.emptyMap());
-            news.setImage((String) uploadResult.get("url"));
-        }
+        news.setImage(imageHandler.process(file));
 
         newsRepository.save(news);
         return new ResponseEntity<>("News have been successfully changed", HttpStatus.OK);
@@ -112,13 +106,8 @@ public class NewsJsonController {
     @RequestMapping(value = "/fileupload", method = RequestMethod.POST)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity processUpload(@RequestPart("profilePicture") MultipartFile file,
-                                 Long newsID) throws IOException {
-        Map uploadResult = ((Cloudinary) cloudService
-                .getConnection())
-                .uploader()
-                .upload(file.getBytes(), ObjectUtils.emptyMap());
-        String profileImage = (String) uploadResult.get("url");
-        newsRepository.updateProfileImage(profileImage, newsID);
+                                        Long newsID) throws IOException {
+        newsRepository.updateProfileImage(imageHandler.process(file), newsID);
         return new ResponseEntity<>("Image have been successfully added", HttpStatus.OK);
     }
 }

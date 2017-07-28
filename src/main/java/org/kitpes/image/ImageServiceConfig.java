@@ -7,14 +7,9 @@ import org.springframework.context.annotation.Configuration;
  * Created by mac on 19.05.17.
  */
 @Configuration
-public class CloudServiceConfig {
+public class ImageServiceConfig {
     @Bean
     public ImageHandler cloudSource() {
         return new CloudinaryImageHandler();
-    }
-
-    @Bean
-    public ResizeImage resizeImageServiceSource() {
-        return new ResizerImageCompressor();
     }
 }

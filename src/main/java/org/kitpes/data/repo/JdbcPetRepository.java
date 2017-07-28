@@ -6,6 +6,7 @@ import java.util.List;
 
 import lombok.NoArgsConstructor;
 import org.kitpes.data.contract.PetRepository;
+import org.kitpes.model.FoundLostPet;
 import org.kitpes.model.Pet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcOperations;
@@ -25,19 +26,41 @@ public class JdbcPetRepository implements PetRepository {
         this.jdbc = jdbc;
     }
 
-    /**
-     * Method that execute sql-query for retrieve the count of pets in the db
-     *
-     * @return count of pets
-     */
-    public int totalPets() {
-        SqlRowSet rowSet = jdbc.queryForRowSet("SELECT COUNT(*) FROM pets");
+    public int totalPets(boolean type) {
+        SqlRowSet rowSet = jdbc.queryForRowSet("SELECT COUNT(*) FROM found_lost_pets WHERE type = ?", type);
         rowSet.next();
         return rowSet.getInt(1);
     }
 
-    public List<Pet> readLimited(int lowerBound, int count) {
-        return jdbc.query("SELECT * FROM pets LIMIT ?, ?", new PetRowMapper(), lowerBound, count);
+    public List<Pet> readLimited(int type, int lowerBound, int count) {
+        return jdbc.query("SELECT * FROM pets WHERE type = ? LIMIT ?, ?",
+                new PetRowMapper(), type, lowerBound, count);
+    }
+
+    /**
+     * Getting all the found_lost_pets from the db
+     *
+     * @return a list of found_lost_pets
+     */
+    public List<Pet> readAll(Boolean type, Long userId) {
+        List<Pet> foundLostPets;
+        if (type != null) {
+            if (userId != null) {
+                foundLostPets = jdbc.query("SELECT * FROM pets WHERE type = ?  AND user_id = ?",
+                        new PetRowMapper(), type, userId);
+            } else {
+                foundLostPets = jdbc.query("SELECT * FROM pets WHERE type = ?",
+                        new PetRowMapper(), type);
+            }
+        } else {
+            if (userId != null) {
+                foundLostPets = jdbc.query("SELECT * FROM pets WHERE user_id = ?",
+                        new PetRowMapper(), userId);
+            } else {
+                foundLostPets = jdbc.query("SELECT * FROM pets", new PetRowMapper());
+            }
+        }
+        return foundLostPets;
     }
 
     /**
@@ -156,7 +179,7 @@ public class JdbcPetRepository implements PetRepository {
                     PreparedStatement ps =
                             connection.prepareStatement(insertSQL, new String[]{"id"});
                     /* Setting userID and petID */
-                    Long userID = pet.getUserID();
+                    Long userID = pet.getUserId();
                     Long petID = pet.getOrganizationID();
 
                     ps.setString(1, pet.getName());
@@ -198,10 +221,11 @@ public class JdbcPetRepository implements PetRepository {
                     rs.getInt("age"),
                     rs.getString("sex"),
                     rs.getString("description"),
+                    rs.getString("profile_image"),
+                    rs.getString("dateLostFound"),
                     rs.getString("status"),
                     rs.getLong("user_id"),
                     rs.getLong("organization_id"),
-                    rs.getString("profile_image"),
                     rs.getBoolean("vaccinated"),
                     rs.getBoolean("sterilized"));
         }

@@ -2,8 +2,8 @@ package org.kitpes.web.controller.view;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import org.kitpes.config.cloud.CloudService;
-import org.kitpes.config.security.UserPrincipal;
+import org.kitpes.image.ImageHandler;
+import org.kitpes.security.UserPrincipal;
 import org.kitpes.data.contract.OrganizationRepository;
 import org.kitpes.data.contract.PetRepository;
 import org.kitpes.model.Pet;
@@ -11,7 +11,6 @@ import org.kitpes.model.Pet;
 import org.kitpes.model.filter.FilterPet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,11 +31,12 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @Controller
 @RequestMapping("/pet")
 public class PetController {
-    private OrganizationRepository organizationRepository;
-
     private PetRepository petRepository;
 
-    private CloudService cloudService;
+    private OrganizationRepository organizationRepository;
+
+    @Autowired
+    private ImageHandler imageHandler;
 
     @Autowired
     public PetController(PetRepository petRepository) {
@@ -48,36 +48,31 @@ public class PetController {
         this.organizationRepository = organizationRepository;
     }
 
-    @Autowired
-    public void setCloudService(CloudService cloudService) {
-        this.cloudService = cloudService;
-    }
-
     /**
      * A purpose of this method is a filtering data by
      * five fields of the {@code Pet class}: species, sex, status, organizationID and age
      *
      * @return list of Pet objects
      */
-    @RequestMapping(value = "/filter", method = GET)
+    /*@RequestMapping(value = "/filter", method = GET)
     public String filter(FilterPet filterForm, Model model) {
         List<Pet> pets = filterForm.filtering(petRepository.readAll());
         model.addAttribute("petList", pets);
         return "pet/all";
-    }
+    }*/
 
     /**
      * Getting all pets
      *
      * @return list of Pet objects
      */
-    @RequestMapping(method = GET)
+    /*@RequestMapping(method = GET)
     public String pets(Model model) {
         List<Pet> pets = petRepository.readAll();
         model.addAttribute("petList", pets);
         model.addAttribute("orgs", organizationRepository.readAll());
         return "pet/all";
-    }
+    }*/
 
     /**
      * Getting a profile of a pet by id
@@ -165,30 +160,32 @@ public class PetController {
      * @param pet pet instance that was created from the web-filter fields data
      * @return jsp with data of a new pet
      */
-    @RequestMapping(value = "/new", method = POST)
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public String create(@RequestPart(required = false, value = "profilePicture") MultipartFile file,
-                         Pet pet) throws IOException {
+    //@RequestMapping(value = "/new", method = POST)
+    // @PreAuthorize("hasRole('ROLE_USER')")
+    //public String create(@RequestPart(required = false, value = "profilePicture") MultipartFile file,
+    //                   Pet pet) throws IOException {
+
+         /* Set type (Found pet) */
+    //pet.setType(type);
+
+        /* Get date of day, month and year when pet was found
+         * and unite them in one string */
+        /*String dateLostFound = date.dateConstruct();
+        if (dateLostFound != null) {
+            pet.setDateLostFound(dateLostFound);
+        }*/
 
         /* Bind new pet to the current authentificated user */
-        long userId = ((UserPrincipal) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal()).getUser().getId();
-        pet.setUserID(userId);
+    //pet.setUserId(retriever.getId());
 
         /* Set profile image of a new pet */
-        if (file != null) {
-            Map uploadResult = ((Cloudinary) cloudService
-                    .getConnection())
-                    .uploader()
-                    .upload(file.getBytes(), ObjectUtils.emptyMap());
-            pet.setProfileImgURL((String) uploadResult.get("url"));
-        }
+    //if (file != null) {
+    //    pet.setProfileImgURL(imageHandler.process(file));
+    // }
 
-        petRepository.save(pet);
-        return "redirect:/user/" + userId;
-    }
+    //petRepository.save(pet);
+    //return "redirect:/user/" + userId;
+    //}
 
     /**
      * Processing image files those user uploads on an pet's
@@ -200,14 +197,8 @@ public class PetController {
      */
     @RequestMapping(value = "/fileupload", method = RequestMethod.POST)
     public String processUpload(@RequestPart("profilePicture") MultipartFile file,
-                              Long petID) throws IOException {
-        Map uploadResult = ((Cloudinary) cloudService
-                .getConnection())
-                .uploader()
-                .upload(file.getBytes(), ObjectUtils.emptyMap());
-
-        String profileImage = (String) uploadResult.get("url");
-        petRepository.updateProfileImage(profileImage, petID);
+                                Long petID) throws IOException {
+        petRepository.updateProfileImage(imageHandler.process(file), petID);
         return "redirect:/pet/" + petID;
     }
 }

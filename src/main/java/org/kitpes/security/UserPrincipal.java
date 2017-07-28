@@ -1,10 +1,9 @@
-package org.kitpes.config.security;
+package org.kitpes.security;
 
 import lombok.Data;
 import org.kitpes.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 

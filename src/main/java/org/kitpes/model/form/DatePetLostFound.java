@@ -16,6 +16,9 @@ public class DatePetLostFound {
     private int year;
 
     public String dateConstruct() {
-        return  day + "." + month + "." + year;
+        if (day == 0) return null;
+        else if (month == 0) return null;
+        else if (year == 0) return null;
+        else return day + "." + month + "." + year;
     }
 }

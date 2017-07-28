@@ -1,28 +1,20 @@
 package org.kitpes.web.controller.json.api;
 
-import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
-
-import io.swagger.annotations.Api;
-import org.kitpes.config.cloud.CloudService;
 import org.kitpes.data.contract.OrganizationRepository;
 import org.kitpes.data.contract.PetRepository;
 import org.kitpes.data.contract.UserRepository;
-import org.kitpes.model.Message;
+import org.kitpes.image.ImageHandler;
 import org.kitpes.model.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -44,7 +36,7 @@ public class UserJsonController {
     private OrganizationRepository organizationRepository;
 
     @Autowired
-    private CloudService cloudService;
+    private ImageHandler imageHandler;
 
     /**
      * Getting a profile of a user by id
@@ -91,7 +83,6 @@ public class UserJsonController {
 
     }
 
-
     /**
      * Delete a user by its id
      *
@@ -114,17 +105,11 @@ public class UserJsonController {
      * @return redirection to an user's profile page
      */
     @RequestMapping(value = "/fileupload", method = RequestMethod.POST)
-    @PreAuthorize("#userId == authentication.principal.user.id or hasRole('ROLE_ADMIN')")
+    //@PreAuthorize("#userId == authentication.principal.user.id or hasRole('ROLE_ADMIN')")
     public ResponseEntity processUpload(@RequestPart("profilePicture") MultipartFile file,
                                         long userId) throws IOException {
-        Cloudinary cloud = cloudService.getConnection();
-        Map uploadResult = cloud
-                .uploader()
-                .upload(file.getBytes(), ObjectUtils.emptyMap());
 
-        String profileImage = (String) uploadResult.get("url");
-        System.out.println(profileImage);
-        userRepository.updateProfileImage(profileImage, userId);
+        userRepository.updateProfileImage(imageHandler.process(file), userId);
         return new ResponseEntity<>("Image have been successfully added", HttpStatus.OK);
     }
 }

@@ -2,8 +2,8 @@ package org.kitpes.web.controller.view;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import org.kitpes.config.cloud.CloudService;
-import org.kitpes.config.security.UserPrincipal;
+import org.kitpes.image.ImageHandler;
+import org.kitpes.security.UserPrincipal;
 import org.kitpes.data.contract.FoundLostPetRepository;
 import org.kitpes.model.FoundLostPet;
 import org.kitpes.model.form.DatePetLostFound;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Map;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -31,10 +30,10 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RequestMapping("/foundLostPet")
 public class FoundLostPetController {
     @Autowired
-    private CloudService cloudService;
+    private FoundLostPetRepository foundLostPetRepository;
 
     @Autowired
-    private FoundLostPetRepository foundLostPetRepository;
+    private ImageHandler imageHandler;
 
     @RequestMapping(value = "/found", method = GET)
     public String foundRedirect() {
@@ -96,11 +95,7 @@ public class FoundLostPetController {
 
         /* Set profile image of a new pet */
         if (file != null) {
-            Map uploadResult = ((Cloudinary) cloudService
-                    .getConnection())
-                    .uploader()
-                    .upload(file.getBytes(), ObjectUtils.emptyMap());
-            foundLostPet.setProfileImgURL((String) uploadResult.get("url"));
+            foundLostPet.setProfileImgURL(imageHandler.process(file));
         }
 
         foundLostPetRepository.save(foundLostPet);

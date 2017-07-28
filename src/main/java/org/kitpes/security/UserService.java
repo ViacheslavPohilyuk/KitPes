@@ -1,4 +1,4 @@
-package org.kitpes.config.security;
+package org.kitpes.security;
 
 import lombok.NonNull;
 import org.kitpes.data.contract.UserRepository;

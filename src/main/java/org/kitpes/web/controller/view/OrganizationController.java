@@ -3,9 +3,9 @@ package org.kitpes.web.controller.view;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 
-import org.kitpes.config.cloud.CloudService;
 import org.kitpes.data.contract.OrganizationRepository;
 import org.kitpes.data.contract.PetRepository;
+import org.kitpes.image.ImageHandler;
 import org.kitpes.model.Organization;
 import org.kitpes.model.filter.FilterOrg;
 
@@ -15,7 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.ServletRequest;
 import java.io.IOException;
 import java.util.Map;
 
@@ -33,7 +32,9 @@ public class OrganizationController {
 
     private PetRepository petRepository;
 
-    private CloudService cloudService;
+    @Autowired
+    private ImageHandler imageHandler;
+
 
     @Autowired
     public OrganizationController(OrganizationRepository organizationRepository) {
@@ -43,11 +44,6 @@ public class OrganizationController {
     @Autowired
     public void setPetRepository(PetRepository petRepository) {
         this.petRepository = petRepository;
-    }
-
-    @Autowired
-    public void setCloudService(CloudService cloudService) {
-        this.cloudService = cloudService;
     }
 
     /**
@@ -185,14 +181,7 @@ public class OrganizationController {
     @RequestMapping(value = "/fileupload", method = RequestMethod.POST)
     public String processUpload(@RequestPart("profilePicture") MultipartFile file,
                                 Long organizationID) throws IOException {
-        Map uploadResult = ((Cloudinary) cloudService
-                .getConnection())
-                .uploader()
-                .upload(file.getBytes(), ObjectUtils.emptyMap());
-
-        String profileImage = (String) uploadResult.get("url");
-        System.out.println("profileImage: " + profileImage + "\norganizationID: " + organizationID);
-        organizationRepository.updateProfileImage(profileImage, organizationID);
+        organizationRepository.updateProfileImage(imageHandler.process(file), organizationID);
         return "redirect:/organization/" + organizationID;
     }
 }
