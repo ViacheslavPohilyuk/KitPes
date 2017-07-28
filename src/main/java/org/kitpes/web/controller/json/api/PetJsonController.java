@@ -2,19 +2,20 @@ package org.kitpes.web.controller.json.api;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import org.kitpes.config.cloud.CloudService;
-import org.kitpes.data.contract.PetRepository;
-import org.kitpes.model.FoundLostPet;
-import org.kitpes.model.Message;
-import org.kitpes.model.Pet;
 
-import org.kitpes.model.filter.FilterPet;
+import org.kitpes.security.AuthenticatedUserIdRetriever;
+import org.kitpes.security.UserPrincipal;
+import org.kitpes.data.contract.FoundLostPetRepository;
+import org.kitpes.image.ImageHandler;
+import org.kitpes.model.FoundLostPet;
+
+import org.kitpes.model.form.DatePetLostFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -25,52 +26,37 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
- * Created by mac on 14.04.17.
+ * Created by mac on 03.07.17.
  */
 @RestController
-@RequestMapping("api/pet")
-public class PetJsonController {
+@RequestMapping("api/foundlostpets")
+public class FoundLostPetJsonController {
 
     @Autowired
-    private PetRepository petRepository;
+    private FoundLostPetRepository foundLostPetRepository;
 
     @Autowired
-    private CloudService cloudService;
+    private AuthenticatedUserIdRetriever retriever;
 
-    @RequestMapping(value = "/count", method = GET)
-    public int count() {
-        return petRepository.totalPets();
-    }
-
-    @RequestMapping(value = "/byUserId/{userId}", method = GET)
-    public List<Pet> usersPets(@PathVariable long userId) {
-        return petRepository.readByUserID(userId);
-    }
+    @Autowired
+    private ImageHandler imageHandler;
 
     @RequestMapping(value = "limited", method = GET)
-    public List<Pet> petsLimited(@RequestParam(value = "bunch") int bunch) {
-        int bunchSize = 8;
-        return petRepository.readLimited((bunch * bunchSize), bunchSize);
+    public List<FoundLostPet> petsLimited(@RequestParam(value = "type") int type,
+                                          @RequestParam(value = "bunch") int bunch) {
+        int bunchSize = 16;
+        return foundLostPetRepository.readLimited(type, (bunch * bunchSize), bunchSize);
     }
+
     /**
      * Getting all pets
      *
      * @return list of Pet objects
      */
     @RequestMapping(method = GET)
-    public List<Pet> pets() {
-        return petRepository.readAll();
-    }
-
-    /**
-     * A purpose of this method is a filtering data by
-     * five fields of the {@code Pet class}: species, sex, status, organizationID and age
-     *
-     * @return list of Pet objects
-     */
-    @RequestMapping(value = "/filter", method = GET)
-    public List<Pet> filter(FilterPet filterForm) {
-        return filterForm.filtering(petRepository.readAll());
+    public List<FoundLostPet> pets(@RequestParam(required = false) Boolean type,
+                                   @RequestParam(required = false) Long userId) {
+        return foundLostPetRepository.readAll(type, userId);
     }
 
     /**
@@ -79,22 +65,21 @@ public class PetJsonController {
      * @return list of Pet objects
      */
     @RequestMapping(value = "{id}", method = GET)
-    public Pet pet(@PathVariable long id) {
-        return petRepository.readOne(id);
+    public FoundLostPet pet(@PathVariable long id) {
+        return foundLostPetRepository.readOne(id);
     }
 
     /**
      * Update data of a required pet
      *
-     * @param pet pet that will be updated
-     * @return message about an operation
+     * @param foundLostPet pet that will be updated
+     * @return ResponseEntity about an operation
      */
     @RequestMapping(value = "/edit", method = POST)
-    @PreAuthorize("#userId == authentication.principal.user.id or hasRole('ROLE_ADMIN')")
-    public ResponseEntity updateID(Pet pet, long userId) {
-        petRepository.updateOne(pet);
+    @PreAuthorize("foundLostPet.userId == authentication.principal.user.id or hasRole('ROLE_ADMIN')")
+    public ResponseEntity updateID(FoundLostPet foundLostPet) {
+        foundLostPetRepository.updateOne(foundLostPet);
         return new ResponseEntity<>("Pet have been successfully changed", HttpStatus.OK);
-
     }
 
     /**
@@ -104,56 +89,55 @@ public class PetJsonController {
      */
     @RequestMapping(value = "/delete/{id}", method = GET)
     @PreAuthorize("#userId == authentication.principal.user.id or hasRole('ROLE_ADMIN')")
-    public ResponseEntity deleteID(@PathVariable long id, @RequestParam(required = false) long userId) {
-        petRepository.deleteOne(id);
-        return new ResponseEntity<>("Pet have been successfully changed", HttpStatus.OK);
-
+    public ResponseEntity deleteID(@PathVariable long id, long userId) {
+        foundLostPetRepository.deleteOne(id);
+        return new ResponseEntity<>("Pet have been successfully deleted", HttpStatus.OK);
     }
 
     /**
      * Creating new pet and adding one to the db
      *
-     * @param pet pet instance
+     * @param foundLostPet pet instance that was created from the web-filter fields data
      * @return jsp with data of a new pet
      */
     @RequestMapping(value = "/new", method = POST)
-    @PreAuthorize("#userId == authentication.principal.user.id or hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity create(@RequestPart(required = false, value = "profilePicture") MultipartFile file,
-                          Pet pet, long userId) throws IOException {
+                                 @RequestParam Boolean type,
+                                 FoundLostPet foundLostPet,
+                                 DatePetLostFound date) throws IOException {
+        /* Set type (Found pet) */
+        foundLostPet.setType(type);
+
+        /* Get date of day, month and year when pet was found
+         * and unite them in one string */
+        foundLostPet.setDateLostFound(date.dateConstruct());
+
+        /* Bind new pet to the current authentificated user */
+        foundLostPet.setUserId(retriever.getId(););
 
         /* Set profile image of a new pet */
-        if(file != null) {
-            Map uploadResult = ((Cloudinary) cloudService
-                    .getConnection())
-                    .uploader()
-                    .upload(file.getBytes(), ObjectUtils.emptyMap());
-            pet.setProfileImgURL((String) uploadResult.get("url"));
+        if (file != null) {
+            foundLostPet.setProfileImgURL(imageHandler.process(file));
         }
 
-        petRepository.save(pet);
-        return new ResponseEntity<>("Pet have been successfully changed", HttpStatus.OK);
-
+        foundLostPetRepository.save(foundLostPet);
+        return new ResponseEntity<>("Pet have been successfully added", HttpStatus.OK);
     }
 
     /**
      * Processing image files those user uploads on an pet's
      * profile page
      *
-     * @param file  image that is an avatar of an pet
-     * @param petID id of an pet
+     * @param file           image that is an avatar of an pet
+     * @param foundLostPetID id of an pet
      * @return redirection to an pet's profile page
      */
     @RequestMapping(value = "/fileupload", method = RequestMethod.POST)
-    @PreAuthorize("#userId == authentication.principal.user.id  or hasRole('ROLE_ADMIN')")
+    @PreAuthorize("#userId == authentication.principal.user.id or hasRole('ROLE_ADMIN')")
     public ResponseEntity processUpload(@RequestPart("profilePicture") MultipartFile file,
-                                 long userId, Long petID) throws IOException {
-        Map uploadResult = ((Cloudinary) cloudService
-                .getConnection())
-                .uploader()
-                .upload(file.getBytes(), ObjectUtils.emptyMap());
-
-        String profileImage = (String) uploadResult.get("url");
-        petRepository.updateProfileImage(profileImage, petID);
+                                        long userId, Long foundLostPetID) throws IOException {
+        foundLostPetRepository.updateProfileImage(imageHandler.process(file), foundLostPetID);
         return new ResponseEntity<>("Image have been successfully added", HttpStatus.OK);
     }
 }
