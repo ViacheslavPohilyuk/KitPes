@@ -6,7 +6,6 @@ import java.util.List;
 
 import lombok.NoArgsConstructor;
 import org.kitpes.data.contract.PetRepository;
-import org.kitpes.model.FoundLostPet;
 import org.kitpes.model.Pet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcOperations;

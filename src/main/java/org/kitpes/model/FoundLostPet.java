@@ -44,8 +44,4 @@ public class FoundLostPet {
         this.profileImgURL = profileImgURL;
         this.userId = userId;
     }
-
-    public FoundLostPet(String sex, String name, String species, int age, String description, String dateLostFound, boolean type, String profileImgURL, long userId) {
-        this(null, name, sex, species, age, description, dateLostFound, type, profileImgURL, userId);
-    }
 }

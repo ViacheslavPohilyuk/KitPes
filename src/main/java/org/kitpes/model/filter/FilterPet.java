@@ -1,9 +1,5 @@
 package org.kitpes.model.filter;
 
-import com.healthmarketscience.sqlbuilder.BinaryCondition;
-import com.healthmarketscience.sqlbuilder.SelectQuery;
-import com.healthmarketscience.sqlbuilder.ValidationContext;
-import com.healthmarketscience.sqlbuilder.custom.CustomSyntax;
 import lombok.Data;
 import org.kitpes.model.Pet;
 

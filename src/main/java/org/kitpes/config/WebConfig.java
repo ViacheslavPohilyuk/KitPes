@@ -34,11 +34,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         return resolver;
     }
 
-    @Bean
-    CurrentDateTimeZone currentDateTimeZone() {
-        return new CurrentDateTimeZone();
-    }
-
     @Override
     public void configureDefaultServletHandling(
             DefaultServletHandlerConfigurer configurer) {

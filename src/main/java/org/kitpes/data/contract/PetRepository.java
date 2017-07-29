@@ -1,6 +1,5 @@
 package org.kitpes.data.contract;
 
-import org.kitpes.model.FoundLostPet;
 import org.kitpes.model.Pet;
 
 import java.util.List;
