@@ -77,7 +77,7 @@ public class LostPetController {
         }
 
         /* Bind new pet to the current authentificated user */
-        pet.setUserId(retriever.getId());
+        pet.getUser().setId(retriever.getId());
 
         /* Set profile image of a new pet */
         if (file != null) {

@@ -2,6 +2,7 @@ package org.kitpes.web.rest.api;
 
 import org.kitpes.data.repo.UserRepository;
 import org.kitpes.image.ImageHandler;
+import org.kitpes.model.Role;
 import org.kitpes.model.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.Collection;
 
@@ -45,34 +47,34 @@ public class UserController {
         return userRepository.get(id);
     }
 
-    /* @RequestMapping(method = POST)
+    @RequestMapping(method = POST)
     public ResponseEntity register(@Valid User user, @RequestParam("second_password") String secondPassword) {
         String emailRegisteredUser = user.getUsername();
-        List<String> usernames = userRepository.readUsernames();
+        /* List<String> usernames = userRepository.readUsernames();
         boolean isEmailDuplicated = false;
         for (String username : usernames) {
             if (emailRegisteredUser.equals(username)) {
                 isEmailDuplicated = true;
             }
-        }
+        } */
 
-        if (!isEmailDuplicated) {
-            if (user.getPassword().equals(secondPassword)) { */
+        //if (!isEmailDuplicated) {
+        if (user.getPassword().equals(secondPassword)) {
                 /* Encode password */
-    //user.setPassword(passwordEncoder.encode(user.getPassword()));
+            //user.setPassword(passwordEncoder.encode(user.getPassword()));
 
                 /* Set role USER to new registered user */
-               /* user.getAuthorities().add(new Role(Role.ROLE_USER));
+            user.getAuthorities().add(new Role(Role.ROLE_USER));
 
-                userRepository.save(user);
-            } else {
-                return new ResponseEntity<>("Wrong password!", HttpStatus.BAD_REQUEST);
-            }
+            userRepository.save(user);
         } else {
-            return new ResponseEntity<>("User with this email already registered!", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>("Wrong password!", HttpStatus.BAD_REQUEST);
         }
+        //else {
+        //  return new ResponseEntity<>("User with this email already registered!", HttpStatus.NOT_ACCEPTABLE);
+        //}
         return new ResponseEntity<>("New User have been successfully registered!", HttpStatus.OK);
-    }*/
+    }
 
     @RequestMapping(method = PUT)
     @PreAuthorize("#user.id == authentication.principal.user.id or hasRole('ROLE_ADMIN')")

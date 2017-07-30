@@ -19,8 +19,8 @@ public class FoundPet extends Pet {
     @Column(name = "dateFound")
     private String dateFound;
 
-    public FoundPet(Long id, String name, String species, Integer age, String sex, String description, String profileImgURL, Long userId, String dateFound) {
-        super(id, name, species, age, sex, description, profileImgURL, userId);
+    public FoundPet(Long id, String name, String species, Integer age, String sex, String description, String profileImgURL, String dateFound) {
+        super(id, name, species, age, sex, description, profileImgURL);
         this.dateFound = (dateFound != null) ? dateFound : "Нет данных";
     }
 }

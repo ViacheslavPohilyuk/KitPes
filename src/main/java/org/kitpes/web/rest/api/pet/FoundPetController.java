@@ -51,7 +51,7 @@ public class FoundPetController {
     }
 
     @RequestMapping(method = PUT)
-    @PreAuthorize("pet.userId == authentication.principal.user.id or hasRole('ROLE_ADMIN')")
+    @PreAuthorize("pet.user.id == authentication.principal.user.id or hasRole('ROLE_ADMIN')")
     public ResponseEntity updateID(FoundPet pet) {
         repository.update(pet);
         return new ResponseEntity<>("Pet have been successfully changed", HttpStatus.OK);
@@ -77,7 +77,7 @@ public class FoundPetController {
         }
 
         /* Bind new pet to the current authentificated user */
-        pet.setUserId(retriever.getId());
+        pet.getUser().setId(retriever.getId());
 
         /* Set profile image of a new pet */
         if (file != null) {

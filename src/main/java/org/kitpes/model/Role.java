@@ -18,6 +18,9 @@ public class Role implements GrantedAuthority, Serializable {
     public static final String ROLE_USER = "ROLE_USER";
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
 
+    @ManyToOne
+    User user;
+
     @Id
     @Column(name = "user_role_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

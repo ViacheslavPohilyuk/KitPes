@@ -18,7 +18,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 /*------------------------------------------------------------*/
 @MappedSuperclass
-public class Pet implements Serializable {
+class Pet implements Serializable {
 
     @ManyToOne
     @JsonIgnore
@@ -47,10 +47,7 @@ public class Pet implements Serializable {
     @Column(name = "profile_image")
     private String profileImgURL = "/resources/images/default_pet.jpg";
 
-    @Column(name = "userId")
-    long userId;
-
-    public Pet(Long id, String name, String species, Integer age, String sex, String description, String profileImgURL, Long userId) {
+    Pet(Long id, String name, String species, Integer age, String sex, String description, String profileImgURL) {
         this.id = id;
         this.name = (name != null) ? name : "Без имени";
         this.species = species;
@@ -58,6 +55,5 @@ public class Pet implements Serializable {
         this.sex = sex;
         this.description = description;
         this.profileImgURL = profileImgURL;
-        this.userId = userId;
     }
 }

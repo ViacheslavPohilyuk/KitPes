@@ -28,8 +28,8 @@ public class HomelessPet extends Pet {
     @Column(name = "vaccinated")
     Boolean vaccinated;
 
-    public HomelessPet(Long id, String name, String species, Integer age, String sex, String description, String profileImgURL, Long userId, String status, Boolean sterilized, Boolean vaccinated) {
-        super(id, name, species, age, sex, description, profileImgURL, userId);
+    public HomelessPet(Long id, String name, String species, Integer age, String sex, String description, String profileImgURL, String status, Boolean sterilized, Boolean vaccinated) {
+        super(id, name, species, age, sex, description, profileImgURL);
         this.status = status;
         this.sterilized = sterilized;
         this.vaccinated = vaccinated;
