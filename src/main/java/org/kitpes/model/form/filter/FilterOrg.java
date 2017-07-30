@@ -1,4 +1,4 @@
-package org.kitpes.model.filter;
+package org.kitpes.model.form.filter;
 
 import lombok.Data;
 import org.kitpes.model.Organization;

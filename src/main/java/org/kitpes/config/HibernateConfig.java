@@ -2,10 +2,7 @@ package org.kitpes.config;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -18,7 +15,10 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-@PropertySource("classpath:heroku_jdbc.properties")
+@PropertySources({
+        @PropertySource("classpath:localhost_jdbc.properties"),
+        @PropertySource("classpath:hibernate_settings.properties")
+})
 @ComponentScan({"org.kitpes"})
 public class HibernateConfig {
 
@@ -65,10 +65,10 @@ public class HibernateConfig {
     private Properties hibernateProperties() {
         return new Properties() {
             {
-                setProperty("hibernate.hbm2ddl.auto", "validate");
-                setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
-                setProperty("hibernate.show_sql", "true");
-                setProperty("hibernate.globally_quoted_identifiers", "true");
+                setProperty("hibernate.hbm2ddl.auto", env.getProperty("hb.hbm2ddl.auto"));
+                setProperty("hibernate.dialect", env.getProperty("hb.dialect"));
+                setProperty("hibernate.show_sql", env.getProperty("hb.show_sql"));
+                setProperty("hibernate.globally_quoted_identifiers", env.getProperty("hb.gqi"));
             }
         };
     }

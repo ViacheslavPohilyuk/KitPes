@@ -1,21 +1,23 @@
 package org.kitpes.model.pet;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  * Created by mac on 28.07.17.
  */
 @Getter
 @Setter
-@ToString()
-public class FoundPet extends MainPet {
-    private String dateFound;
+@NoArgsConstructor
+@Entity
+@Table(name = "found_pets")
+public class FoundPet extends Pet {
 
-    public FoundPet() {
-        super();
-    }
+    @Column(name = "dateFound")
+    private String dateFound;
 
     public FoundPet(Long id, String name, String species, Integer age, String sex, String description, String profileImgURL, Long userId, String dateFound) {
         super(id, name, species, age, sex, description, profileImgURL, userId);

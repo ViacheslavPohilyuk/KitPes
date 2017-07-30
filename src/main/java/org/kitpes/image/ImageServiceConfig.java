@@ -15,7 +15,7 @@ public class ImageServiceConfig {
     private Environment env;
 
     @Bean
-    public ImageHandler cloudSource() {
+    public ImageHandler cloudinarySource() {
         return new CloudinaryImageHandler(env.getProperty("cloud.url"));
     }
 }

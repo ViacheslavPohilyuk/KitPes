@@ -1,13 +1,13 @@
 package org.kitpes.model;
+
 import lombok.*;
 
 import java.util.List;
+
 /**
  * Created by mac on 11.04.17.
  */
-@Getter
-@Setter
-@ToString(exclude="pets")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Organization {
@@ -28,14 +28,4 @@ public class Organization {
     private String phoneNumber;
 
     private String webSite;
-
-    private List<Pet> pets = null;
-
-    public Organization(String name, String address, String description, Long userID, String profileImgURL, boolean type, String phoneNumber, String webSite) {
-        this(null, name, address, description, userID, profileImgURL, type, phoneNumber, webSite, null);
-    }
-
-    public Organization(Long id, String name, String address, String description, Long userID, String profileImgURL, boolean type, String phoneNumber, String webSite) {
-        this(id, name, address, description, userID, profileImgURL, type, phoneNumber, webSite, null);
-    }
 }

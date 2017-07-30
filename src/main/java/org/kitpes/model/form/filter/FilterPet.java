@@ -1,7 +1,6 @@
-package org.kitpes.model.filter;
+package org.kitpes.model.form.filter;
 
 import lombok.Data;
-import org.kitpes.model.Pet;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,7 +24,7 @@ public class FilterPet {
 
     private String vaccinated = null;
 
-    public List<Pet> filtering(List<Pet> pets) {
+    /* public List<Pet> filtering(List<Pet> pets) {
         //String query1 =
         //SelectQuery selectQ = new SelectQuery();
         //SelectQuery sel = new SelectQuery().addCondition(BinaryCondition.equalTo(species, "?"));
@@ -50,6 +49,6 @@ public class FilterPet {
                                         (vaccinated.equals("vaccinated") || p.getVaccinated() == Boolean.valueOf(vaccinated))
 
                 ).collect(Collectors.toList());
-    }
+    } */
 }
 

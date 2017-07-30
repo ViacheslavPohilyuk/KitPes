@@ -1,11 +1,11 @@
 package org.kitpes.config;
 
-import org.kitpes.date.CurrentDateTimeZone;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.multipart.MultipartResolver;
-import org.springframework.web.multipart.support.StandardServletMultipartResolver;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -13,7 +13,6 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-import java.io.IOException;
 
 /**
  * Created by mac on 11.04.17.
@@ -32,6 +31,16 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         resolver.setContentType("text/html");
         resolver.setExposeContextBeansAsAttributes(true);
         return resolver;
+    }
+
+    @Component
+    public class CurrentDateTimeZone {
+        long getCurrentDate() {
+            return new DateTime(DateTimeZone.UTC)
+                    .toDateTime(DateTimeZone.forID("Africa/Cairo"))
+                    .toDate()
+                    .getTime();
+        }
     }
 
     @Override
