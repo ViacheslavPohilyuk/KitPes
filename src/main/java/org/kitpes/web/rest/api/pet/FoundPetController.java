@@ -4,7 +4,7 @@ import org.kitpes.image.ImageHandler;
 import org.kitpes.model.form.DatePetLostFound;
 import org.kitpes.model.pet.FoundPet;
 import org.kitpes.data.repo.pet.FoundPetRepository;
-import org.kitpes.security.AuthenticatedUserIdRetriever;
+import org.kitpes.security.SecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +28,7 @@ public class FoundPetController {
     private FoundPetRepository repository;
 
     @Autowired
-    private AuthenticatedUserIdRetriever retriever;
+    private SecurityConfig.AuthenticatedUserIdRetriever retriever;
 
     @Autowired
     private ImageHandler imageHandler;

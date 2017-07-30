@@ -2,9 +2,9 @@ package org.kitpes.web.rest.api.pet;
 
 import org.kitpes.model.pet.HomelessPet;
 import org.kitpes.data.repo.pet.HomelessPetRepository;
-import org.kitpes.security.AuthenticatedUserIdRetriever;
 import org.kitpes.image.ImageHandler;
 
+import org.kitpes.security.SecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +28,7 @@ public class HomelessPetController {
     private HomelessPetRepository repository;
 
     @Autowired
-    private AuthenticatedUserIdRetriever retriever;
+    private SecurityConfig.AuthenticatedUserIdRetriever retriever;
 
     @Autowired
     private ImageHandler imageHandler;

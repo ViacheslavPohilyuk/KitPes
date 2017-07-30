@@ -9,8 +9,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 
 @Configuration
 @EnableWebSecurity
@@ -26,14 +28,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 //.antMatchers("/user").access("hasRole('ROLE_USER')")
                 .and()
-                    .formLogin()
-                    .loginPage("/login")
-                    .defaultSuccessUrl("/user/afterLogin")
-                    .failureUrl("/login?error")
-                    .permitAll()
-                    .loginProcessingUrl("/auth/login_check")
-                    .usernameParameter("username")
-                    .passwordParameter("password")
+                .formLogin()
+                .loginPage("/login")
+                .defaultSuccessUrl("/user/afterLogin")
+                .failureUrl("/login?error")
+                .permitAll()
+                .loginProcessingUrl("/auth/login_check")
+                .usernameParameter("username")
+                .passwordParameter("password")
                 .and()
                 .logout().logoutSuccessUrl("/").logoutUrl("/logout")
                 .and()
@@ -53,13 +55,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return authProvider;
     }
 
-    @Bean
-    public PasswordEncoder encoder() {
-        return new BCryptPasswordEncoder(11);
+    @Component
+    public class AuthenticatedUserIdRetriever {
+        public long getId() {
+            return ((UserPrincipal) SecurityContextHolder
+                    .getContext()
+                    .getAuthentication()
+                    .getPrincipal()).getUser().getId();
+        }
     }
 
     @Bean
-    public AuthenticatedUserIdRetriever retrieverUserId() {
-        return new AuthenticatedUserIdRetriever();
+    public PasswordEncoder encoder() {
+        return new BCryptPasswordEncoder(11);
     }
 }
