@@ -1,20 +1,5 @@
 package org.kitpes.web.rest.api;
 
-import org.kitpes.image.ImageHandler;
-import org.kitpes.model.Organization;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.util.List;
-
-import static org.springframework.web.bind.annotation.RequestMethod.*;
-
 /**
  * Created by mac on 14.05.17.
  */
